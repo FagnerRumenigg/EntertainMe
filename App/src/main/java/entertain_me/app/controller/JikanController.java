@@ -1,6 +1,6 @@
 package entertain_me.app.controller;
 
-import entertain_me.app.service.AnimeReturnService;
+import entertain_me.app.service.JikanService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,24 +9,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RequestMapping("jikan-api")
 @RestController()
-public class AnimeReturnController {
+public class JikanController {
 
-    private final AnimeReturnService animeReturnService;
-   private final Logger logger = LoggerFactory.getLogger(AnimeReturnController.class);
+    private final JikanService animeReturnService;
+   private final Logger logger = LoggerFactory.getLogger(JikanController.class);
 
-    public AnimeReturnController(AnimeReturnService animeReturnService) {
+    public JikanController(JikanService animeReturnService) {
         this.animeReturnService = animeReturnService;
     }
 
     @GetMapping("/atualizar-database")
     public ResponseEntity<?> getAllAnimes() {
         try{
-            animeReturnService.getAllAnimes();
+            animeReturnService.getAllAnimesJikan();
 
             return ResponseEntity.ok().build();
         } catch(Exception e){
@@ -36,7 +35,7 @@ public class AnimeReturnController {
     }
 
     @GetMapping("/getNew/{jikanId}")
-    public ResponseEntity<String> getMethodName(@PathVariable Integer jikanId) {
+    public ResponseEntity<String> getAnimeNews(@PathVariable Integer jikanId) {
         try{
             String animeNews = animeReturnService.getAnimeNews(jikanId);
 

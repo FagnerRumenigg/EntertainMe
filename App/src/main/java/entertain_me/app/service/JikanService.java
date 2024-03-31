@@ -18,20 +18,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-public class AnimeReturnService {
+public class JikanService {
 
     private final JikanAPIService jikanAPIService;
 
-    public AnimeReturnService(JikanAPIService jikanAPIService) {
+    public JikanService(JikanAPIService jikanAPIService) {
         this.jikanAPIService = jikanAPIService;
     }
 
     @Autowired
     private AnimeRepository repository;
 
-    private static final Logger logger = LoggerFactory.getLogger(AnimeReturnService.class);
+    private static final Logger logger = LoggerFactory.getLogger(JikanService.class);
 
-    public void getAllAnimes() throws Exception {
+    public void getAllAnimesJikan() throws Exception {
         try {
             int page = 1;
             boolean retornoOk = true;
@@ -62,7 +62,7 @@ public class AnimeReturnService {
                             .toList();
 
                     for (AnimeReturn anime : retorno) {
-                        repository.save(getAnime(anime));
+                        repository.save(setAnimeFromJikan(anime));
                     }
                 }
                 Duration diferenca = Duration.between(horaComeco, LocalDateTime.now());
@@ -88,8 +88,9 @@ public class AnimeReturnService {
         return now.format(format);
     }
 
-    private static Anime getAnime(AnimeReturn anime) {
+    private static Anime setAnimeFromJikan(AnimeReturn anime) {
         Anime animeNovo = new Anime();
+
         animeNovo.setJikanId(anime.jikanId());
         animeNovo.setTitulo(anime.title());
         animeNovo.setFonteDeOrigem(anime.source());
