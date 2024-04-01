@@ -1,6 +1,5 @@
 package entertain_me.app.controller;
 
-import entertain_me.app.service.JikanService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -10,13 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import entertain_me.app.service.JikanService;
 
 @RequestMapping("jikan-api")
 @RestController()
 public class JikanController {
 
     private final JikanService animeReturnService;
-   private final Logger logger = LoggerFactory.getLogger(JikanController.class);
+
+    private final Logger logger = LoggerFactory.getLogger(JikanController.class);
 
     public JikanController(JikanService animeReturnService) {
         this.animeReturnService = animeReturnService;
