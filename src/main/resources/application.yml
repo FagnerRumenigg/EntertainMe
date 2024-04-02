@@ -1,0 +1,5 @@
+mongodb:
+  host: entertainme.qe4nfvv.mongodb.net
+  username: entertainment
+  password: Ss3r8LiphvmoXayF
+  database: EntertainMe
