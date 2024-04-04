@@ -1,0 +1,48 @@
+package entertain_me.app.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import entertain_me.app.model.User;
+import entertain_me.app.record.user.AuthenticationRecord;
+import entertain_me.app.record.user.RegisterRecord;
+import entertain_me.app.service.AuthorizationService;
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("auth")
+public class AuthenticationController {
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired 
+	AuthorizationService service;
+
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationRecord dto) {
+		var userNamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
+		var auth = this.authenticationManager.authenticate(userNamePassword);
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("register")
+	public ResponseEntity<?> register(@RequestBody @Valid RegisterRecord dto){
+		if(this.service.findByLogin(dto.login()) != null) return ResponseEntity.badRequest().build();
+		
+		String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
+		User newUser = new User(dto.login(), encryptedPassword, dto.role());
+		
+		service.save(newUser);
+		
+		return ResponseEntity.ok().build();
+	}
+}
