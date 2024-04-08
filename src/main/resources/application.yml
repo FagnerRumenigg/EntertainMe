@@ -3,3 +3,9 @@ mongodb:
   username: entertainment
   password: Ss3r8LiphvmoXayF
   database: EntertainMe
+  
+  
+api:
+  security:
+    token:
+      secret: "${JWT_SECRET:my-secret-key}"

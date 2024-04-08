@@ -2,6 +2,7 @@ package entertain_me.app.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,10 @@ import entertain_me.app.service.AnimeService;
 @RestController
 public class AnimeController {
 
-  private AnimeService service;
+	@Autowired
+	private AnimeService service;
 
-  private Logger logger = LoggerFactory.getLogger(AnimeController.class);
+	private Logger logger = LoggerFactory.getLogger(AnimeController.class);
 
   @GetMapping("/getByTitulo/{titulo}")
   public ResponseEntity<?> getAllAnimes(@PathVariable String titulo) {

@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import entertain_me.app.config.TokenService;
 import entertain_me.app.model.User;
 import entertain_me.app.record.user.AuthenticationRecord;
+import entertain_me.app.record.user.LoginResponseDto;
 import entertain_me.app.record.user.RegisterRecord;
 import entertain_me.app.service.AuthorizationService;
 import jakarta.validation.Valid;
@@ -24,14 +26,19 @@ public class AuthenticationController {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired 
-	AuthorizationService service;
+	private AuthorizationService service;
+	
+	@Autowired
+	private TokenService tokenService;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationRecord dto) {
 		var userNamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
 		var auth = this.authenticationManager.authenticate(userNamePassword);
 		
-		return ResponseEntity.ok().build();
+		var token = tokenService.generateToken((User) auth.getPrincipal());
+		
+		return ResponseEntity.ok(new LoginResponseDto(token));
 	}
 	
 	@PostMapping("register")
