@@ -27,7 +27,7 @@ public class MongoConfig {
     private String mongoDatabase;
 
     @Bean
-    public MongoClient mongoClient() {
+    MongoClient mongoClient() {
         String connectionString = "mongodb+srv://" + mongoUsername + ":" + mongoPassword + "@" + mongoHost;
 
         ServerApi serverApi = ServerApi.builder()
@@ -41,7 +41,7 @@ public class MongoConfig {
     }
 
     @Bean
-    public MongoTemplate mongoTemplate() {
+    MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongoClient(), mongoDatabase);
     }
 }

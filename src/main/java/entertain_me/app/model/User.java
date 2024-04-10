@@ -41,8 +41,8 @@ public class User implements UserDetails{
 		if(this.role == UserRoleEnum.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
 		else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
-	@Override
 
+	@Override
 	public String getUsername() {
 		return login;
 	}

@@ -81,7 +81,6 @@ public class JikanService {
     }
 
     public String getAnimeNews(Integer jikanId){
-        //String apiUrl = String.format("https://api.jikan.moe/v4/anime/%d/news", jikanId);
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
         logger.info(now.format(format));
