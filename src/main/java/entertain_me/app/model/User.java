@@ -3,13 +3,14 @@ package entertain_me.app.model;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import entertain_me.app.enums.UserRoleEnum;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor	
-@Document(collection = "users")
+@Entity
+@Table(name = "users")
 public class User implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;

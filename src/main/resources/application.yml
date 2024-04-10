@@ -1,10 +1,11 @@
-mongodb:
-  host: entertainme.qe4nfvv.mongodb.net
-  username: entertainment
-  password: Ss3r8LiphvmoXayF
-  database: EntertainMe
+postgres:
+  host: cb4l59cdg4fg1k.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com
+  username: u1m92vecjgdaek
+  password: p14a9e04dc5d599a025fa21f99543d6771f105a9e9cd93151f7ab5748d6b6faee
+  database: d3hos9t27kdge7
+  port: 5432
   
-  
+ 
 api:
   security:
     token:
