@@ -1,12 +1,14 @@
 package entertain_me.app.config;
 
+import javax.sql.DataSource;
+
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import javax.sql.DataSource;
 
 @Configuration
 public class DatabaseConfig {
@@ -25,9 +27,21 @@ public class DatabaseConfig {
 
     @Value("${postgres.database}")
     private String postgresDatabase;
+    
+    @Value("${DATABASE_URL")
+    private String urlHeroku;
+
+	private org.slf4j.Logger logger = LoggerFactory.getLogger(DatabaseConfig.class);
 
     @Bean
     public DataSource dataSource() {
+    	
+    	logger.info("Chegou");
+    	logger.info(urlHeroku);
+    	
+    	System.out.println("Chegou2");
+    	System.out.println(urlHeroku);
+    	
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://" + postgresHost + ":" + postgresPort + "/" + postgresDatabase);
