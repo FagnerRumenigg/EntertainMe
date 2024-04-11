@@ -8,7 +8,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import entertain_me.app.enums.UserRoleEnum;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,9 +30,17 @@ public class User implements UserDetails{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String id;
+	@Column(name = "id_user")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "login_user")
 	private String login;
+	
+	@Column(name = "password_user")
 	private String password;
+	
+	@Column(name = "role_user")
 	private UserRoleEnum role;
 	
 	public User(String login, String password, UserRoleEnum role) {
