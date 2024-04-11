@@ -1,8 +1,8 @@
 postgres:
   host: cb4l59cdg4fg1k.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com
-  username: u1m92vecjgdaek
-  password: p14a9e04dc5d599a025fa21f99543d6771f105a9e9cd93151f7ab5748d6b6faee
-  database: d3hos9t27kdge7
+  username: u5i60op1sbsq3
+  password: p0e323a7bc1d6549da87b3b082cadb8a6198f42d1855dc6a9bcfa15d1f290bf2f
+  database: d8lavk58imcfln
   port: 5432
   
  
