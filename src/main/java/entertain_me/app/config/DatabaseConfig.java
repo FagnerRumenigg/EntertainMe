@@ -28,17 +28,12 @@ public class DatabaseConfig {
     @Value("${postgres.database}")
     private String postgresDatabase;
     
-    @Value("${DATABASE_URL")
+    @Value("${DATABASE_URL}")
     private String urlHeroku;
 
-	private org.slf4j.Logger logger = LoggerFactory.getLogger(DatabaseConfig.class);
 
     @Bean
     public DataSource dataSource() {
-    	
-    	logger.info("Chegou");
-    	logger.info(urlHeroku);
-    	
     	System.out.println("Chegou2");
     	System.out.println(urlHeroku);
     	
