@@ -60,8 +60,8 @@ public class JikanService {
                                     getNameFromStudio(anime.studios()),
                                     getNameFromGenres(anime.genres())))
                             .toList();
-
                     for (AnimeReturn anime : retorno) {
+                    	logger.info("Anime inserido: "+ anime.title());
                         repository.save(setAnimeFromJikan(anime));
                     }
                 }
@@ -72,6 +72,7 @@ public class JikanService {
                     logger.info("Página: "+page);
                 }
                 page++;
+                logger.info("Terminou a pagina: " + page + " - " + LocalDateTime.now().format(format));
                 Thread.sleep(1500);
             }
            logger.info("Terminou: " + LocalDateTime.now().format(format));
