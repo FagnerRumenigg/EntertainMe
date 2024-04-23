@@ -7,5 +7,5 @@ import entertain_me.app.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
-	UserDetails findByLogin(String login);
+	UserDetails findByEmail(String login);
 }

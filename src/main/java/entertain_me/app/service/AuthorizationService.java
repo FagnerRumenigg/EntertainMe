@@ -19,13 +19,12 @@ public class AuthorizationService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return findByLogin(username);
 	}
-	
+
 	public UserDetails findByLogin(String userName)throws UsernameNotFoundException {
-		return repository.findByLogin(userName);
+		return repository.findByEmail(userName);
 	}
-	
+
 	public void save(User user) {
 		repository.save(user);
 	}
-
 }
