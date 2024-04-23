@@ -11,8 +11,7 @@ import entertain_me.app.vo.AnimeVO;
 public interface AnimeRepository extends JpaRepository<Anime, String> {
 
   @Query("SELECT new entertain_me.app.vo.AnimeVO("
-  		+ "a.titulo, a.fonteDeOrigem, a.situacaoAtual, a.sinopse, a.quantidadeEpisodios, a.anoLancamento, a.demografias, a.estudios, a.generos) "
-  		+ "FROM Anime a WHERE a.titulo = :titulo")
-  AnimeVO findAnimeByTitulo(String titulo);
-
+  		+ "a.title, a.source, a.status, a.synopsys, a.episodes, a.year, a.demographics, a.studios, a.genres) "
+  		+ "FROM Anime a WHERE a.title = :title")
+  AnimeVO findAnimeByTitle(String title);
 }

@@ -23,10 +23,10 @@ public class AnimeController {
 
 	private Logger logger = LoggerFactory.getLogger(AnimeController.class);
 
-  @GetMapping("/getByTitulo/{titulo}")
-  public ResponseEntity<?> getAnimeByTitulo(@PathVariable String titulo) {
+  @GetMapping("/getByTitle/{title}")
+  public ResponseEntity<?> getAnimeByTitulo(@PathVariable String title) {
       try{
-          return ResponseEntity.ok(service.getAnimeByTitulo(titulo));
+          return ResponseEntity.ok(service.getAnimeByTitulo(title));
       } catch(Exception e){
           logger.error("Error descriptrion: ", e);
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

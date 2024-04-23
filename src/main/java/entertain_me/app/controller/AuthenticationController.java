@@ -48,10 +48,10 @@ public class AuthenticationController {
 		if(this.service.findByLogin(dto.login()) != null) return ResponseEntity.badRequest().build();
 		
 		String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
-		User novoUsuario = new User(dto.login(), encryptedPassword, dto.role());
+		User newUser = new User(dto.login(), encryptedPassword, dto.role());
 		
-		service.save(novoUsuario);
-		System.out.println("novoUsuario: "+novoUsuario);
+		service.save(newUser);
+
 		return ResponseEntity.ok().build();
 	}
 }

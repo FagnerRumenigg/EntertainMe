@@ -26,21 +26,21 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails{
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id_user")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "login_user")
+	@Column(name = "login")
 	private String login;
 	
-	@Column(name = "password_user")
+	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "role_user")
+	@Column(name = "role")
 	private UserRoleEnum role;
 	
 	public User(String login, String password, UserRoleEnum role) {

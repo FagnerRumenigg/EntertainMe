@@ -26,7 +26,7 @@ public class JikanAPIService {
             JikanResponse jikanResponse = responseEntity.getBody();
             jikanRequestAllRecords = jikanResponse != null ? jikanResponse.data() : Collections.emptyList();
         }else{
-            throw new Exception("Não foi possível fazer a requisição para a API JIKAN");
+            throw new Exception("The connection with the jikan-api is down. Try again later.");
         }
 
         return jikanRequestAllRecords;

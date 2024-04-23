@@ -34,18 +34,18 @@ public class JikanService {
     public void getAllAnimesJikan() throws Exception {
         try {
             int page = 1;
-            boolean retornoOk = true;
+            boolean returnOk = true;
             DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
-            LocalDateTime horaComeco = LocalDateTime.now();
-            logger.info("Começou: " + LocalDateTime.now().format(format));
+            LocalDateTime timeStart = LocalDateTime.now();
+            logger.info("Started: " + LocalDateTime.now().format(format));
 
-            while (retornoOk) {
+            while (returnOk) {
                 String apiUrl = String.format("https://api.jikan.moe/v4/anime?page=%d", page);
 
                 List<JikanRequestAllRecord> animesList = jikanAPIService.requestAllAnimes(apiUrl);
 
                 if (animesList.isEmpty()) {
-                    retornoOk = false;
+                	returnOk = false;
                 } else {
                     List<AnimeReturn> retorno = animesList.stream()
                             .map(anime -> new AnimeReturn(
@@ -61,30 +61,30 @@ public class JikanService {
                                     getNameFromGenres(anime.genres())))
                             .toList();
                     for (AnimeReturn anime : retorno) {
-                    	logger.info("Anime inserido: "+ anime.title());
+                    	logger.info("Anime inserted: "+ anime.title());
                         repository.save(setAnimeFromJikan(anime));
                     }
                 }
-                Duration diferenca = Duration.between(horaComeco, LocalDateTime.now());
+                Duration diferenca = Duration.between(timeStart, LocalDateTime.now());
                 long minutosPassados = diferenca.toMinutes();
 
                 if(minutosPassados > 5){
-                    logger.info("Página: "+page);
+                    logger.info("Page: "+page);
                 }
                 page++;
-                logger.info("Terminou a pagina: " + page + " - " + LocalDateTime.now().format(format));
+                logger.info("finished the page : " + page + " - " + LocalDateTime.now().format(format));
                 Thread.sleep(1500);
             }
            logger.info("Terminou: " + LocalDateTime.now().format(format));
         } catch (Exception e) {
-            throw new Exception("Falha em atualizar base de dados", e);
+            throw new Exception("Fail updating database", e);
         }
     }
 
     public String getAnimeNews(Integer jikanId){
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
-        logger.info(now.format(format));
+
         return now.format(format);
     }
 
@@ -92,15 +92,15 @@ public class JikanService {
         Anime animeNovo = new Anime();
 
         animeNovo.setJikanId(anime.jikanId());
-        animeNovo.setTitulo(anime.title());
-        animeNovo.setFonteDeOrigem(anime.source());
-        animeNovo.setSituacaoAtual(anime.status());
-        animeNovo.setSinopse(anime.synopsys());
-        animeNovo.setQuantidadeEpisodios(anime.episodes());
-        animeNovo.setAnoLancamento(anime.year());
-        animeNovo.setDemografias(anime.demographics());
-        animeNovo.setEstudios(anime.studios());
-        animeNovo.setGeneros(anime.genres());
+        animeNovo.setTitle(anime.title());
+        animeNovo.setSource(anime.source());
+        animeNovo.setStatus(anime.status());
+        animeNovo.setSynopsys(anime.synopsys());
+        animeNovo.setEpisodes(anime.episodes());
+        animeNovo.setYear(anime.year());
+        animeNovo.setDemographics(anime.demographics());
+        animeNovo.setStudios(anime.studios());
+        animeNovo.setGenres(anime.genres());
 
         return animeNovo;
     }

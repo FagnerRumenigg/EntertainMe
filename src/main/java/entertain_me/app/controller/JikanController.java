@@ -25,7 +25,7 @@ public class JikanController {
         this.animeReturnService = animeReturnService;
     }
 
-    @GetMapping("/atualizar-database")
+    @GetMapping("/update-database")
     public ResponseEntity<?> getAllAnimes() {
         try{
             animeReturnService.getAllAnimesJikan();

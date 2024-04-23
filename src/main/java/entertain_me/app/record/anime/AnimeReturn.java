@@ -12,7 +12,5 @@ public record AnimeReturn(
         Integer year,
         List<String> demographics,
         List<String> studios,
-        List<String> genres
-
-        ) {
+        List<String> genres) {
 }

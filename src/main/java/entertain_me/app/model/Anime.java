@@ -30,29 +30,29 @@ public class Anime {
 	private Integer jikanId;
 	
 	@Column(name = "titulo")
-    private String titulo;
+    private String title;
 	
 	@Column(name = "fonte_origem")
-    private String fonteDeOrigem;
+    private String source;
 	
 	@Column(name = "situacao_atual")
-    private String situacaoAtual;
+    private String status;
 	
 	@Column(name = "sinopse")
-    private String sinopse;
+    private String synopsys;
 	
 	@Column(name = "quantidade_episodios")
-    private Integer quantidadeEpisodios;
+    private Integer episodes;
 	
 	@Column(name = "ano_lancamento")
-    private Integer anoLancamento;
+    private Integer year;
 	
 	@Column(name = "demografias")
-    private List<String> demografias;
+    private List<String> demographics;
 
 	@Column(name = "estudios")
-	private List<String> estudios;
+	private List<String> studios;
 	
 	@Column(name = "generos")
-    private List<String> generos;
+    private List<String> genres;
 }

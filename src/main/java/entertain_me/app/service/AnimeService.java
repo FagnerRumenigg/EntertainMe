@@ -13,7 +13,7 @@ public class AnimeService {
   AnimeRepository repository;
 
   public AnimeVO getAnimeByTitulo(String titulo){
-    return repository.findAnimeByTitulo(titulo);
+    return repository.findAnimeByTitle(titulo);
   }
 
 }
