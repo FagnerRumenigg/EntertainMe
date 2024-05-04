@@ -1,4 +1,4 @@
-package entertain_me.app.record.jikan_api;
+package entertain_me.app.dto.jikan_api;
 
 import java.util.List;
 

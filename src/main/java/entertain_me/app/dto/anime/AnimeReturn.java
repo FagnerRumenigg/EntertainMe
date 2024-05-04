@@ -1,4 +1,4 @@
-package entertain_me.app.record.anime;
+package entertain_me.app.dto.anime;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package entertain_me.app.model;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import lombok.Setter;
 @Table(name = "users")
 public class User implements UserDetails{
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -34,8 +36,8 @@ public class User implements UserDetails{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name ="nome")
-	private String nome;
+	@Column(name ="name")
+	private String name;
 	
 	@Column(name = "email")
 	private String email;
@@ -46,8 +48,8 @@ public class User implements UserDetails{
 	@Column(name = "role")
 	private UserRoleEnum role;
 	
-	public User(String nome, String email, String password, UserRoleEnum role) {
-		this.nome = nome;
+	public User(String name, String email, String password, UserRoleEnum role) {
+		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;

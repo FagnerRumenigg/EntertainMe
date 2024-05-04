@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 @Configuration
 public class DatabaseConfig {
@@ -28,7 +29,6 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {
-        postgresHost = "localhost";
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://" + postgresHost + ":" + postgresPort + "/" + postgresDatabase);

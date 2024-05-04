@@ -13,7 +13,12 @@ public class AnimeService {
   AnimeRepository repository;
 
   public AnimeVO getAnimeByTitulo(String titulo){
-    return repository.findAnimeByTitle(titulo);
+    try{
+      throw new RuntimeException("Este é um exemplo de exceção!");
+      //return repository.findAnimeByTitle(titulo);
+    }catch(Exception e){
+      throw e;
+    }
   }
 
 }

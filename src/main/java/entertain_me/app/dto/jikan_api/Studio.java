@@ -1,6 +1,6 @@
-package entertain_me.app.record.jikan_api;
+package entertain_me.app.dto.jikan_api;
 
-public record Licensor(
+public record Studio(
         Integer mal_id,
         String type,
         String name,

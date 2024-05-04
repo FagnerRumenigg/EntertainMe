@@ -1,6 +1,6 @@
-package entertain_me.app.record.jikan_api;
+package entertain_me.app.dto.jikan_api;
 
-public record AiredTo(
+public record AiredFrom(
         Integer day,
         Integer month,
         Integer year) {

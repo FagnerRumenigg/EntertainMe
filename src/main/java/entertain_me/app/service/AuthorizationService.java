@@ -25,6 +25,7 @@ public class AuthorizationService implements UserDetailsService{
 	}
 
 	public void save(User user) {
-		repository.save(user);
-	}
+
+        repository.save(user);
+    }
 }

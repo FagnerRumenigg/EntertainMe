@@ -1,23 +1,21 @@
-CREATE entertainme-dabase;
-
 CREATE TABLE users (
- id SERIAL  PRIMARY KEY,
- nome varchar(100) not null,
- email varchar(100) NOT NULL,
- password varchar(100) NOT NULL,
- role varchar(15) NOT NULL
+     id         SERIAL          PRIMARY KEY,
+     name       VARCHAR(100)    NOT NULL,
+     email      VARCHAR(100)    NOT NULL,
+     password   VARCHAR(100)    NOT NULL,
+     role       VARCHAR(15)     NOT NULL
 );
 
 CREATE TABLE anime (
-    id_anime SERIAL PRIMARY KEY,
-    jikan_id INTEGER NOT NULL,
-    titulo VARCHAR(100) NOT NULL,
-    fonte_origem VARCHAR(100) NOT NULL,
-    situacao_atual VARCHAR(50) NOT NULL,
-    sinopse VARCHAR(5000) NOT NULL,
-    quantidade_episodios INTEGER ,
-    ano_lancamento INTEGER,
-    demografias TEXT[],
-    estudios TEXT[],
-    generos TEXT[]
+    id_anime        SERIAL          PRIMARY KEY,
+    jikan_id        INTEGER         NOT NULL,
+    title           VARCHAR(100)    NOT NULL,
+    source          VARCHAR(100)    NOT NULL,
+    status          VARCHAR(50)     NOT NULL,
+    synopsys        VARCHAR(5000)   NOT NULL,
+    episodes        INTEGER ,
+    release_year    INTEGER,
+    demographics    TEXT[],
+    studios         TEXT[],
+    genres          TEXT[]
 );

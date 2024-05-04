@@ -21,15 +21,9 @@ public class AnimeController {
 	@Autowired
 	private AnimeService service;
 
-	private Logger logger = LoggerFactory.getLogger(AnimeController.class);
 
   @GetMapping("/getByTitle/{title}")
-  public ResponseEntity<?> getAnimeByTitulo(@PathVariable String title) {
-      try{
-          return ResponseEntity.ok(service.getAnimeByTitulo(title));
-      } catch(Exception e){
-          logger.error("Error descriptrion: ", e);
-          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-      }
+  public ResponseEntity<?> getAnimeByTitle(@PathVariable String title) {
+      return ResponseEntity.ok(service.getAnimeByTitulo(title));
   }
 }

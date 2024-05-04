@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import entertain_me.app.config.TokenService;
 import entertain_me.app.model.User;
-import entertain_me.app.record.user.AuthenticationRecord;
-import entertain_me.app.record.user.LoginResponseDto;
-import entertain_me.app.record.user.RegisterRecord;
+import entertain_me.app.dto.user.AuthenticationRecord;
+import entertain_me.app.dto.user.LoginResponseDto;
+import entertain_me.app.dto.user.RegisterRecord;
 import entertain_me.app.service.AuthorizationService;
 import jakarta.validation.Valid;
 
@@ -44,11 +44,11 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestBody @Valid RegisterRecord dto){
-		if(this.service.findByLogin(dto.email()) != null) return ResponseEntity.badRequest().build();
+	public ResponseEntity<?> register(@RequestBody @Valid RegisterRecord registerUser){
+		if(this.service.findByLogin(registerUser.email()) != null) return ResponseEntity.badRequest().build();
 		
-		String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
-		User newUser = new User(dto.nome(), dto.email(), encryptedPassword, dto.role());
+		String encryptedPassword = new BCryptPasswordEncoder().encode(registerUser.password());
+		User newUser = new User(registerUser.name(), registerUser.email(), encryptedPassword, registerUser.role());
 
 		service.save(newUser);
 

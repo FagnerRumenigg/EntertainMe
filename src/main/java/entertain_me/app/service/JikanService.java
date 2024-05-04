@@ -1,22 +1,25 @@
 package entertain_me.app.service;
 
 import entertain_me.app.model.Anime;
-import entertain_me.app.record.anime.AnimeReturn;
-import entertain_me.app.record.jikan_api.*;
+import entertain_me.app.dto.anime.AnimeReturn;
+import entertain_me.app.dto.jikan_api.*;
 import entertain_me.app.repository.AnimeRepository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Log
 @Service
 public class JikanService {
 
@@ -29,25 +32,20 @@ public class JikanService {
     @Autowired
     private AnimeRepository repository;
 
-    private static final Logger logger = LoggerFactory.getLogger(JikanService.class);
-
     public void getAllAnimesJikan() throws Exception {
         try {
             int page = 1;
             boolean returnOk = true;
             DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
             LocalDateTime timeStart = LocalDateTime.now();
-            logger.info("Started: " + LocalDateTime.now().format(format));
 
+            log.info("Updating database , time started: "+ timeStart);
             while (returnOk) {
-                String apiUrl = String.format("https://api.jikan.moe/v4/anime?page=%d", page);
 
-                List<JikanRequestAllRecord> animesList = jikanAPIService.requestAllAnimes(apiUrl);
+                List<JikanRequestAllRecord> animesList = jikanAPIService.requestAllAnimes(page);
 
-                if (animesList.isEmpty()) {
-                	returnOk = false;
-                } else {
-                    List<AnimeReturn> retorno = animesList.stream()
+                if (!animesList.isEmpty()) {
+                    List<AnimeReturn> animesReturn = animesList.stream()
                             .map(anime -> new AnimeReturn(
                                     anime.mal_id(),
                                     anime.title(),
@@ -60,22 +58,30 @@ public class JikanService {
                                     getNameFromStudio(anime.studios()),
                                     getNameFromGenres(anime.genres())))
                             .toList();
-                    for (AnimeReturn anime : retorno) {
-                    	logger.info("Anime inserted: "+ anime.title());
+                    for (AnimeReturn anime : animesReturn) {
+                        Optional<AnimeReturn> animeDatabase = repository.findByJikanId(anime.jikanId());
+
+                        if(animeDatabase.isPresent()){
+                            log.info("Anime already registered: "+ anime.title());
+                            continue;
+                        }
+                        log.info("Anime saved: "+anime.title());
                         repository.save(setAnimeFromJikan(anime));
                     }
+                }else{
+                    returnOk = false;
                 }
-                Duration diferenca = Duration.between(timeStart, LocalDateTime.now());
-                long minutosPassados = diferenca.toMinutes();
+                Duration difference = Duration.between(timeStart, LocalDateTime.now());
+                long passedMinutes = difference.toMinutes();
 
-                if(minutosPassados > 5){
-                    logger.info("Page: "+page);
+                if(passedMinutes >= 5){
+                    timeStart = LocalDateTime.now();
+                    log.info("5 minutes passed, page : " + page + " - " + timeStart.format(format));
                 }
                 page++;
-                logger.info("finished the page : " + page + " - " + LocalDateTime.now().format(format));
+
                 Thread.sleep(1500);
             }
-           logger.info("Terminou: " + LocalDateTime.now().format(format));
         } catch (Exception e) {
             throw new Exception("Fail updating database", e);
         }
