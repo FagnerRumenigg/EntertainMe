@@ -8,7 +8,7 @@ import entertain_me.app.model.Anime;
 import entertain_me.app.vo.AnimeVO;
 
 @Repository
-public interface AnimeRepository extends JpaRepository<Anime, String> {
+public interface AnimeRepository extends JpaRepository<Anime, Long> {
 
   @Query("SELECT new entertain_me.app.vo.AnimeVO("
   		+ "a.title, a.source, a.status, a.synopsys, a.episodes, a.year, a.demographics, a.studios, a.genres) "

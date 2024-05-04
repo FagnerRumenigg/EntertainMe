@@ -1,0 +1,23 @@
+version: "3"
+services:
+  postgresdb:
+    container_name: postgresdb
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: entertainme-database
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  entertainme-api:
+    image: fagnerrumenigg/entertainme-api
+    container_name: entertainme-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresdb

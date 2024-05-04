@@ -3,7 +3,13 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+infra/.terraform/
+infra/docker/postgres-data/
 src/main/resources/application.yml
+infra/.terraform.lock.hcl
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+infra/user_data.sh
 ### STS ###
 .apt_generated
 .classpath

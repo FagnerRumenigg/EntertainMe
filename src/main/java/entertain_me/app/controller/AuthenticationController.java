@@ -43,7 +43,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new LoginResponseDto(token));
 	}
 	
-	@PostMapping("register")
+	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody @Valid RegisterRecord dto){
 		if(this.service.findByLogin(dto.email()) != null) return ResponseEntity.badRequest().build();
 		

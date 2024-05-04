@@ -99,6 +99,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>entertainMe-API</finalName>
+		<finalName>entertainme-api</finalName>
 	</build>
 </project>
