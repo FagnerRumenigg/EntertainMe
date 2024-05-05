@@ -1,5 +1,5 @@
 CREATE TABLE users (
-     id         SERIAL          PRIMARY KEY,
+     id_user         SERIAL          PRIMARY KEY,
      name       VARCHAR(100)    NOT NULL,
      email      VARCHAR(100)    NOT NULL,
      password   VARCHAR(100)    NOT NULL,
@@ -18,4 +18,16 @@ CREATE TABLE anime (
     demographics    TEXT[],
     studios         TEXT[],
     genres          TEXT[]
+);
+
+CREATE TABLE address (
+    id_address  SERIAL          PRIMARY KEY,
+    id_user     INT             NOT NULL,
+    street      VARCHAR(100)    NOT NULL,
+    city        VARCHAR(100)    NOT NULL,
+    estate      VARCHAR(50)     NOT NULL,
+    country     VARCHAR(50)     NOT NULL,
+    cep         VARCHAR(20)     NOT NULL,
+
+    FOREIGN KEY (id_user) REFERENCES users(id_user)
 );

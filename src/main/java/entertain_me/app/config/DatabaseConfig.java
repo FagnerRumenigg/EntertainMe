@@ -34,7 +34,6 @@ public class DatabaseConfig {
         dataSource.setUrl("jdbc:postgresql://" + postgresHost + ":" + postgresPort + "/" + postgresDatabase);
         dataSource.setUsername(postgresUsername);
         dataSource.setPassword(postgresPassword);
-        System.out.println(dataSource.getUrl());
 
         return dataSource;
     }

@@ -1,4 +1,4 @@
-package entertain_me.app.dto;
+package entertain_me.app.dto.exception;
 
 import org.springframework.validation.FieldError;
 

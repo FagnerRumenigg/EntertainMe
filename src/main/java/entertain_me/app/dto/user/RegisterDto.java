@@ -3,7 +3,7 @@ package entertain_me.app.dto.user;
 import entertain_me.app.enums.UserRoleEnum;
 import jakarta.validation.constraints.NotNull;
 
-public record RegisterRecord(
+public record RegisterDto(
 		@NotNull
 		String name,
 		@NotNull
