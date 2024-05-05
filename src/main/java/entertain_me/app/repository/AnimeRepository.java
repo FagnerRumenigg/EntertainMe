@@ -15,7 +15,7 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
 
   @Query("SELECT new entertain_me.app.vo.AnimeVO("
   		+ "a.title, a.source, a.status, a.synopsys, a.episodes, a.year, a.demographics, a.studios, a.genres) "
-  		+ "FROM Anime a WHERE a.title = :title")
+  		+ "FROM Anime a WHERE a.title = %:title%")
   AnimeVO findAnimeByTitle(String title);
 
   Optional<AnimeReturn> findByJikanId(Integer jikanId);

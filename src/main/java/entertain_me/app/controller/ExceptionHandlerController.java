@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -48,5 +49,12 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         var error = ProblemDto.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
         log.error("[ApiExceptionHandler] - forbidden -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+        var error = ProblemDto.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
+        log.error("[ApiExceptionHandler] - notFound -> {}", error);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }
