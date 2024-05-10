@@ -1,7 +1,7 @@
 package entertain_me.app.service;
 
-import entertain_me.app.dto.jikan_api.JikanRequestAllRecord;
-import entertain_me.app.dto.jikan_api.JikanResponse;
+import entertain_me.app.dto.jikan_api.JikanRequestAllDto;
+import entertain_me.app.dto.jikan_api.JikanResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,15 +17,15 @@ public class JikanAPIService {
         this.restTemplate = restTemplate;
     }
 
-    public List<JikanRequestAllRecord> requestAllAnimes(Integer page) throws Exception {
+    public List<JikanRequestAllDto> requestAllAnimes(Integer page) throws Exception {
 
         String apiUrl = String.format("https://api.jikan.moe/v4/anime?page=%d", page);
 
-        ResponseEntity<JikanResponse> responseEntity = restTemplate.getForEntity(apiUrl, JikanResponse.class);
-        List<JikanRequestAllRecord> jikanRequestAllRecords;
+        ResponseEntity<JikanResponseDto> responseEntity = restTemplate.getForEntity(apiUrl, JikanResponseDto.class);
+        List<JikanRequestAllDto> jikanRequestAllRecords;
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            JikanResponse jikanResponse = responseEntity.getBody();
+            JikanResponseDto jikanResponse = responseEntity.getBody();
             jikanRequestAllRecords = jikanResponse != null ? jikanResponse.data() : Collections.emptyList();
         }else{
             throw new Exception("The connection with the jikan-api is down. Try again later.");

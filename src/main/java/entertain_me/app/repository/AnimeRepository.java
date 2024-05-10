@@ -1,6 +1,6 @@
 package entertain_me.app.repository;
 
-import entertain_me.app.dto.anime.AnimeReturn;
+import entertain_me.app.dto.anime.AnimeReturnDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,5 +18,5 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
   		+ "FROM Anime a WHERE a.title = %:title%")
   AnimeVO findAnimeByTitle(String title);
 
-  Optional<AnimeReturn> findByJikanId(Integer jikanId);
+  Optional<AnimeReturnDto> findByJikanId(Integer jikanId);
 }

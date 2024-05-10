@@ -1,6 +1,6 @@
 package entertain_me.app.dto.jikan_api;
 
-public record Licensor(
+public record ProducerDto(
         Integer mal_id,
         String type,
         String name,

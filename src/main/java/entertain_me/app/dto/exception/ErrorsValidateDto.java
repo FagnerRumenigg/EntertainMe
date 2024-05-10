@@ -2,12 +2,12 @@ package entertain_me.app.dto.exception;
 
 import org.springframework.validation.FieldError;
 
-public record ErrorsValidateRecord(
+public record ErrorsValidateDto(
         String field,
 
         String message
 ){
-    public ErrorsValidateRecord(FieldError error){
+    public ErrorsValidateDto(FieldError error){
         this(error.getField(), error.getDefaultMessage());
     }
 }

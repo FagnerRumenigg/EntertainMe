@@ -2,7 +2,7 @@ package entertain_me.app.dto.anime;
 
 import java.util.List;
 
-public record AnimeReturn(
+public record AnimeReturnDto(
         Integer jikanId,
         String title,
         String source,

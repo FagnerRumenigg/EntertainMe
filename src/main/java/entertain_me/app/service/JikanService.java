@@ -1,7 +1,7 @@
 package entertain_me.app.service;
 
 import entertain_me.app.model.Anime;
-import entertain_me.app.dto.anime.AnimeReturn;
+import entertain_me.app.dto.anime.AnimeReturnDto;
 import entertain_me.app.dto.jikan_api.*;
 import entertain_me.app.repository.AnimeRepository;
 
@@ -15,9 +15,6 @@ import java.util.stream.Collectors;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Log
 @Service
@@ -42,11 +39,11 @@ public class JikanService {
             log.info("Updating database , time started: "+ timeStart);
             while (returnOk) {
 
-                List<JikanRequestAllRecord> animesList = jikanAPIService.requestAllAnimes(page);
+                List<JikanRequestAllDto> animesList = jikanAPIService.requestAllAnimes(page);
 
                 if (!animesList.isEmpty()) {
-                    List<AnimeReturn> animesReturn = animesList.stream()
-                            .map(anime -> new AnimeReturn(
+                    List<AnimeReturnDto> animesReturn = animesList.stream()
+                            .map(anime -> new AnimeReturnDto(
                                     anime.mal_id(),
                                     anime.title(),
                                     anime.source(),
@@ -58,8 +55,9 @@ public class JikanService {
                                     getNameFromStudio(anime.studios()),
                                     getNameFromGenres(anime.genres())))
                             .toList();
-                    for (AnimeReturn anime : animesReturn) {
-                        Optional<AnimeReturn> animeDatabase = repository.findByJikanId(anime.jikanId());
+                    for (AnimeReturnDto anime : animesReturn) {
+                        Optional<AnimeReturnDto> animeDatabase = repository.findByJikanId(anime.jikanId());
+
 
                         if(animeDatabase.isPresent()){
                             log.info("Anime already registered: "+ anime.title());
@@ -94,7 +92,7 @@ public class JikanService {
         return now.format(format);
     }
 
-    private static Anime setAnimeFromJikan(AnimeReturn anime) {
+    private static Anime setAnimeFromJikan(AnimeReturnDto anime) {
         Anime animeNovo = new Anime();
 
         animeNovo.setJikanId(anime.jikanId());
@@ -111,21 +109,21 @@ public class JikanService {
         return animeNovo;
     }
 
-    private static List<String> getNameFromGenres(List<Genre> genres) {
+    private static List<String> getNameFromGenres(List<GenreDto> genres) {
         return genres.stream()
-                .map(Genre::name)
+                .map(GenreDto::name)
                 .collect(Collectors.toList());
     }
 
-    private static List<String> getNameFromStudio(List<Studio> studio) {
-        return studio.stream()
-                .map(Studio::name)
+    private static List<String> getNameFromStudio(List<StudioDto> studioDto) {
+        return studioDto.stream()
+                .map(StudioDto::name)
                 .collect(Collectors.toList());
     }
 
-    private static List<String> getNameFromDemographics(List<Demographics> demographics) {
+    private static List<String> getNameFromDemographics(List<DemographicsDto> demographics) {
         return demographics.stream()
-                .map(Demographics::name)
+                .map(DemographicsDto::name)
                 .collect(Collectors.toList());
     }
 }

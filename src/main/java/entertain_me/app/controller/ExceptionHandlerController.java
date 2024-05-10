@@ -15,7 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import java.time.OffsetDateTime;
 
-import entertain_me.app.dto.exception.ErrorsValidateRecord;
+import entertain_me.app.dto.exception.ErrorsValidateDto;
 import entertain_me.app.dto.exception.ProblemDto;
 
 @Slf4j
@@ -26,7 +26,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
         var errors = ex.getFieldErrors();
         log.error("[ApiExceptionHandler] - MethodArgumentNotValid -> {}", errors);
-        return ResponseEntity.badRequest().body(errors.stream().map(ErrorsValidateRecord::new).toList());
+        return ResponseEntity.badRequest().body(errors.stream().map(ErrorsValidateDto::new).toList());
     }
 
     @Override

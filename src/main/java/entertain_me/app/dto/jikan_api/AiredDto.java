@@ -1,9 +1,9 @@
 package entertain_me.app.dto.jikan_api;
 
-public record Aired(
+public record AiredDto(
         String from,
         String to,
-        AiredFrom propFrom,
-        AiredTo propTo,
+        AiredFromDto propFrom,
+        AiredToDto propTo,
         String string) {
 }

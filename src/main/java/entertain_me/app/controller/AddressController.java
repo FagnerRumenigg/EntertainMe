@@ -6,13 +6,23 @@ import entertain_me.app.service.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
-@RequestMapping("address")
+@RequestMapping(value = "address", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class AddressController {
+
+
+
+
+
+
+
+
+
 
     @Autowired
     AddressService addressService;

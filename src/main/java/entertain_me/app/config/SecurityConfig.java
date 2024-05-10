@@ -28,9 +28,11 @@ public class SecurityConfig {
 				.csrf(AbstractHttpConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/swagger-ui/**").permitAll()
+						.requestMatchers("/v3/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-						.requestMatchers(HttpMethod.GET,  "/jikan-api/atualizar-database").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET,  "/jikan-api/update-database").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.addFilterBefore(securityFilter,UsernamePasswordAuthenticationFilter.class)
 				.build();

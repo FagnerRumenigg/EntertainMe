@@ -2,13 +2,13 @@ package entertain_me.app.dto.jikan_api;
 
 import java.util.List;
 
-public record JikanRequestAllRecord(
+public record JikanRequestAllDto(
         Integer mal_id,
         String url,
-        ImageUrls images,
-        Trailer trailer,
+        ImageUrlsDto images,
+        TrailerDto trailerDto,
         boolean approved,
-        List<Title> titles,
+        List<TitleDto> titleDtos,
         String title,
         String title_english,
         String title_japanese,
@@ -18,7 +18,7 @@ public record JikanRequestAllRecord(
         Integer episodes,
         String status,
         boolean airing,
-        Aired aired,
+        AiredDto aired,
         String duration,
         double score,
         Integer scored_by,
@@ -30,18 +30,18 @@ public record JikanRequestAllRecord(
         String background,
         String season,
         Integer year,
-        Broadcast broadcast,
-        List<Producer> producers,
-        List<Licensor> licensors,
-        List<Studio> studios,
-        List<Genre> genres,
-        List<Genre> explicit_genres,
-        List<Genre> themes,
-        List<Demographics> demographics
+        BroadcastDto broadcast,
+        List<ProducerDto> producers,
+        List<LicensorDto> licensors,
+        List<StudioDto> studios,
+        List<GenreDto> genres,
+        List<GenreDto> explicit_genres,
+        List<GenreDto> themes,
+        List<DemographicsDto> demographics
 ) {
     // Construtor personalizado
 
-    public JikanRequestAllRecord(String title, String synopsis) {
+    public JikanRequestAllDto(String title, String synopsis) {
         this(null, null, null, null, false, null, title, null, null, null, null,
                 null, null, null, false, null, null, 0, null, null,
                 null, null, null, synopsis, null, null, null, null,

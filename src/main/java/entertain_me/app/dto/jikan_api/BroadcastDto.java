@@ -1,6 +1,6 @@
 package entertain_me.app.dto.jikan_api;
 
-public record Broadcast(
+public record BroadcastDto(
         String day,
         String time,
         String timezone,
