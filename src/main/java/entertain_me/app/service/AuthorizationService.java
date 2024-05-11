@@ -28,9 +28,12 @@ public class AuthorizationService implements UserDetailsService{
 
 	public UserDetails findByLogin(String userName) throws UsernameNotFoundException {
 		return repository.findByEmail(userName);
+		// TODO: "Implementar exceptions de usuário não encontrado e senha não está correta"
 	}
 
 	public void save(RegisterDto registerUser) throws AlreadyExistsException {
+		// TODO: Validar se email está no formato corretor
+
 		if (findByLogin(registerUser.email()) != null) {
 			throw new AlreadyExistsException("Already exist an user with this e-mail.");
 		}

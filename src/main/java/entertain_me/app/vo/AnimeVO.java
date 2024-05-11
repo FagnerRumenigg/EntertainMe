@@ -5,7 +5,7 @@ import lombok.Builder;
 
 import java.util.List;
 
-@Schema(name = "AnimeVO")
+@Schema(name = "AnimeReturn")
 public record AnimeVO(
     @Schema(name = "title")
     String title,

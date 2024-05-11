@@ -1,8 +1,15 @@
 package entertain_me.app.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import entertain_me.app.dto.user.AddressDto;
+import entertain_me.app.vo.exception.ProblemVo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,41 +19,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import entertain_me.app.service.JikanService;
 
+@RequestMapping(value = "jikan-api", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Jikan")
 @CrossOrigin
-@RequestMapping("jikan-api")
 @RestController()
+
 public class JikanController {
 
     private final JikanService animeReturnService;
 
-    private final Logger logger = LoggerFactory.getLogger(JikanController.class);
 
     public JikanController(JikanService animeReturnService) {
         this.animeReturnService = animeReturnService;
     }
 
-    @GetMapping("/update-database")
-    public ResponseEntity<?> getAllAnimes() {
-        try{
-            animeReturnService.getAllAnimesJikan();
-
-            return ResponseEntity.ok().build();
-        } catch(Exception e){
-            logger.error("Error descriptrion: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    @Operation(summary = "Update the database completely", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Database updated"),
+            @ApiResponse(responseCode = "500", description = "Internal error",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
+    })
+    @GetMapping(value = "/update-database")
+    public ResponseEntity<?> getAllAnimes() throws Exception {
+        animeReturnService.getAllAnimesJikan();
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/getNew/{jikanId}")
+    @Operation(summary = "Get the anime's new", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Anime news was found "),
+            @ApiResponse(responseCode = "500", description = "Internal error",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
+    })
+    @GetMapping(value = "/getNew/{jikanId}")
     public ResponseEntity<String> getAnimeNews(@PathVariable Integer jikanId) {
-        try{
-            String animeNews = animeReturnService.getAnimeNews(jikanId);
+        String animeNews = animeReturnService.getAnimeNews(jikanId);
 
-            return ResponseEntity.ok(animeNews);
-        } catch(Exception e){
-            logger.error("Error descriptrion: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        return ResponseEntity.ok(animeNews);
     }
-
 }

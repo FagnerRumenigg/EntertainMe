@@ -1,5 +1,6 @@
 package entertain_me.app.controller;
 
+import entertain_me.app.vo.exception.ProblemVo;
 import entertain_me.app.vo.AnimeVO;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,10 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import entertain_me.app.service.AnimeService;
 
+@RequestMapping(value = "anime",  produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Anime")
 @CrossOrigin
 @RestController
-@RequestMapping(value = "anime", produces = {"application/json"})
-@Tag(name = "Anime")
+
 public class AnimeController {
 
     @Autowired
@@ -33,10 +35,11 @@ public class AnimeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Anime founded",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AnimeVO.class))}),
-            @ApiResponse(responseCode = "404", description = "Anime not founded"),
-            @ApiResponse(responseCode = "500", description = "Internal error")
+            @ApiResponse(responseCode = "204", description = "Anime not founded",
+                    content = { @Content(mediaType =  "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Internal error",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
     })
-
     @GetMapping(value = "/getByTitle/{title}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAnimeByTitle(@Parameter(description = "Anime title", example = "Naruto") @PathVariable String title) {
         return ResponseEntity.ok(service.getAnimeByTitulo(title));
