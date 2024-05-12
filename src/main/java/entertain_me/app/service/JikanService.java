@@ -1,5 +1,6 @@
 package entertain_me.app.service;
 
+import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
 import entertain_me.app.model.Anime;
 import entertain_me.app.dto.anime.AnimeReturnDto;
 import entertain_me.app.dto.jikan_api.*;
@@ -39,7 +40,7 @@ public class JikanService {
             log.info("Updating database , time started: "+ timeStart);
             while (returnOk) {
 
-                List<JikanRequestAllDto> animesList = jikanAPIService.requestAllAnimes(page);
+                List<JikanResponseDataDto> animesList = jikanAPIService.requestAllAnimes(page);
 
                 if (!animesList.isEmpty()) {
                     List<AnimeReturnDto> animesReturn = animesList.stream()
