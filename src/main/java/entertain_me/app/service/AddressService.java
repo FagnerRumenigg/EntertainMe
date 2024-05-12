@@ -21,8 +21,8 @@ public class AddressService {
     private UserRepository userRepository;
 
     public void saveAddress(AddressDto addressDto) {
-        Optional<Address> address = addressRepository.findById(addressDto.address_id() != null ? addressDto.address_id() : 0);
-        Optional<User> user = userRepository.findById(addressDto.user_id());
+        Optional<Address> address = addressRepository.findById(addressDto.addressId() != null ? addressDto.addressId() : 0);
+        Optional<User> user = userRepository.findById(addressDto.userId());
 
         address.ifPresentOrElse(existingAddress -> {
             existingAddress.setCep(addressDto.cep());
