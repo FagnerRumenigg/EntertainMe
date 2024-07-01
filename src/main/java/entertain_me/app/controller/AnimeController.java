@@ -40,8 +40,8 @@ public class AnimeController {
             @ApiResponse(responseCode = "500", description = "Internal error",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
     })
-    @GetMapping(value = "/getByTitle/{title}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getByTitle/{title}")
     public ResponseEntity<?> getAnimeByTitle(@Parameter(description = "Anime title", example = "Naruto") @PathVariable String title) {
-        return ResponseEntity.ok(service.getAnimeByTitulo(title));
+        return ResponseEntity.ok(service.getAnimeByTitle(title));
     }
 }

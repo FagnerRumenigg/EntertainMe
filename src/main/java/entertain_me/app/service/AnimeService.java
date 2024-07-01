@@ -12,8 +12,7 @@ public class AnimeService {
   @Autowired
   AnimeRepository repository;
 
-  public AnimeVO getAnimeByTitulo(String title){
+  public AnimeVO getAnimeByTitle(String title){
     return repository.findAnimeByTitle(title);
   }
-
 }

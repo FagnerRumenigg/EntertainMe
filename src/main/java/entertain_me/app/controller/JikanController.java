@@ -1,6 +1,5 @@
 package entertain_me.app.controller;
 
-import entertain_me.app.dto.user.AddressDto;
 import entertain_me.app.vo.exception.ProblemVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -8,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,8 +35,7 @@ public class JikanController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Database updated"),
             @ApiResponse(responseCode = "500", description = "Internal error",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
-    })
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
     @GetMapping(value = "/update-database")
     public ResponseEntity<?> getAllAnimes() throws Exception {
         animeReturnService.getAllAnimesJikan();
@@ -49,8 +46,7 @@ public class JikanController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Anime news was found "),
             @ApiResponse(responseCode = "500", description = "Internal error",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
-    })
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
     @GetMapping(value = "/getNew/{jikanId}")
     public ResponseEntity<String> getAnimeNews(@PathVariable Integer jikanId) {
         String animeNews = animeReturnService.getAnimeNews(jikanId);
