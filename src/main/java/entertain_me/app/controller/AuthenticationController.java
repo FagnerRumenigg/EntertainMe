@@ -15,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,11 +59,10 @@ public class AuthenticationController {
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto userAuthentication) {
 		var userNamePassword = new UsernamePasswordAuthenticationToken(userAuthentication.email(), userAuthentication.password());
-
-		var auth = this.authenticationManager.authenticate(userNamePassword);
-		var token = tokenService.generateToken((User) (auth).getPrincipal());
-
-		return ResponseEntity.ok(new LoginResponseVo(token));
+		Authentication auth = authenticationManager.authenticate(userNamePassword);
+		User user = (User) auth.getPrincipal();
+		String token = tokenService.generateToken(user);
+		return ResponseEntity.ok(new LoginResponseVo(token, user.getName(), user.getEmail(), user.getPassword()));
 	}
 
 	@Operation(summary = "Does the user register", method = "POST")
