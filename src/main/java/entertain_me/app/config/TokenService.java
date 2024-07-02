@@ -23,14 +23,12 @@ public class TokenService {
 	public String generateToken(User user) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-
-			String token = JWT.create()
+			
+			return JWT.create()
 					.withIssuer("entertainMe-api")
 					.withSubject(user.getEmail())
 					.withExpiresAt(generateExpirationDate())
 					.sign(algorithm);
-			
-			return token;
 		}catch(JWTCreationException jwtCreationException) {
 			throw new RuntimeException("Error while generatin token", jwtCreationException);
 		}

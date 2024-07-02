@@ -1,5 +1,6 @@
 package entertain_me.app.controller;
 
+import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.vo.exception.ProblemVo;
 import entertain_me.app.exception.AlreadyExistsException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,16 +55,14 @@ public class AuthenticationController {
 			@ApiResponse(responseCode = "401", description = "The user's password is incorrect",
 					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))),
 			@ApiResponse(responseCode = "500", description = "Internal error",
-					content = { @Content(mediaType  = "application/json", schema = @Schema(implementation = ProblemVo.class))})
-})
+					content = { @Content(mediaType  = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto userAuthentication) {
 		var userNamePassword = new UsernamePasswordAuthenticationToken(userAuthentication.email(), userAuthentication.password());
-
-		var auth = this.authenticationManager.authenticate(userNamePassword);
-		var token = tokenService.generateToken((User) (auth).getPrincipal());
-
-		return ResponseEntity.ok(new LoginResponseVo(token));
+		Authentication auth = authenticationManager.authenticate(userNamePassword);
+		User user = (User) auth.getPrincipal();
+		String token = tokenService.generateToken(user);
+		return ResponseEntity.ok(new LoginResponseVo(token, user.getId(), user.getName(), user.getEmail(), user.getPassword()));
 	}
 
 	@Operation(summary = "Does the user register", method = "POST")
@@ -71,10 +73,9 @@ public class AuthenticationController {
 			@ApiResponse(responseCode = "403", description = "The user's email is already registered",
 					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))}),
 			@ApiResponse(responseCode = "500", description = "Internal error",
-					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
-	})
+					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerUser) throws AlreadyExistsException {
+	public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerUser) throws AlreadyExistsException, EmailNotValidException {
 		authorizationService.save(registerUser);
 
 		return ResponseEntity.status(HttpStatus.CREATED).build();

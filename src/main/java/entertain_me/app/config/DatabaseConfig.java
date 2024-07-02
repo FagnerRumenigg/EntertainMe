@@ -29,13 +29,18 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://" + postgresHost + ":" + postgresPort + "/" + postgresDatabase);
-        dataSource.setUsername(postgresUsername);
-        dataSource.setPassword(postgresPassword);
+        try{
+            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+            dataSource.setDriverClassName("org.postgresql.Driver");
+            dataSource.setUrl("jdbc:postgresql://" + postgresHost + ":" + postgresPort + "/" + postgresDatabase);
+            dataSource.setUsername(postgresUsername);
+            dataSource.setPassword(postgresPassword);
 
-        return dataSource;
+            return dataSource;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao conectar no banco");
+        }
     }
 
     @Bean
