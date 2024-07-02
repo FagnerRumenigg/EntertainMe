@@ -21,35 +21,31 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public void changeEmail(UserDto userDto) {
+    public void changeEmail(UserDto userDto) throws EmailNotValidException, AlreadyExistsException {
         Optional<User> userOptional = userRepository.findById(userDto.id());
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        userOptional.ifPresentOrElse(
-                UtilsService.handleCheckedException(user -> {
-                    String newEmail = userDto.email();
+        String newEmail = userDto.email();
 
-                    if (isValidEmail(newEmail)) {
-                        boolean emailExists = userRepository.existsByEmail(newEmail);
+        if (isValidEmail(newEmail)) {
+            Optional<User> emailExistsOptional = userRepository.getByEmail(newEmail);
+            log.info("DTO: "+userDto);
+            //log.info("Email: "+ emailExistsOptional.get());
+            if (emailExistsOptional.isPresent() && userDto.id().equals(emailExistsOptional.get().getId())) {
 
-                        if (!emailExists) {
-                            user.setEmail(newEmail);
-                            userRepository.save(user);
-                            log.info("Email updated successfully");
-                        } else {
-                            log.info("Email already exists.");
-                            throw new AlreadyExistsException("Already exists a user with this e-mail.");
-                        }
-                    } else {
-                        log.info("This is not a valid e-mail.");
-                        throw new EmailNotValidException("This is not a valid e-mail");
-                    }
-                }),
-                () -> {
-                    log.info("User not found.");
-                    throw new UsernameNotFoundException("User not found");
-                }
-        );
+                user.setEmail(newEmail);
+                userRepository.save(user);
+                log.info("Email updated successfully");
+            } else {
+                log.info("Email already exists.");
+                throw new AlreadyExistsException("Already exists a user with this e-mail.");
+            }
+        } else {
+            log.info("This is not a valid e-mail.");
+            throw new EmailNotValidException("This is not a valid e-mail");
+        }
     }
+
 
     private static boolean isValidEmail(String email) {
         String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
