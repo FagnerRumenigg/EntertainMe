@@ -2,6 +2,7 @@ package entertain_me.app.controller;
 
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
+import entertain_me.app.exception.IncorrectPasswordException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -65,5 +66,12 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
         log.error("[ApiExceptionHandler] - forbidden -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
+    @ExceptionHandler(IncorrectPasswordException.class)
+    public ResponseEntity<?> handleIncorrectPasswordExceptionn(IncorrectPasswordException ex) {
+        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
+        log.error("[ApiExceptionHandler] - forbidden -> {}", error);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 }
