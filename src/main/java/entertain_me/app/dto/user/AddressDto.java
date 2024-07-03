@@ -3,7 +3,7 @@ package entertain_me.app.dto.user;
 import entertain_me.app.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
-@Schema(name = "")
+@Schema(name = "Address")
 public record AddressDto(
 
     @Schema(name = "addressId")

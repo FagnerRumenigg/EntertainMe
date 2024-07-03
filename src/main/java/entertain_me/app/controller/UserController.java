@@ -1,8 +1,9 @@
 package entertain_me.app.controller;
 
-import entertain_me.app.dto.user.UserDto;
+import entertain_me.app.dto.user.ChangeEmailPasswordDto;
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
+import entertain_me.app.exception.IncorrectPasswordException;
 import entertain_me.app.service.UserService;
 import entertain_me.app.vo.exception.ProblemVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +37,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal error",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
     @PostMapping(value = "/changeEmail", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> changeEmail(@RequestBody @Valid UserDto userDto) throws AlreadyExistsException, EmailNotValidException {
+    public ResponseEntity<?> changeEmail(@RequestBody @Valid ChangeEmailPasswordDto userDto) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
         userService.changeEmail(userDto);
 
         return ResponseEntity.ok().build();
