@@ -1,6 +1,7 @@
 package entertain_me.app.service;
 
-import entertain_me.app.dto.user.ChangeEmailPasswordDto;
+import entertain_me.app.dto.user.ChangeEmailDto;
+import entertain_me.app.dto.user.ChangePasswordDto;
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
@@ -23,39 +24,69 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public void changeEmail(ChangeEmailPasswordDto userDto) throws EmailNotValidException, AlreadyExistsException, IncorrectPasswordException {
-        User user = userRepository.getByEmail(userDto.currentEmail())
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
+    public void changePassword(ChangePasswordDto changePasswordDto) throws IncorrectPasswordException {
+        User user = userRepository.getByEmail(changePasswordDto.email())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (!isValidEmail(userDto.newEmail())) {
+        if(isPasswordInvalid(changePasswordDto.newPassword())){
+            throw new IncorrectPasswordException("Password it's not in the right pattern");
+        }
+
+        if(passwordEncoder.matches(changePasswordDto.currentPassword(), user.getPassword())){
+            user.setPassword(passwordEncoder.encode(changePasswordDto.newPassword()));
+            userRepository.save(user);
+        }else{
+            log.info("Incorrect password provided.");
+            throw new IncorrectPasswordException("Incorrect password");
+        }
+    }
+
+    public void changeEmail(ChangeEmailDto changeEmailDto) throws EmailNotValidException, AlreadyExistsException, IncorrectPasswordException {
+
+        User user = userRepository.getByEmail(changeEmailDto.currentEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (isEmailInvalid(changeEmailDto.newEmail())) {
             log.info("This is not a valid e-mail.");
             throw new EmailNotValidException("This is not a valid e-mail");
         }
 
-        Optional<User> emailExistsOptional = userRepository.getByEmail(userDto.newEmail());
-        if (emailExistsOptional.isPresent() && !userDto.currentEmail().equals(userDto.newEmail())) {
+        Optional<User> emailExistsOptional = userRepository.getByEmail(changeEmailDto.newEmail());
+        if (emailExistsOptional.isPresent() && !changeEmailDto.currentEmail().equals(changeEmailDto.newEmail())) {
             log.info("Email already exists.");
             throw new AlreadyExistsException("Already exists a user with this e-mail.");
         }
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        boolean isPasswordMatch = passwordEncoder.matches(userDto.password(), user.getPassword());
+        boolean isPasswordMatch = passwordEncoder.matches(changeEmailDto.password(), user.getPassword());
         if (!isPasswordMatch) {
             log.info("Incorrect password provided.");
             throw new IncorrectPasswordException("Incorrect password");
         }
 
-        user.setEmail(userDto.newEmail());
+        user.setEmail(changeEmailDto.newEmail());
         userRepository.save(user);
         log.info("Email updated successfully");
     }
 
-    private static boolean isValidEmail(String email) {
+    public static boolean isEmailInvalid(String email) {
         String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
 
-        return matcher.matches();
+        return !matcher.matches();
     }
+
+    public static boolean isPasswordInvalid(String password){
+        String passwordPattern =
+                "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,}$";
+
+        Pattern pattern = Pattern.compile(passwordPattern);
+        Matcher matcher = pattern.matcher(password);
+        return !matcher.matches();
+    }
+
 }
