@@ -72,6 +72,6 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleIncorrectPasswordExceptionn(IncorrectPasswordException ex) {
         var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
         log.error("[ApiExceptionHandler] - forbidden -> {}", error);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 }

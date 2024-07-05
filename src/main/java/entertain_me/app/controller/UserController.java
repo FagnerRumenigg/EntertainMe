@@ -1,6 +1,7 @@
 package entertain_me.app.controller;
 
-import entertain_me.app.dto.user.ChangeEmailPasswordDto;
+import entertain_me.app.dto.user.ChangeEmailDto;
+import entertain_me.app.dto.user.ChangePasswordDto;
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
@@ -37,8 +38,20 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal error",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
     @PostMapping(value = "/changeEmail", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> changeEmail(@RequestBody @Valid ChangeEmailPasswordDto userDto) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
-        userService.changeEmail(userDto);
+    public ResponseEntity<?> changeEmail(@RequestBody @Valid ChangeEmailDto changeEmailDto) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
+        userService.changeEmail(changeEmailDto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Change the user password", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Password changed successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal error",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
+    @PostMapping(value = "/changePassword", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> changePassword(@RequestBody @Valid ChangePasswordDto changePasswordDto) throws IncorrectPasswordException {
+        userService.changePassword(changePasswordDto);
 
         return ResponseEntity.ok().build();
     }

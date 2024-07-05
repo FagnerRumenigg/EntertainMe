@@ -1,6 +1,7 @@
 package entertain_me.app.controller;
 
 import entertain_me.app.exception.EmailNotValidException;
+import entertain_me.app.exception.IncorrectPasswordException;
 import entertain_me.app.vo.exception.ProblemVo;
 import entertain_me.app.exception.AlreadyExistsException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,10 +73,12 @@ public class AuthenticationController {
 					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))}),
 			@ApiResponse(responseCode = "403", description = "The user's email is already registered",
 					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))}),
+			@ApiResponse(responseCode = "403", description = "The user's password it is not in the pattern",
+					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))}),
 			@ApiResponse(responseCode = "500", description = "Internal error",
 					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerUser) throws AlreadyExistsException, EmailNotValidException {
+	public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerUser) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
 		authorizationService.save(registerUser);
 
 		return ResponseEntity.status(HttpStatus.CREATED).build();
