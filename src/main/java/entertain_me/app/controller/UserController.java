@@ -1,5 +1,6 @@
 package entertain_me.app.controller;
 
+import entertain_me.app.dto.user.AuthenticationDto;
 import entertain_me.app.dto.user.ChangeEmailDto;
 import entertain_me.app.dto.user.ChangePasswordDto;
 import entertain_me.app.exception.AlreadyExistsException;
@@ -52,6 +53,18 @@ public class UserController {
     @PostMapping(value = "/changePassword", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> changePassword(@RequestBody @Valid ChangePasswordDto changePasswordDto) throws IncorrectPasswordException {
         userService.changePassword(changePasswordDto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Delete the user account", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Account deleted successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal error",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
+    @PostMapping(value = "/deleteAccount", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteAccount(@RequestBody @Valid AuthenticationDto userDto) throws IncorrectPasswordException {
+        userService.deleteAccount(userDto);
 
         return ResponseEntity.ok().build();
     }

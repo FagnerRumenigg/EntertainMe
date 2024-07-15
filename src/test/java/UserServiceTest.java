@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import entertain_me.app.dto.user.AuthenticationDto;
 import entertain_me.app.dto.user.ChangeEmailDto;
 import entertain_me.app.dto.user.ChangePasswordDto;
 import entertain_me.app.exception.AlreadyExistsException;
@@ -157,5 +158,21 @@ public class UserServiceTest {
 
         IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> userService.changeEmail(userDto));
         assertEquals("Incorrect password", exception.getMessage());
+    }
+
+    @Test
+    public void testDeleteAccount() throws IncorrectPasswordException {
+        AuthenticationDto userDto = new AuthenticationDto("emailtest@test.com", "password");
+
+        User user = new User();
+        user.setEmail("emailtest@test.com");
+        user.setPassword(passwordEncoder.encode("password")); // Hashed password
+
+        when(userRepository.getByEmail("emailtest@test.com")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("password", user.getPassword())).thenReturn(true);
+
+        userService.deleteAccount(userDto);
+
+        verify(userRepository, times(1)).delete(user);
     }
 }
