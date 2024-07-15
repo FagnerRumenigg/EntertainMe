@@ -1,5 +1,6 @@
 package entertain_me.app.service;
 
+import entertain_me.app.dto.user.AuthenticationDto;
 import entertain_me.app.dto.user.ChangeEmailDto;
 import entertain_me.app.dto.user.ChangePasswordDto;
 import entertain_me.app.exception.AlreadyExistsException;
@@ -69,6 +70,18 @@ public class UserService {
         user.setEmail(changeEmailDto.newEmail());
         userRepository.save(user);
         log.info("Email updated successfully");
+    }
+
+    public void deleteAccount(AuthenticationDto userDto) throws IncorrectPasswordException {
+        User user = userRepository.getByEmail(userDto.email())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if(passwordEncoder.matches(userDto.password(), user.getPassword())){
+            userRepository.delete(user);
+        }else{
+            log.info("Incorrect password provided.");
+            throw new IncorrectPasswordException("Incorrect password");
+        }
     }
 
     public static boolean isEmailInvalid(String email) {
