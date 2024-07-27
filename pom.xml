@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>entertainMe</groupId>
 	<artifactId>App</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>App</name>
 	<description>entertainMe</description>
 	<properties>

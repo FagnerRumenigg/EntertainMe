@@ -9,7 +9,7 @@ CREATE TABLE users (
 CREATE TABLE anime (
     id_anime        SERIAL          PRIMARY KEY,
     jikan_id        INTEGER         NOT NULL,
-    title           VARCHAR(100)    NOT NULL,
+    title           VARCHAR(200)    NOT NULL,
     source          VARCHAR(100)    NOT NULL,
     status          VARCHAR(50)     NOT NULL,
     synopsys        VARCHAR(5000),

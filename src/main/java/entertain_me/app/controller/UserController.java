@@ -62,7 +62,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Account deleted successfully"),
             @ApiResponse(responseCode = "500", description = "Internal error",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
-    @PostMapping(value = "/deleteAccount", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/deleteAccount", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteAccount(@RequestBody @Valid AuthenticationDto userDto) throws IncorrectPasswordException {
         userService.deleteAccount(userDto);
 
