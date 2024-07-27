@@ -15,7 +15,7 @@ services:
       - "5432:5432"
 
   entertainme-api:
-    image: fagnerrumenigg/entertainme-api
+    image: fagnerrumenigg/entertainme-api:1.0.0
     container_name: entertainme-api
     ports:
       - "8080:8080"

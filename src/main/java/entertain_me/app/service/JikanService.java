@@ -59,7 +59,6 @@ public class JikanService {
                     for (AnimeReturnDto anime : animesReturn) {
                         Optional<AnimeReturnDto> animeDatabase = repository.findByJikanId(anime.jikanId());
 
-
                         if(animeDatabase.isPresent()){
                             log.info("Anime already registered: "+ anime.title());
                             continue;

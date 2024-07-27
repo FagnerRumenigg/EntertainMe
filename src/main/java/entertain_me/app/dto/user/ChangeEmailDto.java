@@ -4,12 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "ChangeEmail")
 public record ChangeEmailDto(
-        @Schema(name = "Current-Email")
+        @Schema(name = "currentEmail")
         String currentEmail,
-        @Schema(name = "New-Email")
+        @Schema(name = "newEmail")
         String newEmail,
 
-        @Schema(name = "Password")
+        @Schema(name = "password")
         String password
 ) {
 }

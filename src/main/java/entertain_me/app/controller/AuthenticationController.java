@@ -59,6 +59,7 @@ public class AuthenticationController {
 					content = { @Content(mediaType  = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto userAuthentication) {
+		System.out.println("Ola");
 		var userNamePassword = new UsernamePasswordAuthenticationToken(userAuthentication.email(), userAuthentication.password());
 		Authentication auth = authenticationManager.authenticate(userNamePassword);
 		User user = (User) auth.getPrincipal();
