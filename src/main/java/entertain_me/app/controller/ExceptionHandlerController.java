@@ -40,13 +40,6 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return ResponseEntity.internalServerError().body(error);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handle500Error(Exception ex) {
-        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
-        log.error("[ApiExceptionHandler] - internalServerError -> {}", error);
-        return ResponseEntity.internalServerError().body(error);
-    }
-
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<?> handleUserAlreadyExistsException(AlreadyExistsException ex) {
         var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();

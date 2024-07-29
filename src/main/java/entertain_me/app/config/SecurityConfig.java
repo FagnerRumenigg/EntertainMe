@@ -20,31 +20,35 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
 	@Autowired
-	SecurityFilter securityFilter;
+	private SecurityFilter securityFilter;
+
+	@Autowired
+	private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+		System.out.println("securityFilterChain");
 		return httpSecurity
 				.csrf(AbstractHttpConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/swagger-ui/**").permitAll()
-						.requestMatchers("/v3/**").permitAll()
-						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-						.requestMatchers(HttpMethod.GET,  "/jikan-api/update-database").hasRole("ADMIN")
+						.requestMatchers("/swagger-ui/**", "/v3/**", "/auth/login", "/auth/register").permitAll()
+						.requestMatchers(HttpMethod.GET, "/jikan-api/update-database").hasRole("ADMIN")
 						.anyRequest().authenticated())
-				.addFilterBefore(securityFilter,UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling(exception -> exception
+						.authenticationEntryPoint(customAuthenticationEntryPoint))
+				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 
+
 	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
 	@Bean
-	PasswordEncoder passwordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 }
