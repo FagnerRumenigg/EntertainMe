@@ -8,11 +8,11 @@
 		<version>3.2.4</version>
 		<relativePath/> 
 	</parent>
-	<groupId>entertainMe</groupId>
+	<groupId>Shamble</groupId>
 	<artifactId>App</artifactId>
-	<version>1.0</version>
-	<name>App</name>
-	<description>entertainMe</description>
+	<version>Alpha</version>
+	<name>entertainMe</name>
+	<description>Back-end for the Entertain-me application</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
