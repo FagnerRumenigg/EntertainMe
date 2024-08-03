@@ -9,6 +9,7 @@ import entertain_me.app.exception.IncorrectPasswordException;
 import entertain_me.app.model.User;
 import entertain_me.app.repository.UserRepository;
 import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Log
+@Log4j2
 @Service
 public class UserService {
 
@@ -26,7 +27,6 @@ public class UserService {
     UserRepository userRepository;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
 
     public void changePassword(ChangePasswordDto changePasswordDto) throws IncorrectPasswordException {
         User user = userRepository.getByEmail(changePasswordDto.email())

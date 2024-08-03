@@ -3,6 +3,7 @@ package entertain_me.app.controller;
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.time.OffsetDateTime;
 import entertain_me.app.vo.exception.ErrorsValidateVo;
 import entertain_me.app.vo.exception.ProblemVo;
 
-@Slf4j
+@Log4j2
 @RestControllerAdvice
 public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 

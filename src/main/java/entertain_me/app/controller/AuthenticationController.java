@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +38,7 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "auth", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Authentication")
 @CrossOrigin
+@Log4j2
 @RestController
 public class AuthenticationController {
 
@@ -63,6 +66,8 @@ public class AuthenticationController {
 		Authentication auth = authenticationManager.authenticate(userNamePassword);
 		User user = (User) auth.getPrincipal();
 		String token = tokenService.generateToken(user);
+
+		log.info("User: "+ user.getName() +" logged");
 		return ResponseEntity.ok(new LoginResponseVo(token, user.getId(), user.getName(), user.getEmail(), user.getPassword()));
 	}
 
@@ -81,6 +86,7 @@ public class AuthenticationController {
 	public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerUser) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
 		authorizationService.save(registerUser);
 
+		log.info("User created");
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }
