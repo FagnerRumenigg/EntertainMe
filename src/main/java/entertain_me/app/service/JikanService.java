@@ -81,7 +81,7 @@ public class JikanService {
                 Thread.sleep(1500);
             }
         } catch (Exception e) {
-            log.severe("Fail updating database");
+            log.error("Fail updating database", e);
             throw new Exception("Fail updating database", e);
         }
     }
