@@ -9,7 +9,7 @@
         <file>logs/entertainme-api.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>logs/entertainme-api_%d{dd-MM-yyyy}_%i.log.gz</fileNamePattern>
-            <maxFileSize>1GB</maxFileSize>
+            <maxFileSize>1MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>100GB</totalSizeCap>
         </rollingPolicy>
