@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +15,18 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import entertain_me.app.model.User;
 
+
+@Log4j2
 @Service
 public class TokenService {
-	
-	@Value("${api.security.token.secret")
+
+
+	@Value("${api.security.token.secret}")
 	private String secret;
 
 	public String generateToken(User user) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-			System.out.println("secretCreation: "+secret);
 
 			return JWT.create()
 					.withIssuer("entertainMe-api")
@@ -38,7 +41,7 @@ public class TokenService {
 	public String validateToken(String token) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-			System.out.println("secretValidation: "+secret);
+
 			return JWT.require(algorithm)
 					.withIssuer("entertainMe-api")
 					.build()
