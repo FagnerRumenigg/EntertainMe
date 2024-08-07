@@ -10,7 +10,7 @@ infra/.terraform.lock.hcl
 infra/terraform.tfstate
 infra/terraform.tfstate.backup
 infra/user_data.sh
-
+/logs/
 ### STS ###
 .apt_generated
 .classpath
