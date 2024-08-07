@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Log4j2
 @Component
@@ -14,10 +15,11 @@ public class ScheduledTasks {
     @Autowired
     JikanService jikanService;
 
-    @Scheduled(cron = "0 0 4 * * MON")
+    @Scheduled(cron = "0 30 18 * * WED")
     public void updateDatabase() throws Exception {
-        log.info("Starting database update task at the following time: " + LocalDateTime.now());
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
+        log.info("Starting database update task at the following time: " + LocalDateTime.now().format(format));
         jikanService.getAllAnimesJikan();
+        log.info("Task finished at: "+LocalDateTime.now().format(format));
     }
-
 }
