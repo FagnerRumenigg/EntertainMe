@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import entertain_me.app.vo.exception.ProblemVo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -16,7 +18,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 
 @Component
-@Slf4j
+@Log4j2
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
@@ -35,8 +37,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
 
     private String customErrorMessageAuthentication(AuthenticationException exception) {
-        log.error("Authentication error of type {}:", exception.getMessage());
-
+        log.error("Authentication error of type -> {}", exception.getMessage());
         String handledMessage;
 
         if (exception instanceof InternalAuthenticationServiceException) {
@@ -49,6 +50,4 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         return handledMessage;
     }
-
-
 }
