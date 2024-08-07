@@ -38,7 +38,6 @@ public class JikanService {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
             LocalDateTime timeStart = LocalDateTime.now();
 
-            log.info("Updating database , time started: "+ timeStart);
             while (returnOk) {
 
                 List<JikanResponseDataDto> animesList = jikanAPIService.requestAllAnimes(page);
@@ -64,7 +63,7 @@ public class JikanService {
                             log.info("Anime already registered: "+ anime.title());
                             continue;
                         }
-                        log.info("Anime saved: "+anime.title());
+                        log.info("Anime registered: "+anime.title());
                         repository.save(setAnimeFromJikan(anime));
                     }
                 }else{
@@ -82,6 +81,7 @@ public class JikanService {
                 Thread.sleep(1500);
             }
         } catch (Exception e) {
+            log.severe("Fail updating database");
             throw new Exception("Fail updating database", e);
         }
     }
