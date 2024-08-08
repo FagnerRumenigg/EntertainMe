@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
-import java.util.logging.Logger;
 
 @Log4j2
 @Configuration
@@ -41,7 +40,6 @@ public class DatabaseConfig {
             dataSource.setUsername(postgresUsername);
             dataSource.setPassword(postgresPassword);
 
-            // Testa a conexão ao banco de dados
             dataSource.getConnection().isValid(1);
         } catch (Exception e) {
             log.error("Connection failed: "+e.getMessage());
