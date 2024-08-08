@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import entertain_me.app.repository.AnimeRepository;
-import entertain_me.app.vo.AnimeVO;
+import entertain_me.app.vo.AnimeVo;
+
+import java.util.List;
 
 @Service
 public class AnimeService {
@@ -12,7 +14,7 @@ public class AnimeService {
   @Autowired
   AnimeRepository repository;
 
-  public AnimeVO getAnimeByTitle(String title){
-    return repository.findAnimeByTitle(title);
+  public List<AnimeVo> getAnimeByTitle(String title){
+    return repository.findByTitleContainingIgnoreCase(title);
   }
 }

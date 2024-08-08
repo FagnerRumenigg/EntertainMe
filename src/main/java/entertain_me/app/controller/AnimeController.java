@@ -1,7 +1,7 @@
 package entertain_me.app.controller;
 
 import entertain_me.app.vo.exception.ProblemVo;
-import entertain_me.app.vo.AnimeVO;
+import entertain_me.app.vo.AnimeVo;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import entertain_me.app.service.AnimeService;
 
+import java.util.List;
+
 @RequestMapping(value = "anime",  produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Anime")
 @CrossOrigin
@@ -34,14 +36,15 @@ public class AnimeController {
     @Operation(summary = "Get anime by the title", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Anime founded",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AnimeVO.class))}),
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AnimeVo.class))}),
             @ApiResponse(responseCode = "204", description = "Anime not founded",
                     content = { @Content(mediaType =  "application/json")}),
             @ApiResponse(responseCode = "500", description = "Internal error",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
     })
-    @GetMapping(value = "/getByTitle/{title}")
-    public ResponseEntity<?> getAnimeByTitle(@Parameter(description = "Anime title", example = "Naruto") @PathVariable String title) {
-        return ResponseEntity.ok(service.getAnimeByTitle(title));
+    @GetMapping("/getByTitle/{title}")
+    public ResponseEntity<List<AnimeVo>> getAnimeByTitle(@Parameter(description = "Anime title", example = "Naruto") @PathVariable String title) {
+        List<AnimeVo> animeList = service.getAnimeByTitle(title);
+        return animeList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 }

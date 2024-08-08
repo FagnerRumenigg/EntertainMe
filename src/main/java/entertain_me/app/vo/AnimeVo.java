@@ -1,12 +1,11 @@
 package entertain_me.app.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 
 import java.util.List;
 
 @Schema(name = "AnimeReturn")
-public record AnimeVO(
+public record AnimeVo(
     @Schema(name = "title")
     String title,
     @Schema(name = "source")
