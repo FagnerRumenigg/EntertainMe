@@ -32,7 +32,6 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/swagger-ui/**", "/v3/**", "/auth/login", "/auth/register").permitAll()
-						.requestMatchers(HttpMethod.GET, "/jikan-api/update-database").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.exceptionHandling(exception -> exception
 						.authenticationEntryPoint(customAuthenticationEntryPoint))
