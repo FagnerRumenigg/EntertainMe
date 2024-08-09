@@ -39,8 +39,8 @@ public class JikanService {
             LocalDateTime timeStart = LocalDateTime.now();
 
             while (returnOk) {
-
                 List<JikanResponseDataDto> animesList = jikanAPIService.requestAllAnimes(page);
+                log.info("Returned "+animesList.size()+" animes at the page: "+page);
 
                 if (!animesList.isEmpty()) {
                     List<AnimeReturnDto> animesReturn = animesList.stream()
