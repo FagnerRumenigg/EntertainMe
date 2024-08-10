@@ -68,4 +68,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         log.error("[ApiExceptionHandler] - forbidden -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
+        log.error("[ApiExceptionHandler] - forbidden -> {}", error);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
 }
