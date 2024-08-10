@@ -39,6 +39,8 @@ public class AnimeController {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AnimeVo.class))}),
             @ApiResponse(responseCode = "204", description = "Anime not founded",
                     content = { @Content(mediaType =  "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Title is null or empty",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))}),
             @ApiResponse(responseCode = "500", description = "Internal error",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
     })
