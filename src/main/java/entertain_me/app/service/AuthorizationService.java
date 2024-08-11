@@ -4,7 +4,9 @@ import entertain_me.app.dto.user.RegisterDto;
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import entertain_me.app.model.User;
 import entertain_me.app.repository.UserRepository;
 
+@Log4j2
 @Service
 public class AuthorizationService implements UserDetailsService{
 
@@ -32,7 +35,12 @@ public class AuthorizationService implements UserDetailsService{
 	}
 
 	public UserDetails findByLogin(String userName) throws UsernameNotFoundException {
-		return repository.findByEmail(userName);
+		try{
+			return repository.findByEmail(userName);
+		}catch(DataAccessResourceFailureException ex){
+			log.error("Database connection attempt failed");
+		}
+		return null;
 	}
 
 	public void save(RegisterDto registerUser) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
