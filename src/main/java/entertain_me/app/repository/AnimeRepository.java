@@ -9,9 +9,10 @@ import entertain_me.app.vo.AnimeVo;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface AnimeRepository extends JpaRepository<Anime, Long> {
+public interface AnimeRepository extends JpaRepository<Anime, UUID> {
 
     List<AnimeVo> findByTitleContainingIgnoreCase(String title);
 

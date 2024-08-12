@@ -7,17 +7,11 @@ import jakarta.persistence.Column;
 public record LoginResponseVo(
         @Schema(name = "token")
         String token,
-        
-        @Schema(name = "id")
-        Long id,
 
         @Schema(name ="name")
         String name,
 
         @Schema(name = "email")
-         String email,
-
-        @Schema(name = "password")
-         String password){
+         String email){
 
 }

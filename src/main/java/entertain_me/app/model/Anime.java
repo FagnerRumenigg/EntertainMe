@@ -1,6 +1,7 @@
 package entertain_me.app.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 @Getter
 @Setter
@@ -24,7 +26,8 @@ public class Anime {
 	@Id
 	@Column(name = "id_anime")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@UuidGenerator
+	private UUID id;
 
 	@Column(name = "jikan_id")
 	private Integer jikanId;
