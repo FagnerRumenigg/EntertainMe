@@ -3,13 +3,16 @@ package entertain_me.app.dto.user;
 import entertain_me.app.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
+
+import java.util.UUID;
+
 @Schema(name = "Address")
 public record AddressDto(
 
     @Schema(name = "addressId")
-    Long addressId,
+    UUID addressId,
     @Schema(name = "userId")
-    Long userId,
+    UUID userId,
     @Schema(name = "street")
     String street,
     @Schema(name = "city")
