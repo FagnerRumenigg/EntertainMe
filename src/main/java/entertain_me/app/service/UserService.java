@@ -51,13 +51,13 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         if (isEmailInvalid(changeEmailDto.newEmail())) {
-            log.info("This is not a valid e-mail.");
+            log.info("This is not a valid e-mail {}.", changeEmailDto.newEmail());
             throw new EmailNotValidException("This is not a valid e-mail");
         }
 
         Optional<User> emailExistsOptional = userRepository.getByEmail(changeEmailDto.newEmail());
         if (emailExistsOptional.isPresent() && !changeEmailDto.currentEmail().equals(changeEmailDto.newEmail())) {
-            log.info("Email already exists.");
+            log.info("Email already exists {}.", changeEmailDto.newEmail());
             throw new AlreadyExistsException("Already exists a user with this e-mail.");
         }
 
@@ -69,7 +69,7 @@ public class UserService {
 
         user.setEmail(changeEmailDto.newEmail());
         userRepository.save(user);
-        log.info("Email updated successfully");
+        log.info("Email updated successfully to {}", user.getEmail());
     }
 
     public void deleteAccount(AuthenticationDto userDto) throws IncorrectPasswordException {
@@ -77,6 +77,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         if(passwordEncoder.matches(userDto.password(), user.getPassword())){
+            log.info("User {} deleted", user.getName());
             userRepository.delete(user);
         }else{
             log.info("Incorrect password provided.");
