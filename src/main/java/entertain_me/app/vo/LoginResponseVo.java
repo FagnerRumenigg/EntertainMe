@@ -12,7 +12,7 @@ public record LoginResponseVo(
         String type,
 
         @Schema(name = "expiresIn")
-        Integer expiresIn,
+        Integer expiresInSeconds,
 
         @Schema(name ="name")
         String name,
