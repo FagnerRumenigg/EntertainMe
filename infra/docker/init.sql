@@ -40,6 +40,21 @@ CREATE TABLE anime (
     FOREIGN KEY (id_genre)       REFERENCES genre(id_genre)
 );
 
+CREATE TABLE custom_anime_user (
+    id_anime           UUID           NOT null,
+    id_user            UUID           NOT NULL,
+    custom_title       VARCHAR(200)   NOT NULL,
+    custom_synopsys    VARCHAR(5000),
+    id_demographic     UUID,
+    id_studio          UUID,
+    id_genre           UUID,
+
+    PRIMARY KEY (id_anime, id_user),
+    FOREIGN KEY (id_demographic) REFERENCES demographic(id_demographic),
+    FOREIGN KEY (id_studio)      REFERENCES studio(id_studio),
+    FOREIGN KEY (id_genre)       REFERENCES genre(id_genre)
+);
+
 CREATE TABLE anime_genre (
     id_anime UUID NOT NULL,
     id_genre UUID NOT NULL,
@@ -49,7 +64,7 @@ CREATE TABLE anime_genre (
 );
 
 CREATE TABLE anime_studio (
-    id_anime UUID NOT NULL,
+    id_anime  UUID NOT NULL,
     id_studio UUID NOT NULL,
     PRIMARY KEY (id_anime, id_studio),
     FOREIGN KEY (id_anime) REFERENCES anime(id_anime),
