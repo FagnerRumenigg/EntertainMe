@@ -1,6 +1,6 @@
 package entertain_me.app.repository;
 
-import entertain_me.app.dto.anime.AnimeReturnDto;
+import entertain_me.app.dto.anime.AnimeDatabaseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +16,5 @@ public interface AnimeRepository extends JpaRepository<Anime, UUID> {
 
     List<AnimeVo> findByTitleContainingIgnoreCase(String title);
 
-    Optional<AnimeReturnDto> findByJikanId(Integer jikanId);
+    Optional<AnimeDatabaseDto> findByJikanId(Integer jikanId);
 }

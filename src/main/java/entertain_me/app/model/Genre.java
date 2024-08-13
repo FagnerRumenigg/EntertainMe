@@ -26,4 +26,9 @@ public class Genre {
 
     @ManyToMany(mappedBy = "genres")
     private Set<Anime> animes;
+
+    public Genre(UUID idGenre, String name) {
+        this.idGenre = idGenre;
+        this.name = name;
+    }
 }

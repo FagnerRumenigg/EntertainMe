@@ -41,16 +41,4 @@ public class JikanController {
         animeReturnService.getAllAnimesJikan();
         return ResponseEntity.ok().build();
     }
-
-    @Operation(summary = "Get the anime's new", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Anime news was found "),
-            @ApiResponse(responseCode = "500", description = "Internal error",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
-    @GetMapping(value = "/getNew/{jikanId}")
-    public ResponseEntity<String> getAnimeNews(@PathVariable Integer jikanId) {
-        String animeNews = animeReturnService.getAnimeNews(jikanId);
-
-        return ResponseEntity.ok(animeNews);
-    }
 }

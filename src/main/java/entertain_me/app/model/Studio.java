@@ -24,4 +24,9 @@ public class Studio {
 
     @ManyToMany(mappedBy = "studios")
     private Set<Anime> animes;
+
+    public Studio(UUID idStudio, String name) {
+        this.idStudio = idStudio;
+        this.name = name;
+    }
 }
