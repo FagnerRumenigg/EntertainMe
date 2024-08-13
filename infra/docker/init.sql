@@ -30,24 +30,14 @@ CREATE TABLE anime (
     status             VARCHAR(50)    NOT NULL,
     synopsys           VARCHAR(5000),
     episodes           INTEGER,
-    release_year       INTEGER,
-    id_demographic     UUID,
-    id_studio          UUID,
-    id_genre           UUID,
-
-    FOREIGN KEY (id_demographic) REFERENCES demographic(id_demographic),
-    FOREIGN KEY (id_studio)      REFERENCES studio(id_studio),
-    FOREIGN KEY (id_genre)       REFERENCES genre(id_genre)
+    release_year       INTEGER
 );
 
 CREATE TABLE custom_anime_user (
     id_anime           UUID           NOT null,
     id_user            UUID           NOT NULL,
     custom_title       VARCHAR(200)   NOT NULL,
-    custom_synopsys    VARCHAR(5000),
-    id_demographic     UUID,
-    id_studio          UUID,
-    id_genre           UUID,
+    custom_synopsys    VARCHAR(5000)
 
     PRIMARY KEY (id_anime, id_user),
     FOREIGN KEY (id_demographic) REFERENCES demographic(id_demographic),

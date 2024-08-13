@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 @Schema(name ="animeJikan")
-public record AnimeReturnDto(
+public record AnimeDatabaseDto(
         @Schema(name = "jikanId")
         Integer jikanId,
         @Schema(name = "title")
