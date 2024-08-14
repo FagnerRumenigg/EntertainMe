@@ -39,7 +39,7 @@ public class AnimeService {
       throw new IllegalArgumentException("Title is empty");
     }
 
-    List<Anime> animeList = animeRepository.findAllAnimeInfoByTitle(title);
+    List<Anime> animeList = animeRepository.findAllAnimeInfoByTitle(title.trim());
     List<UUID> animeIds = animeList.stream().map(Anime::getId).collect(Collectors.toList());
 
     List<DemographicDto> demographics = demographicService.findDemographicNameByAnimeIds(animeIds);

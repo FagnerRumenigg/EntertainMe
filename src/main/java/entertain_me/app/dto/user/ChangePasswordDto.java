@@ -2,7 +2,7 @@ package entertain_me.app.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "ChangePaswword")
+@Schema(name = "ChangePassword")
 public record ChangePasswordDto(
 
         @Schema(name = "email")
