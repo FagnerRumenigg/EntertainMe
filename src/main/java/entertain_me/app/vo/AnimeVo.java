@@ -17,11 +17,5 @@ public record AnimeVo(
     @Schema(name = "episodes")
     Integer episodes,
     @Schema(name = "year")
-    Integer year,
-    @Schema(name = "demographics")
-    List<String> demographics,
-    @Schema(name = "studios")
-    List<String> studios,
-    @Schema(name = "genres")
-    List<String> genres) {
+    Integer year){
 }

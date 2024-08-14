@@ -8,7 +8,6 @@ public record ChangeEmailDto(
         String currentEmail,
         @Schema(name = "newEmail")
         String newEmail,
-
         @Schema(name = "password")
         String password
 ) {

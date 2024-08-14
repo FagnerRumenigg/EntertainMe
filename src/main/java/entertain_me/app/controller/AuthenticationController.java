@@ -73,7 +73,7 @@ public class AuthenticationController {
 
 	@Operation(summary = "Does the user register", method = "POST")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "User registered successfully"),
+			@ApiResponse(responseCode = "201", description = "User registered successfully"),
 			@ApiResponse(responseCode = "403", description = "The user's email is not in the correct format",
 					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))}),
 			@ApiResponse(responseCode = "403", description = "The user's email is already registered",

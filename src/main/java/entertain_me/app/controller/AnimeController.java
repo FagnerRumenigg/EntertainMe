@@ -1,5 +1,6 @@
 package entertain_me.app.controller;
 
+import entertain_me.app.vo.AllAnimeInfo;
 import entertain_me.app.vo.exception.ProblemVo;
 import entertain_me.app.vo.AnimeVo;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,8 +46,8 @@ public class AnimeController {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
     })
     @GetMapping("/getByTitle/{title}")
-    public ResponseEntity<List<AnimeVo>> getAnimeByTitle(@Parameter(description = "Anime title", example = "Naruto") @PathVariable String title) {
-        List<AnimeVo> animeList = service.getAnimeByTitle(title);
+    public ResponseEntity<List<AllAnimeInfo>> getAnimeByTitle(@Parameter(description = "Anime title", example = "Naruto") @PathVariable String title) {
+        List<AllAnimeInfo> animeList = service.getAnimeByTitle(title);
         return animeList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 }

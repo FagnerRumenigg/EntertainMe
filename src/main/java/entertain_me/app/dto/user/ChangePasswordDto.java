@@ -5,12 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(name = "ChangePaswword")
 public record ChangePasswordDto(
 
-        @Schema(name = "Email")
+        @Schema(name = "email")
         String email,
 
-        @Schema(name = "CurrentPassword")
+        @Schema(name = "currentPassword")
         String currentPassword,
 
-        @Schema(name = "NewPassword")
+        @Schema(name = "newPassword")
         String newPassword) {
 }

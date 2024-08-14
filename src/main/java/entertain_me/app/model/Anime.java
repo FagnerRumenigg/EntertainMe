@@ -69,4 +69,14 @@ public class Anime {
 			inverseJoinColumns = @JoinColumn(name = "id_genre")
 	)
 	private Set<Genre> genres;
+
+	public Anime(UUID id, String title, String source, String status, String synopsys, Integer episodes, Integer year) {
+		this.id = id;
+		this.title = title;
+		this.source = source;
+		this.status = status;
+		this.synopsys = synopsys;
+		this.episodes = episodes;
+		this.year = year;
+	}
 }
