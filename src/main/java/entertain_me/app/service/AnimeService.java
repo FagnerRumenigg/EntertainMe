@@ -4,10 +4,7 @@ import entertain_me.app.dto.anime.DemographicDto;
 import entertain_me.app.dto.anime.GenreDto;
 import entertain_me.app.dto.anime.StudioDto;
 import entertain_me.app.model.Anime;
-import entertain_me.app.model.Demographic;
-import entertain_me.app.model.Genre;
-import entertain_me.app.model.Studio;
-import entertain_me.app.vo.AllAnimeInfo;
+import entertain_me.app.vo.AllAnimeInfoVo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +30,7 @@ public class AnimeService {
   @Autowired
   StudioService studioService;
 
-  public List<AllAnimeInfo> getAnimeByTitle(String title) {
+  public List<AllAnimeInfoVo> getAnimeByTitle(String title) {
     if (title == null || title.trim().isEmpty()) {
       log.warn("Title is empty");
       throw new IllegalArgumentException("Title is empty");
@@ -82,7 +79,7 @@ public class AnimeService {
       List<String> genresNames = Optional.ofNullable(genresMap.get(animeId))
               .orElse(Collections.emptyList());
 
-      return new AllAnimeInfo(
+      return new AllAnimeInfoVo(
               anime.getTitle(),
               anime.getSource(),
               anime.getStatus(),

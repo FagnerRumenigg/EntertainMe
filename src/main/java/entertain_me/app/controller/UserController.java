@@ -7,7 +7,7 @@ import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
 import entertain_me.app.service.UserService;
-import entertain_me.app.vo.exception.ProblemVo;
+import entertain_me.app.vo.ProblemVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import entertain_me.app.vo.exception.ErrorsValidateVo;
-import entertain_me.app.vo.exception.ProblemVo;
+import entertain_me.app.vo.ErrorsValidateVo;
+import entertain_me.app.vo.ProblemVo;
 
 @Log4j2
 @RestControllerAdvice

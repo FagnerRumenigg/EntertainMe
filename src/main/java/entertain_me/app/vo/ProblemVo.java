@@ -1,4 +1,4 @@
-package entertain_me.app.vo.exception;
+package entertain_me.app.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

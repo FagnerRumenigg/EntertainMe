@@ -1,15 +1,11 @@
 package entertain_me.app.vo;
 
-import entertain_me.app.model.Demographic;
-import entertain_me.app.model.Genre;
-import entertain_me.app.model.Studio;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Set;
 
 @Schema(name= "AllAnimeInfo")
-public record AllAnimeInfo(
+public record AllAnimeInfoVo(
         @Schema(name = "title")
         String title,
         @Schema(name = "source")

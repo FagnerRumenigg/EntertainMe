@@ -18,7 +18,7 @@ import entertain_me.app.model.User;
 
 @Log4j2
 @Service
-public class TokenService {
+public class TokenServiceConfig {
 
 
 	@Value("${api.security.token.secret}")

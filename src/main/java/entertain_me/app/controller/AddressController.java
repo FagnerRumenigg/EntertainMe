@@ -1,6 +1,6 @@
 package entertain_me.app.controller;
 
-import entertain_me.app.vo.exception.ProblemVo;
+import entertain_me.app.vo.ProblemVo;
 import entertain_me.app.dto.user.AddressDto;
 import entertain_me.app.service.AddressService;
 import io.swagger.v3.oas.annotations.Operation;

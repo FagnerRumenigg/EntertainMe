@@ -1,5 +1,6 @@
-package entertain_me.app.service;
+package entertain_me.app.component;
 
+import entertain_me.app.service.JikanService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,6 +29,4 @@ public class ScheduledTasks {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
         log.info("Compacting log by time, at: {}",LocalDateTime.now().format(format));
     }
-
-
 }

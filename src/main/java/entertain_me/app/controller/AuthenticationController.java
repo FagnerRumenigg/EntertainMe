@@ -2,7 +2,7 @@ package entertain_me.app.controller;
 
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
-import entertain_me.app.vo.exception.ProblemVo;
+import entertain_me.app.vo.ProblemVo;
 import entertain_me.app.exception.AlreadyExistsException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,15 +18,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import entertain_me.app.config.TokenService;
+import entertain_me.app.config.TokenServiceConfig;
 import entertain_me.app.model.User;
 import entertain_me.app.dto.user.AuthenticationDto;
 import entertain_me.app.vo.LoginResponseVo;
@@ -48,7 +45,7 @@ public class AuthenticationController {
 	private AuthorizationService authorizationService;
 
 	@Autowired
-	private TokenService tokenService;
+	private TokenServiceConfig tokenService;
 
 	@Operation(summary = "Does the user login", method = "POST")
 	@ApiResponses(value = {
@@ -73,7 +70,7 @@ public class AuthenticationController {
 
 	@Operation(summary = "Does the user register", method = "POST")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "201", description = "User registered successfully"),
+ 				@ApiResponse(responseCode = "201", description = "User registered successfully"),
 			@ApiResponse(responseCode = "403", description = "The user's email is not in the correct format",
 					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))}),
 			@ApiResponse(responseCode = "403", description = "The user's email is already registered",

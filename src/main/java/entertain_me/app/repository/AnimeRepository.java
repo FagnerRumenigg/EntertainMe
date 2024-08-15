@@ -1,17 +1,12 @@
 package entertain_me.app.repository;
 
-import entertain_me.app.dto.anime.AnimeDatabaseDto;
-import entertain_me.app.vo.AllAnimeInfo;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import entertain_me.app.model.Anime;
-import entertain_me.app.vo.AnimeVo;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
