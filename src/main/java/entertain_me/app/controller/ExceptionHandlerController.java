@@ -4,7 +4,6 @@ import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.time.OffsetDateTime;
 
 import entertain_me.app.vo.exception.ErrorsValidateVo;
 import entertain_me.app.vo.exception.ProblemVo;
@@ -36,42 +33,42 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @Override
     public ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        var error = ProblemVo.builder().message(ex.getMessage()).dateTime(OffsetDateTime.now()).build();
+        var error = ProblemVo.builder().message(ex.getMessage()).build();
         log.error("[ApiExceptionHandler] - HttpMessageNotReadable -> {}", error);
         return ResponseEntity.internalServerError().body(error);
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<?> handleUserAlreadyExistsException(AlreadyExistsException ex) {
-        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
+        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).build();
         log.error("[ApiExceptionHandler] - forbidden -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
+        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).build();
         log.error("[ApiExceptionHandler] - notFound -> {}", error);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(EmailNotValidException.class)
     public ResponseEntity<?> handleEmailNotValidException(EmailNotValidException ex) {
-        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
+        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).build();
         log.error("[ApiExceptionHandler] - forbidden -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     @ExceptionHandler(IncorrectPasswordException.class)
-    public ResponseEntity<?> handleIncorrectPasswordExceptionn(IncorrectPasswordException ex) {
-        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
+    public ResponseEntity<?> handleIncorrectPasswordException(IncorrectPasswordException ex) {
+        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).build();
         log.error("[ApiExceptionHandler] - forbidden -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
-        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).dateTime(OffsetDateTime.now()).build();
+        var error = ProblemVo.builder().message("Error: " + ex.getLocalizedMessage()).build();
         log.error("[ApiExceptionHandler] - forbidden -> {}", error);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }

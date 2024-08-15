@@ -8,8 +8,5 @@ import java.time.OffsetDateTime;
 @Schema (name = "ProblemReturn")
 public record ProblemVo(
         @Schema(name = "message")
-        String message,
-
-        @Schema(name = "datetime")
-        OffsetDateTime dateTime
+        String message
 ){ }

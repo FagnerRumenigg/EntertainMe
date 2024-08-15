@@ -26,11 +26,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        var authenticationError = ProblemVo.builder().message(customErrorMessageAuthentication(authException)).dateTime(OffsetDateTime.now()).build();
+        var authenticationError = ProblemVo.builder().message(customErrorMessageAuthentication(authException)).build();
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(OffsetDateTime.class, new OffsetDateTimeAdapter())
-                .create();
+        Gson gson = new GsonBuilder().create();
 
         response.getWriter().write(String.valueOf(gson.toJson(authenticationError)));
         response.getWriter().flush();
