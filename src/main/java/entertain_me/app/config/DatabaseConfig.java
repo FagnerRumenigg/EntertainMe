@@ -31,7 +31,7 @@ public class DatabaseConfig {
     private DriverManagerDataSource dataSource;
 
     @PostConstruct
-    public void init() {
+    public void initDataSource() {
         try {
             dataSource = new DriverManagerDataSource();
             dataSource.setDriverClassName("org.postgresql.Driver");
