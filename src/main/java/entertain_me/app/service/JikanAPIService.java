@@ -11,11 +11,7 @@ import java.util.List;
 @Service
 public class JikanAPIService {
 
-    private final RestTemplate restTemplate;
-
-    public JikanAPIService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public List<JikanResponseDataDto> requestAllAnimes(Integer page) throws Exception {
 

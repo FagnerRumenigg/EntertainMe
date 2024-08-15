@@ -16,7 +16,7 @@ public class ScheduledTasks {
     JikanService jikanService;
     DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    @Scheduled(cron = "00 55 21 * * TUE")
+    @Scheduled(cron = "00 12 09 * * THU")
     public void updateDatabase() throws Exception {
         log.info("Starting database update task at the following time: " + LocalDateTime.now().format(format));
         jikanService.getAllAnimesJikan();
