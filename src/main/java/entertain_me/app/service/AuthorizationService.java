@@ -39,6 +39,8 @@ public class AuthorizationService implements UserDetailsService{
 			return repository.findByEmail(userName);
 		}catch(DataAccessResourceFailureException ex){
 			log.error("Database connection attempt failed");
+		}catch (Exception e){
+			log.error(e.getCause());
 		}
 		return null;
 	}

@@ -2,8 +2,8 @@ package entertain_me.app.controller;
 
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
-import entertain_me.app.vo.ProblemVo;
 import entertain_me.app.exception.AlreadyExistsException;
+import entertain_me.app.vo.ProblemVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -58,14 +59,14 @@ public class AuthenticationController {
 			@ApiResponse(responseCode = "500", description = "Internal error",
 					content = { @Content(mediaType  = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto userAuthentication) {
+	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDto userAuthentication) throws BadCredentialsException, Exception {
 		var userNamePassword = new UsernamePasswordAuthenticationToken(userAuthentication.email(), userAuthentication.password());
-		Authentication auth = authenticationManager.authenticate(userNamePassword);
-		User user = (User) auth.getPrincipal();
-		String token = tokenService.generateToken(user);
+			Authentication auth = authenticationManager.authenticate(userNamePassword);
+			User user = (User) auth.getPrincipal();
+			String token = tokenService.generateToken(user);
 
-		log.info("User: "+ user.getName() +" logged");
-		return ResponseEntity.ok(new LoginResponseVo(token, "Bearer", 3600, user.getName(), user.getEmail()));
+			log.info("User: "+ user.getName() +" logged");
+			return ResponseEntity.ok(new LoginResponseVo(token, "Bearer", 3600, user.getName(), user.getEmail()));
 	}
 
 	@Operation(summary = "Does the user register", method = "POST")

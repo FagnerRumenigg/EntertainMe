@@ -88,8 +88,8 @@ public class JikanService {
                 Thread.sleep(1500);
             }
         } catch (Exception e) {
-            log.error("Fail updating database", e);
-            throw new Exception("Fail updating database", e);
+            log.error("Fail updating anime database", e);
+            throw new Exception("Fail updating anime database", e);
         }
     }
 

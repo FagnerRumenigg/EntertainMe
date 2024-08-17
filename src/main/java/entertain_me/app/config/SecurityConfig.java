@@ -21,9 +21,6 @@ public class SecurityConfig {
 	@Autowired
 	private SecurityFilterConfig securityFilter;
 
-	@Autowired
-	private CustomAuthenticationEntryPointConfig customAuthenticationEntryPoint;
-
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
@@ -32,8 +29,6 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/swagger-ui/**", "/v3/**", "/auth/login", "/auth/register").permitAll()
 						.anyRequest().authenticated())
-				.exceptionHandling(exception -> exception
-						.authenticationEntryPoint(customAuthenticationEntryPoint))
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
