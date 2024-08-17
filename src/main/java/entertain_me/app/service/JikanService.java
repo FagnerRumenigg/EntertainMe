@@ -1,10 +1,7 @@
 package entertain_me.app.service;
 
 import entertain_me.app.dto.anime.AnimeDatabaseDto;
-import entertain_me.app.dto.jikan_api.DemographicsDto;
-import entertain_me.app.dto.jikan_api.GenreDto;
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
-import entertain_me.app.dto.jikan_api.StudioDto;
 import entertain_me.app.model.Anime;
 import entertain_me.app.model.Demographic;
 import entertain_me.app.model.Genre;
@@ -18,7 +15,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,7 +43,6 @@ public class JikanService {
             boolean returnOk = true;
             DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
             LocalDateTime timeStart = LocalDateTime.now();
-
             while (returnOk) {
                 List<JikanResponseDataDto> animesList = jikanAPIService.requestAllAnimes(page);
                 log.info("Returned "+animesList.size()+" animes at the page: "+page);
@@ -62,9 +57,9 @@ public class JikanService {
                                     anime.synopsis(),
                                     anime.episodes(),
                                     anime.year(),
-                                    getNameFromDemographics(anime.demographics()),
-                                    getNameFromStudio(anime.studios()),
-                                    getNameFromGenres(anime.genres())))
+                                    anime.demographicsName(),
+                                    anime.studiosName(),
+                                    anime.genresName()))
                             .toList();
                     for (AnimeDatabaseDto anime : animesReturn) {
 //                        Optional<AnimeDatabaseDto> animeDatabase = repository.findByJikanId(anime.jikanId());
@@ -107,7 +102,6 @@ public class JikanService {
         animeNovo.setEpisodes(anime.episodes());
         animeNovo.setYear(anime.year());
 
-        // Save or retrieve related entities
         Set<Genre> genres = saveGenres(anime.genres());
         Set<Studio> studios = saveStudios(anime.studios());
         Set<Demographic> demographics = saveDemographics(anime.demographics());
@@ -135,23 +129,5 @@ public class JikanService {
         return demographicNames.stream()
                 .map(demographicService::findOrCreateDemographic)
                 .collect(Collectors.toSet());
-    }
-
-    private List<String> getNameFromGenres(List<GenreDto> genres) {
-        return genres.stream()
-                .map(GenreDto::name)
-                .collect(Collectors.toList());
-    }
-
-    private List<String> getNameFromStudio(List<StudioDto> studioDto) {
-        return studioDto.stream()
-                .map(StudioDto::name)
-                .collect(Collectors.toList());
-    }
-
-    private List<String> getNameFromDemographics(List<DemographicsDto> demographics) {
-        return demographics.stream()
-                .map(DemographicsDto::name)
-                .collect(Collectors.toList());
     }
 }

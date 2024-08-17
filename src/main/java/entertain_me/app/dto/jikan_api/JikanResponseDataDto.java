@@ -1,8 +1,5 @@
 package entertain_me.app.dto.jikan_api;
 
-import entertain_me.app.dto.jikan_api.DemographicsDto;
-import entertain_me.app.dto.jikan_api.GenreDto;
-import entertain_me.app.dto.jikan_api.StudioDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -23,9 +20,9 @@ public record JikanResponseDataDto(
         @Schema(name = "year")
         Integer year,
         @Schema(name = "demographics")
-        List<DemographicsDto> demographics,
+        List<String> demographicsName,
         @Schema(name = "studios")
-        List<StudioDto> studios,
+        List<String> studiosName,
         @Schema(name = "genres")
-        List<GenreDto> genres) {
+        List<String> genresName) {
 }
