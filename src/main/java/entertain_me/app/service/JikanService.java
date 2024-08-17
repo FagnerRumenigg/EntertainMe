@@ -43,6 +43,7 @@ public class JikanService {
             boolean returnOk = true;
             DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
             LocalDateTime timeStart = LocalDateTime.now();
+
             while (returnOk) {
                 List<JikanResponseDataDto> animesList = jikanAPIService.requestAllAnimes(page);
                 log.info("Returned "+animesList.size()+" animes at the page: "+page);
