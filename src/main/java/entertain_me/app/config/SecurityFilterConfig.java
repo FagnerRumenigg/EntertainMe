@@ -2,19 +2,22 @@ package entertain_me.app.config;
 
 import java.io.IOException;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import entertain_me.app.service.AuthorizationService;
+import entertain_me.app.service.AuthenticationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Log4j2
 @Component
 public class SecurityFilterConfig extends OncePerRequestFilter {
 
@@ -22,28 +25,34 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 	private TokenServiceConfig tokenService;
 
 	@Autowired
-	private AuthorizationService authorizationService;
+	private AuthenticationService authorizationService;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		var token = this.recoverToken(request);
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		try {
+			var token = this.recoverToken(request);
 
-		if (token != null) {
-			var login = tokenService.validateToken(token);
-			if (!login.isEmpty()) {
-				UserDetails user = authorizationService.findByLogin(login);
-				if (user != null) {
-					var authentication = new UsernamePasswordAuthenticationToken(
-							user, null, user.getAuthorities());
-					SecurityContextHolder.getContext().setAuthentication(authentication);
+			if (token != null) {
+				var login = tokenService.validateToken(token);
+				if (!login.isEmpty()) {
+					UserDetails user = authorizationService.findByLogin(login);
+					if (user != null) {
+						var authentication = new UsernamePasswordAuthenticationToken(
+								user, null, user.getAuthorities());
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+					}
 				}
 			}
+			filterChain.doFilter(request, response);
+		} catch (Exception e) {
+			String messageError = "Something is wrong, please, try again in a few minutes";
+			log.error("Unexpected error: {} : {}", e.getClass(), e.getMessage());
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().write(messageError);
+			response.getWriter().flush();
 		}
-
-		filterChain.doFilter(request, response);
-
 	}
+
 
 
 

@@ -30,7 +30,7 @@ import entertain_me.app.model.User;
 import entertain_me.app.dto.user.AuthenticationDto;
 import entertain_me.app.vo.LoginResponseVo;
 import entertain_me.app.dto.user.RegisterDto;
-import entertain_me.app.service.AuthorizationService;
+import entertain_me.app.service.AuthenticationService;
 import jakarta.validation.Valid;
 
 @RequestMapping(value = "auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,7 +43,7 @@ public class AuthenticationController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	@Autowired 
-	private AuthorizationService authorizationService;
+	private AuthenticationService authorizationService;
 
 	@Autowired
 	private TokenServiceConfig tokenService;

@@ -18,7 +18,7 @@ import entertain_me.app.repository.UserRepository;
 
 @Log4j2
 @Service
-public class AuthorizationService implements UserDetailsService{
+public class AuthenticationService implements UserDetailsService{
 
 	@Autowired 
 	UserRepository repository;
@@ -34,15 +34,8 @@ public class AuthorizationService implements UserDetailsService{
 		return findByLogin(username);
 	}
 
-	public UserDetails findByLogin(String userName) throws UsernameNotFoundException {
-		try{
-			return repository.findByEmail(userName);
-		}catch(DataAccessResourceFailureException ex){
-			log.error("Database connection attempt failed");
-		}catch (Exception e){
-			log.error(e.getCause());
-		}
-		return null;
+	public UserDetails findByLogin(String userName) throws UsernameNotFoundException, DataAccessResourceFailureException {
+		return repository.findByEmail(userName);
 	}
 
 	public void save(RegisterDto registerUser) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
