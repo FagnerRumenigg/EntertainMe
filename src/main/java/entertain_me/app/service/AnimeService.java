@@ -5,6 +5,7 @@ import entertain_me.app.dto.anime.GenreDto;
 import entertain_me.app.dto.anime.StudioDto;
 import entertain_me.app.model.Anime;
 import entertain_me.app.vo.AllAnimeInfoVo;
+import entertain_me.app.vo.AnimeVo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,5 +94,7 @@ public class AnimeService {
     }).collect(Collectors.toList());
   }
 
-
+  private Anime getById(UUID animeId){
+      return animeRepository.getReferenceById(animeId);
+  }
 }

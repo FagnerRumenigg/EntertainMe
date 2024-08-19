@@ -69,6 +69,17 @@ CREATE TABLE anime_demographic (
     FOREIGN KEY (id_demographic) REFERENCES demographic(id_demographic)
 );
 
+CREATE TABLE anime_user_review(
+    id_anime UUID NOT NULL,
+    id_user UUID NOT NULL,
+    comment VARCHAR(5000),
+    rating SMALLINT NOT NULL,
+    review_date DATE NOT NULL,
+    PRIMARY KEY (id_anime, id_user),
+    FOREIGN KEY (id_anime) REFERENCES anime(id_anime),
+    FOREIGN KEY (id_user) REFERENCES users(id_user)
+);
+
 CREATE TYPE estate AS ENUM (
     'AC', -- Acre
     'AL', -- Alagoas

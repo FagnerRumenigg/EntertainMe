@@ -46,7 +46,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<?> handleUserAlreadyExistsException(AlreadyExistsException ex) {
         var error = ProblemVo.builder().message(ex.getLocalizedMessage()).build();
-        log.error("[ApiExceptionHandler] - forbidden -> {}", error);
+        log.error("[ApiExceptionHandler] - AlreadyExistsException -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
@@ -54,28 +54,28 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         log.info("SOCORRO");
         var error = ProblemVo.builder().message(ex.getLocalizedMessage()).build();
-        log.error("[ApiExceptionHandler] - notFound -> {}", error);
+        log.error("[ApiExceptionHandler] - UsernameNotFoundException -> {}", error);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(EmailNotValidException.class)
     public ResponseEntity<?> handleEmailNotValidException(EmailNotValidException ex) {
         var error = ProblemVo.builder().message(ex.getLocalizedMessage()).build();
-        log.error("[ApiExceptionHandler] - forbidden -> {}", error);
+        log.error("[ApiExceptionHandler] - EmailNotValidException -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     @ExceptionHandler(IncorrectPasswordException.class)
     public ResponseEntity<?> handleIncorrectPasswordException(IncorrectPasswordException ex) {
         var error = ProblemVo.builder().message(ex.getLocalizedMessage()).build();
-        log.error("[ApiExceptionHandler] - forbidden -> {}", error);
+        log.error("[ApiExceptionHandler] - IncorrectPasswordException -> {}", error);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
         var error = ProblemVo.builder().message(ex.getLocalizedMessage()).build();
-        log.error("[ApiExceptionHandler] - forbidden -> {}", error);
+        log.error("[ApiExceptionHandler] - IllegalArgumentException -> {}", error);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
@@ -83,7 +83,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
         String errorMessage = "Password is incorrect";
         var error = ProblemVo.builder().message(errorMessage).build();
-        log.error("[ApiExceptionHandler] - forbidden -> {}", ex.getLocalizedMessage());
+        log.error("[ApiExceptionHandler] - BadCredentialsException -> {}", ex.getLocalizedMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
@@ -92,7 +92,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         String errorMessage = "Email not found";
 
         var error = ProblemVo.builder().message(errorMessage).build();
-        log.error("[ApiExceptionHandler] - forbidden -> {}", ex.getLocalizedMessage());
+        log.error("[ApiExceptionHandler] - InternalAuthenticationServiceException -> {}", ex.getLocalizedMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
@@ -100,7 +100,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleException(Exception ex) {
         log.error(ex.getClass());
         var error = ProblemVo.builder().message( ex.getLocalizedMessage()).build();
-        log.error("[ApiExceptionHandler] - forbidden -> {}", ex.getLocalizedMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body( ex.getLocalizedMessage());
+        log.error("[ApiExceptionHandler] - Exception -> {}", ex.getLocalizedMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( ex.getLocalizedMessage());
     }
 }

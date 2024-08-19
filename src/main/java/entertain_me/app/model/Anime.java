@@ -3,18 +3,17 @@ package entertain_me.app.model;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "anime")
 public class Anime {
@@ -78,5 +77,14 @@ public class Anime {
 		this.synopsys = synopsys;
 		this.episodes = episodes;
 		this.year = year;
+	}
+
+	@Override
+	public String toString() {
+		return "Anime{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", genres=" + genres.stream().map(Genre::getName).collect(Collectors.joining(", ")) +
+				'}';
 	}
 }
