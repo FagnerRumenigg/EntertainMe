@@ -66,7 +66,7 @@ public class AuthenticationController {
 			String token = tokenService.generateToken(user);
 
 			log.info("User: "+ user.getName() +" logged");
-			return ResponseEntity.ok(new LoginResponseVo(token, "Bearer", 3600, user.getName(), user.getEmail()));
+			return ResponseEntity.ok(new LoginResponseVo(token, "Bearer", 3600,user.getId(), user.getName(), user.getEmail()));
 	}
 
 	@Operation(summary = "Does the user register", method = "POST")
