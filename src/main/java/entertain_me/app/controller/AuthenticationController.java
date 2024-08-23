@@ -92,10 +92,14 @@ public class AuthenticationController {
 
 	@Operation(summary = "Does the user logout", method = "POST", security = @SecurityRequirement(name = "bearerAuth"))
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "User registered successfully"),
+			@ApiResponse(responseCode = "200", description = "User logout"),
+			@ApiResponse(responseCode = "404", description = "The user's email was not found",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))),
+			@ApiResponse(responseCode = "401", description = "The user's password is incorrect",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))),
 			@ApiResponse(responseCode = "500", description = "Internal error",
-					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
-	@PostMapping(value = "/logout", consumes = MediaType.APPLICATION_JSON_VALUE)
+					content = { @Content(mediaType  = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
+	@PostMapping(value = "/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request){
 		authenticationService.logout(tokenService.recoverToken(request));
 		return ResponseEntity.status(HttpStatus.OK).build();

@@ -1,5 +1,6 @@
 package entertain_me.app.service;
 
+import entertain_me.app.config.TokenServiceConfig;
 import entertain_me.app.dto.user.AuthenticationDto;
 import entertain_me.app.dto.user.ChangeEmailDto;
 import entertain_me.app.dto.user.ChangePasswordDto;
@@ -8,6 +9,7 @@ import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
 import entertain_me.app.model.User;
 import entertain_me.app.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TokenServiceConfig tokenServiceConfig;
+
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -85,6 +91,19 @@ public class UserService {
         }
     }
 
+    public void forgotPassword(AuthenticationDto authenticationDto, HttpServletRequest request) throws IncorrectPasswordException {
+        User user = userRepository.getByEmail(authenticationDto.email())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if(isPasswordInvalid(authenticationDto.password())){
+            throw new IncorrectPasswordException("Password it's not in the right pattern");
+        }
+        user.setPassword(passwordEncoder.encode(authenticationDto.password()));
+        userRepository.save(user);
+
+        addToBlacklist(tokenServiceConfig.recoverToken(request));
+    }
+
     public static boolean isEmailInvalid(String email) {
         String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
@@ -103,4 +122,10 @@ public class UserService {
         return !matcher.matches();
     }
 
+    private void addToBlacklist(String token){
+        String jti = tokenServiceConfig.getJtiFromToken(token);
+        long expiration = tokenServiceConfig.getExpirationFromToken(token);
+
+        tokenServiceConfig.addToBlacklist(jti, expiration);
+    }
 }

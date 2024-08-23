@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -70,6 +72,18 @@ public class UserController {
     @DeleteMapping(value = "/deleteAccount", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteAccount(@RequestBody @Valid AuthenticationDto userDto) throws IncorrectPasswordException {
         userService.deleteAccount(userDto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary =  "Reset the user password", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Password redefined"),
+            @ApiResponse(responseCode = "500", description = "Internal error",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
+    @PostMapping(value = "/forgotPassword", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> forgotPassword(@RequestBody @Valid AuthenticationDto userDto, HttpServletRequest request) throws IncorrectPasswordException {
+        userService.forgotPassword(userDto, request);
 
         return ResponseEntity.ok().build();
     }
