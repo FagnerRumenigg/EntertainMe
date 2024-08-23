@@ -81,7 +81,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
-        String errorMessage = "Password is incorrect";
+        String errorMessage = "Email or Password invalid";
         var error = ProblemVo.builder().message(errorMessage).build();
         log.error("[ApiExceptionHandler] - BadCredentialsException -> {}", ex.getLocalizedMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
@@ -89,7 +89,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<Object> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException ex) {
-        String errorMessage = "Email not found";
+        String errorMessage = "Email or Password invalid";
 
         var error = ProblemVo.builder().message(errorMessage).build();
         log.error("[ApiExceptionHandler] - InternalAuthenticationServiceException -> {}", ex.getLocalizedMessage());
