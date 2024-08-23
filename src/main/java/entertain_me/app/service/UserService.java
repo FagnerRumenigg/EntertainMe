@@ -31,7 +31,6 @@ public class UserService {
     @Autowired
     TokenServiceConfig tokenServiceConfig;
 
-
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public void changePassword(ChangePasswordDto changePasswordDto) throws IncorrectPasswordException {
@@ -96,12 +95,18 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         if(isPasswordInvalid(authenticationDto.password())){
+            log.info("Password it's not in the right pattern");
             throw new IncorrectPasswordException("Password it's not in the right pattern");
         }
+
         user.setPassword(passwordEncoder.encode(authenticationDto.password()));
         userRepository.save(user);
 
-        addToBlacklist(tokenServiceConfig.recoverToken(request));
+        String token = tokenServiceConfig.recoverToken(request);
+        log.info("Password redefined");
+
+        addToBlacklist(token);
+        log.info("token {} is in the blacklist", token);
     }
 
     public static boolean isEmailInvalid(String email) {
