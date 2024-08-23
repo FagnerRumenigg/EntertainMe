@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class AuthenticationController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	@Autowired 
-	private AuthenticationService authorizationService;
+	private AuthenticationService authenticationService;
 
 	@Autowired
 	private TokenServiceConfig tokenService;
@@ -82,9 +83,15 @@ public class AuthenticationController {
 					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerUser) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
-		authorizationService.save(registerUser);
+		authenticationService.save(registerUser);
 
 		log.info("User created");
 		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	@PostMapping(value = "/logout")
+	public ResponseEntity<?> logou(HttpServletRequest request){
+		authenticationService.logout(tokenService.recoverToken(request));
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

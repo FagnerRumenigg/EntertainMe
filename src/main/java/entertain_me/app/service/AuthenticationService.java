@@ -1,5 +1,6 @@
 package entertain_me.app.service;
 
+import entertain_me.app.config.TokenServiceConfig;
 import entertain_me.app.dto.user.RegisterDto;
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
@@ -29,6 +30,9 @@ public class AuthenticationService implements UserDetailsService{
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	TokenServiceConfig tokenServiceConfig;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return findByLogin(username);
@@ -55,5 +59,12 @@ public class AuthenticationService implements UserDetailsService{
 		User newUser = new User(registerUser.name(), registerUser.email(), encryptedPassword, registerUser.role());
 
 		repository.save(newUser);
+	}
+
+	public void logout(String token) {
+		String jti = tokenServiceConfig.getJtiFromToken(token);
+		long expiration = tokenServiceConfig.getExpirationFromToken(token);
+
+		tokenServiceConfig.addToBlacklist(jti, expiration);
 	}
 }

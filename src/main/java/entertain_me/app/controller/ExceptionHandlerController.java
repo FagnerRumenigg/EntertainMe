@@ -98,7 +98,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
-        log.error(ex.getClass());
+        log.error(ex);
         var error = ProblemVo.builder().message( ex.getLocalizedMessage()).build();
         log.error("[ApiExceptionHandler] - Exception -> {}", ex.getLocalizedMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( ex.getLocalizedMessage());

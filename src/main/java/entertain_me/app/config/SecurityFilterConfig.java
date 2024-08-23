@@ -30,9 +30,15 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		try {
-			var token = this.recoverToken(request);
+			var token = tokenService.recoverToken(request);
 
 			if (token != null) {
+				String jti = tokenService.getJtiFromToken(token);
+				if (jti != null && tokenService.isBlacklisted(jti)) {
+					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					response.getWriter().write("Token is blacklisted");
+					return;
+				}
 				var login = tokenService.validateToken(token);
 				if (!login.isEmpty()) {
 					UserDetails user = authorizationService.findByLogin(login);
@@ -51,14 +57,5 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 			response.getWriter().write(messageError);
 			response.getWriter().flush();
 		}
-	}
-
-
-
-
-	private String recoverToken(HttpServletRequest request) {
-		var authHeader = request.getHeader("Authorization");
-		if (authHeader == null) return null;
-		return authHeader.replace("Bearer ", "");
 	}
 }
