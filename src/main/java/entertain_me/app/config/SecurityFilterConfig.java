@@ -2,9 +2,13 @@ package entertain_me.app.config;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import entertain_me.app.vo.ProblemVo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,9 +39,10 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 			if (token != null) {
 				String jti = tokenService.getJtiFromToken(token);
 				if (jti != null && tokenService.isBlacklisted(jti)) {
-					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-					response.getWriter().write("Token is blacklisted");
-					return;
+					String message = "Token is blacklisted";
+					log.error(message);
+
+					handleReturnException(message, response, HttpServletResponse.SC_UNAUTHORIZED);
 				}
 				var login = tokenService.validateToken(token);
 				if (!login.isEmpty()) {
@@ -50,12 +55,21 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 				}
 			}
 			filterChain.doFilter(request, response);
-		} catch (Exception e) {
-			String messageError = "Something is wrong, please, try again in a few minutes";
-			log.error("Unexpected error: {} : {}", e.getClass(), e.getMessage());
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().write(messageError);
-			response.getWriter().flush();
+		} catch(Exception e) {
+			String message = "Something is wrong, please, try again in a few minute";
+			log.error("{} - {} : {}", message, e.getClass(), e.getMessage());
+
+			handleReturnException(message, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	private void handleReturnException(String message, HttpServletResponse response, Integer responseStatus) throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		ProblemVo errorResponse = new ProblemVo("Token is blacklisted");
+
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+		response.getWriter().flush();
 	}
 }

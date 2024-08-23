@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
@@ -72,7 +73,7 @@ public class AuthenticationController {
 
 	@Operation(summary = "Does the user register", method = "POST")
 	@ApiResponses(value = {
- 				@ApiResponse(responseCode = "201", description = "User registered successfully"),
+			@ApiResponse(responseCode = "201", description = "User registered successfully"),
 			@ApiResponse(responseCode = "403", description = "The user's email is not in the correct format",
 					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))}),
 			@ApiResponse(responseCode = "403", description = "The user's email is already registered",
@@ -89,8 +90,13 @@ public class AuthenticationController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@PostMapping(value = "/logout")
-	public ResponseEntity<?> logou(HttpServletRequest request){
+	@Operation(summary = "Does the user logout", method = "POST", security = @SecurityRequirement(name = "bearerAuth"))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "User registered successfully"),
+			@ApiResponse(responseCode = "500", description = "Internal error",
+					content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
+	@PostMapping(value = "/logout", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> logout(HttpServletRequest request){
 		authenticationService.logout(tokenService.recoverToken(request));
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
