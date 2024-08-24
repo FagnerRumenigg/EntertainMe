@@ -48,7 +48,7 @@ jobs:
 
       # Novo passo para listar os arquivos e diretórios
       - name: List files in workspace
-        run: ls -R
+        run: ls -R; pwd
 
       - name: Login to Azure
         uses: azure/login@v2
