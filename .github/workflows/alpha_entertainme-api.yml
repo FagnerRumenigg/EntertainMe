@@ -59,4 +59,5 @@ jobs:
         with:
           app-name: 'entertainme-api'
           slot-name: 'Production'
-          package: '*.jar'
+          package: './ententainme-api/*.jar'
+          
