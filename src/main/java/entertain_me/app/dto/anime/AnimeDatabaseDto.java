@@ -1,12 +1,13 @@
-package entertain_me.app.dto.jikan_api;
+package entertain_me.app.dto.anime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public record JikanResponseDataDto(
+@Schema(name ="animeJikan")
+public record AnimeDatabaseDto(
         @Schema(name = "jikanId")
-        Integer mal_id,
+        Integer jikanId,
         @Schema(name = "title")
         String title,
         @Schema(name = "source")
@@ -14,15 +15,15 @@ public record JikanResponseDataDto(
         @Schema(name = "status")
         String status,
         @Schema(name = "synopsys")
-        String synopsis,
+        String synopsys,
         @Schema(name = "episodes")
         Integer episodes,
         @Schema(name = "year")
         Integer year,
         @Schema(name = "demographics")
-        List<String> demographicsName,
+        List<String> demographics,
         @Schema(name = "studios")
-        List<String> studiosName,
+        List<String> studios,
         @Schema(name = "genres")
-        List<String> genresName) {
+        List<String> genres) {
 }

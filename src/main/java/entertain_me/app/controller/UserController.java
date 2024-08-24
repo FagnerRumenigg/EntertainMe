@@ -7,13 +7,16 @@ import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
 import entertain_me.app.service.UserService;
-import entertain_me.app.vo.exception.ProblemVo;
+import entertain_me.app.vo.ProblemVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,7 +32,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Operation(summary = "Change the user email", method = "POST")
+    @Operation(summary = "Change the user email", method = "POST",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Email changed successfully"),
             @ApiResponse(responseCode = "403", description = "The user's email is not in the correct format",
@@ -39,13 +43,15 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal error",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
     @PostMapping(value = "/changeEmail", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> changeEmail(@RequestBody @Valid ChangeEmailDto changeEmailDto) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
+    public ResponseEntity<?> changeEmail(@RequestBody @Valid ChangeEmailDto changeEmailDto)
+            throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
         userService.changeEmail(changeEmailDto);
 
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Change the user password", method = "POST")
+    @Operation(summary = "Change the user password", method = "POST",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Password changed successfully"),
             @ApiResponse(responseCode = "500", description = "Internal error",
@@ -57,7 +63,8 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Delete the user account", method = "POST")
+    @Operation(summary = "Delete the user account", method = "POST",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Account deleted successfully"),
             @ApiResponse(responseCode = "500", description = "Internal error",
@@ -69,4 +76,15 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary =  "Reset the user password", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Password redefined"),
+            @ApiResponse(responseCode = "500", description = "Internal error",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})})
+    @PostMapping(value = "/forgotPassword", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> forgotPassword(@RequestBody @Valid AuthenticationDto userDto, HttpServletRequest request) throws IncorrectPasswordException {
+        userService.forgotPassword(userDto, request);
+
+        return ResponseEntity.ok().build();
+    }
 }

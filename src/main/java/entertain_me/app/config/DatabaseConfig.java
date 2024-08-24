@@ -1,14 +1,15 @@
 package entertain_me.app.config;
 
+import jakarta.annotation.PostConstruct;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
+@Log4j2
 @Configuration
 public class DatabaseConfig {
 
@@ -27,24 +28,30 @@ public class DatabaseConfig {
     @Value("${postgres.database}")
     private String postgresDatabase;
 
-    @Bean
-    public DataSource dataSource() {
-        try{
-            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    private DriverManagerDataSource dataSource;
+
+    @PostConstruct
+    public void initDataSource() {
+        try {
+            dataSource = new DriverManagerDataSource();
             dataSource.setDriverClassName("org.postgresql.Driver");
             dataSource.setUrl("jdbc:postgresql://" + postgresHost + ":" + postgresPort + "/" + postgresDatabase);
             dataSource.setUsername(postgresUsername);
             dataSource.setPassword(postgresPassword);
 
-            return dataSource;
-        }catch(Exception e){
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao conectar no banco");
+            dataSource.getConnection().isValid(1);
+        } catch (Exception e) {
+            log.error("Connection failed: "+e.getMessage());
+            dataSource = null;
         }
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource());
+    public DataSource dataSource() {
+        if (dataSource == null) {
+            log.error("Database can't be connected, closing application");
+            System.exit(1);
+        }
+        return dataSource;
     }
 }

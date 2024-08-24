@@ -1,12 +1,11 @@
 package entertain_me.app.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 
 import java.util.List;
 
 @Schema(name = "AnimeReturn")
-public record AnimeVO(
+public record AnimeVo(
     @Schema(name = "title")
     String title,
     @Schema(name = "source")
@@ -18,11 +17,5 @@ public record AnimeVO(
     @Schema(name = "episodes")
     Integer episodes,
     @Schema(name = "year")
-    Integer year,
-    @Schema(name = "demographics")
-    List<String> demographics,
-    @Schema(name = "studios")
-    List<String> studios,
-    @Schema(name = "genres")
-    List<String> genres) {
+    Integer year){
 }

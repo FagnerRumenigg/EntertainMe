@@ -1,13 +1,11 @@
-package entertain_me.app.dto.anime;
+package entertain_me.app.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-@Schema(name ="animeJikan")
-public record AnimeReturnDto(
-        @Schema(name = "jikanId")
-        Integer jikanId,
+@Schema(name= "AllAnimeInfo")
+public record AllAnimeInfoVo(
         @Schema(name = "title")
         String title,
         @Schema(name = "source")

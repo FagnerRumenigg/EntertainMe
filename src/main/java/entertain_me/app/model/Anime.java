@@ -1,22 +1,19 @@
 package entertain_me.app.model;
 
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "anime")
 public class Anime {
@@ -24,9 +21,10 @@ public class Anime {
 	@Id
 	@Column(name = "id_anime")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@UuidGenerator
+	private UUID id;
 
-	@Column(name = "jikan_id")
+	@Column(name = "id_jikan")
 	private Integer jikanId;
 
 	@Column(name = "title")
@@ -47,12 +45,46 @@ public class Anime {
 	@Column(name = "release_year")
     private Integer year;
 
-	@Column(name = "demographics")
-    private List<String> demographics;
+	@ManyToMany
+	@JoinTable(
+			name = "anime_demographic",
+			joinColumns = @JoinColumn(name = "id_anime"),
+			inverseJoinColumns = @JoinColumn(name = "id_demographic")
+	)
+    private Set<Demographic> demographics;
 
-	@Column(name = "studios")
-	private List<String> studios;
+	@ManyToMany
+	@JoinTable(
+			name = "anime_studio",
+			joinColumns = @JoinColumn(name = "id_anime"),
+			inverseJoinColumns = @JoinColumn(name = "id_studio")
+	)
+	private Set<Studio> studios;
 
-	@Column(name = "genres")
-    private List<String> genres;
+	@ManyToMany
+	@JoinTable(
+			name = "anime_genre",
+			joinColumns = @JoinColumn(name = "id_anime"),
+			inverseJoinColumns = @JoinColumn(name = "id_genre")
+	)
+	private Set<Genre> genres;
+
+	public Anime(UUID id, String title, String source, String status, String synopsys, Integer episodes, Integer year) {
+		this.id = id;
+		this.title = title;
+		this.source = source;
+		this.status = status;
+		this.synopsys = synopsys;
+		this.episodes = episodes;
+		this.year = year;
+	}
+
+	@Override
+	public String toString() {
+		return "Anime{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", genres=" + genres.stream().map(Genre::getName).collect(Collectors.joining(", ")) +
+				'}';
+	}
 }

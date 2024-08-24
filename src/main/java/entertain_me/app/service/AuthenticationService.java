@@ -1,10 +1,13 @@
 package entertain_me.app.service;
 
+import entertain_me.app.config.TokenServiceConfig;
 import entertain_me.app.dto.user.RegisterDto;
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,8 +17,9 @@ import org.springframework.stereotype.Service;
 import entertain_me.app.model.User;
 import entertain_me.app.repository.UserRepository;
 
+@Log4j2
 @Service
-public class AuthorizationService implements UserDetailsService{
+public class AuthenticationService implements UserDetailsService{
 
 	@Autowired 
 	UserRepository repository;
@@ -26,12 +30,15 @@ public class AuthorizationService implements UserDetailsService{
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	TokenServiceConfig tokenServiceConfig;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return findByLogin(username);
 	}
 
-	public UserDetails findByLogin(String userName) throws UsernameNotFoundException {
+	public UserDetails findByLogin(String userName) throws UsernameNotFoundException, DataAccessResourceFailureException {
 		return repository.findByEmail(userName);
 	}
 
@@ -52,5 +59,12 @@ public class AuthorizationService implements UserDetailsService{
 		User newUser = new User(registerUser.name(), registerUser.email(), encryptedPassword, registerUser.role());
 
 		repository.save(newUser);
+	}
+
+	public void logout(String token) {
+		String jti = tokenServiceConfig.getJtiFromToken(token);
+		long expiration = tokenServiceConfig.getExpirationFromToken(token);
+
+		tokenServiceConfig.addToBlacklist(jti, expiration);
 	}
 }
