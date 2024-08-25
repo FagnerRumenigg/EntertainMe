@@ -14,6 +14,6 @@ public class HomeController {
 
     @RequestMapping("/")
     public String homeHello(){
-        return "Pode ir jogar um aram, amigo!";
+        return "Socorro, i need help";
     }
 }
