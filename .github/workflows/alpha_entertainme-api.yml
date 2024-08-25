@@ -48,12 +48,12 @@ jobs:
 
       - name: List files in directory with artifact
         run: ls -R ${GITHUB_WORKSPACE}
-        
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'entertainme-api'
           slot-name: 'Production'
-          package: 'entertainme-api.jar'
+          package: '${{ github.workspace }}/entertainme-api.jar'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_341B65732BA24EF2BADDBBB8AF835490 }}
