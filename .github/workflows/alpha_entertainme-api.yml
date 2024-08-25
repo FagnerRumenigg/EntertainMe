@@ -43,6 +43,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: java-app
+
+        - name: List files in current directory
+        run: ls -R; pwd
+
+      - name: List files in target directory
+        run: ls -R ${GITHUB_WORKSPACE}/target
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -50,5 +56,5 @@ jobs:
         with:
           app-name: 'entertainme-api'
           slot-name: 'Production'
-          package: '*.jar'
+          package: 'entertainme-api.jar'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_341B65732BA24EF2BADDBBB8AF835490 }}
