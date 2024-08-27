@@ -84,6 +84,7 @@ public class AnimeService {
               anime.getTitle(),
               anime.getSource(),
               anime.getStatus(),
+              anime.getAgeRating(),
               anime.getSynopsys(),
               anime.getEpisodes(),
               anime.getYear(),

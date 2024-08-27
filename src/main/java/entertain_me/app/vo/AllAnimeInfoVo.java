@@ -12,6 +12,8 @@ public record AllAnimeInfoVo(
         String source,
         @Schema(name = "status")
         String status,
+        @Schema(name = "ageRating")
+        String ageRating,
         @Schema(name = "synopsys")
         String synopsys,
         @Schema(name = "episodes")

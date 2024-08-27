@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface AnimeRepository extends JpaRepository<Anime, UUID> {
 
     @Query("SELECT new entertain_me.app.model.Anime(" +
-            "a.id, a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+            "a.id, a.title, a.source, a.status, a.ageRating, a.synopsys, a.episodes, a.year) " +
             "FROM Anime a " +
             "WHERE LOWER(a.title) LIKE LOWER(CONCAT('%', :title, '%'))")
     List<Anime> findAllAnimeInfoByTitle(String title);
