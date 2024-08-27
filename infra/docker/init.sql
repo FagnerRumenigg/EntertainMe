@@ -45,7 +45,6 @@ CREATE TABLE custom_anime_user (
     id_demographic     UUID           NOT NULL,
     id_studio          UUID           NOT NULL,
     id_genre           UUID           NOT NULL,
-
     custom_title       VARCHAR(200)   NOT NULL,
     custom_synopsys    VARCHAR(5000),
     PRIMARY KEY (id_anime, id_user),
