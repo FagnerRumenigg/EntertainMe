@@ -43,6 +43,7 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 					log.error(message);
 
 					handleReturnException(message, response, HttpServletResponse.SC_UNAUTHORIZED);
+					return;
 				}
 				var login = tokenService.validateToken(token);
 				if (!login.isEmpty()) {

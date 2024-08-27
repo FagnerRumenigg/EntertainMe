@@ -68,7 +68,7 @@ public class AuthenticationService implements UserDetailsService{
 		long expiration = tokenServiceConfig.getExpirationFromToken(token);
 
 		tokenServiceConfig.addToBlacklist(jti, expiration);
-		log.info("User logout}");
+		log.info("User logout");
 
 	}
 }
