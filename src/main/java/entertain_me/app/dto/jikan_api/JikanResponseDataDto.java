@@ -6,14 +6,16 @@ import java.util.List;
 
 public record JikanResponseDataDto(
         @Schema(name = "jikanId")
-        Integer mal_id,
+        Integer jikanId,
         @Schema(name = "title")
         String title,
         @Schema(name = "source")
         String source,
         @Schema(name = "status")
         String status,
-        @Schema(name = "synopsys")
+        @Schema(name = "ageRating")
+        String ageRating,
+        @Schema(name = "synopsis")
         String synopsis,
         @Schema(name = "episodes")
         Integer episodes,
@@ -24,5 +26,7 @@ public record JikanResponseDataDto(
         @Schema(name = "studios")
         List<String> studiosName,
         @Schema(name = "genres")
-        List<String> genresName) {
+        List<String> genresName,
+        @Schema(name = "themes")
+        List<String> themesName){
 }

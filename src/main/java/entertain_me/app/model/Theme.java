@@ -23,4 +23,9 @@ public class Theme {
 
     @ManyToMany(mappedBy = "themes")
     private Set<Anime> animes;
+
+    public Theme(UUID idTheme, String name){
+        this.idTheme = idTheme;
+        this.name = name;
+    }
 }

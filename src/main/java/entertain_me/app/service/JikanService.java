@@ -1,11 +1,7 @@
 package entertain_me.app.service;
 
-import entertain_me.app.dto.anime.AnimeDatabaseDto;
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
-import entertain_me.app.model.Anime;
-import entertain_me.app.model.Demographic;
-import entertain_me.app.model.Genre;
-import entertain_me.app.model.Studio;
+import entertain_me.app.model.*;
 import entertain_me.app.repository.AnimeRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +23,18 @@ public class JikanService {
     private final GenreService genreService;
     private final StudioService studioService;
     private final DemographicService demographicService;
+    private final ThemeService themeService;
 
     @Autowired
-    public JikanService(JikanAPIService jikanAPIService, AnimeRepository repository, GenreService genreService, StudioService studioService, DemographicService demographicService) {
+    public JikanService(JikanAPIService jikanAPIService, AnimeRepository repository, GenreService genreService,
+                        StudioService studioService, DemographicService demographicService, ThemeService themeService) {
         this.jikanAPIService = jikanAPIService;
         this.repository = repository;
         this.genreService = genreService;
         this.studioService = studioService;
         this.demographicService = demographicService;
+        this.themeService = themeService;
+
     }
 
     public void getAllAnimesJikan() throws Exception {
@@ -49,26 +49,22 @@ public class JikanService {
                 log.info("Returned "+animesList.size()+" animes at the page: "+page);
 
                 if (!animesList.isEmpty()) {
-                    List<AnimeDatabaseDto> animesReturn = animesList.stream()
-                            .map(anime -> new AnimeDatabaseDto(
-                                    anime.mal_id(),
+                    List<JikanResponseDataDto> animesReturn = animesList.stream()
+                            .map(anime -> new JikanResponseDataDto(
+                                    anime.jikanId(),
                                     anime.title(),
                                     anime.source(),
                                     anime.status(),
+                                    anime.ageRating(),
                                     anime.synopsis(),
                                     anime.episodes(),
                                     anime.year(),
                                     anime.demographicsName(),
                                     anime.studiosName(),
-                                    anime.genresName()))
+                                    anime.genresName(),
+                                    anime.themesName()))
                             .toList();
-                    for (AnimeDatabaseDto anime : animesReturn) {
-//                        Optional<AnimeDatabaseDto> animeDatabase = repository.findByJikanId(anime.jikanId());
-//
-//                        if (animeDatabase.isPresent()) {
-//                            log.info("Anime {} already registered: ",anime.title());
-//                            continue;
-//                        }
+                    for (JikanResponseDataDto anime : animesReturn) {
                         log.info("Anime {} registered: ",anime.title());
                         Anime newAnime = setAnimeFromJikan(anime);
                         repository.save(newAnime);
@@ -93,23 +89,26 @@ public class JikanService {
         }
     }
 
-    private Anime setAnimeFromJikan(AnimeDatabaseDto anime) {
+    private Anime setAnimeFromJikan(JikanResponseDataDto anime) {
         Anime animeNovo = new Anime();
+
+        Set<Genre> genres = saveGenres(anime.genresName());
+        Set<Studio> studios = saveStudios(anime.studiosName());
+        Set<Demographic> demographics = saveDemographics(anime.demographicsName());
+        Set<Theme> themes = saveTheme(anime.themesName());
+
         animeNovo.setJikanId(anime.jikanId());
         animeNovo.setTitle(anime.title());
         animeNovo.setSource(anime.source());
         animeNovo.setStatus(anime.status());
-        animeNovo.setSynopsys(anime.synopsys());
+        animeNovo.setAgeRating(anime.ageRating());
+        animeNovo.setSynopsys(anime.synopsis());
         animeNovo.setEpisodes(anime.episodes());
         animeNovo.setYear(anime.year());
-
-        Set<Genre> genres = saveGenres(anime.genres());
-        Set<Studio> studios = saveStudios(anime.studios());
-        Set<Demographic> demographics = saveDemographics(anime.demographics());
-
         animeNovo.setGenres(genres);
         animeNovo.setStudios(studios);
         animeNovo.setDemographics(demographics);
+        animeNovo.setThemes(themes);
 
         return animeNovo;
     }
@@ -129,6 +128,12 @@ public class JikanService {
     private Set<Demographic> saveDemographics(List<String> demographicNames) {
         return demographicNames.stream()
                 .map(demographicService::findOrCreateDemographic)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Theme> saveTheme(List<String> themeNames) {
+        return themeNames.stream()
+                .map(themeService::findOrCreateTheme)
                 .collect(Collectors.toSet());
     }
 }

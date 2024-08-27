@@ -36,6 +36,9 @@ public class Anime {
 	@Column(name = "status")
     private String status;
 
+	@Column(name = "age_rating")
+	private String ageRating;
+
 	@Column(name = "synopsys")
     private String synopsys;
 
@@ -76,23 +79,4 @@ public class Anime {
 			inverseJoinColumns = @JoinColumn(name = "id_theme")
 	)
 	private Set<Theme> themes;
-
-//	public Anime(UUID id, String title, String source, String status, String synopsys, Integer episodes, Integer year) {
-//		this.id = id;
-//		this.title = title;
-//		this.source = source;
-//		this.status = status;
-//		this.synopsys = synopsys;
-//		this.episodes = episodes;
-//		this.year = year;
-//	}
-
-//	@Override
-//	public String toString() {
-//		return "Anime{" +
-//				"id=" + id +
-//				", title='" + title + '\'' +
-//				", genres=" + genres.stream().map(Genre::getName).collect(Collectors.joining(", ")) +
-//				'}';
-//	}
 }
