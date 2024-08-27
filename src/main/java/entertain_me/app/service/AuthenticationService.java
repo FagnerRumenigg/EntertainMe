@@ -59,6 +59,8 @@ public class AuthenticationService implements UserDetailsService{
 		User newUser = new User(registerUser.name(), registerUser.email(), encryptedPassword, registerUser.role());
 
 		repository.save(newUser);
+		log.info("User created");
+
 	}
 
 	public void logout(String token) {
@@ -66,5 +68,7 @@ public class AuthenticationService implements UserDetailsService{
 		long expiration = tokenServiceConfig.getExpirationFromToken(token);
 
 		tokenServiceConfig.addToBlacklist(jti, expiration);
+		log.info("User logout}");
+
 	}
 }

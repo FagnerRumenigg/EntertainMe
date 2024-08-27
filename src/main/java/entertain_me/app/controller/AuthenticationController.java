@@ -86,7 +86,6 @@ public class AuthenticationController {
 	public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerUser) throws AlreadyExistsException, EmailNotValidException, IncorrectPasswordException {
 		authenticationService.save(registerUser);
 
-		log.info("User created");
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
@@ -102,6 +101,7 @@ public class AuthenticationController {
 	@PostMapping(value = "/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request){
 		authenticationService.logout(tokenService.recoverToken(request));
+
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
