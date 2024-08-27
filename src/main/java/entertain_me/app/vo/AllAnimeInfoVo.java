@@ -12,6 +12,8 @@ public record AllAnimeInfoVo(
         String source,
         @Schema(name = "status")
         String status,
+        @Schema(name = "ageRating")
+        String ageRating,
         @Schema(name = "synopsys")
         String synopsys,
         @Schema(name = "episodes")
@@ -23,5 +25,7 @@ public record AllAnimeInfoVo(
         @Schema(name = "studios")
         List<String> studios,
         @Schema(name = "genres")
-        List<String> genres) {
+        List<String> genres,
+        @Schema(name = "themes")
+        List<String> themes){
 }

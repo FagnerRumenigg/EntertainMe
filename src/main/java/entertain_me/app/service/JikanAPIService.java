@@ -36,12 +36,14 @@ public class JikanAPIService {
                             animeNode.path("title").asText(),
                             animeNode.path("source").asText(),
                             animeNode.path("status").asText(),
+                            animeNode.path("rating").asText(),
                             animeNode.path("synopsis").asText(),
                             animeNode.path("episodes").asInt(),
                             animeNode.path("year").asInt(),
                             getNameFromJikan(animeNode, "demographics"),
                             getNameFromJikan(animeNode, "studios"),
-                            getNameFromJikan(animeNode, "genres")
+                            getNameFromJikan(animeNode, "genres"),
+                            getNameFromJikan(animeNode, "themes")
                     );
                     JikanResponseDataDtoList.add(jikanResponseDataDto);
                 }
