@@ -25,5 +25,7 @@ public record AllAnimeInfoVo(
         @Schema(name = "studios")
         List<String> studios,
         @Schema(name = "genres")
-        List<String> genres) {
+        List<String> genres,
+        @Schema(name = "themes")
+        List<String> themes){
 }

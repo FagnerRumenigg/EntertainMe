@@ -3,6 +3,7 @@ package entertain_me.app.service;
 import entertain_me.app.dto.anime.DemographicDto;
 import entertain_me.app.dto.anime.GenreDto;
 import entertain_me.app.dto.anime.StudioDto;
+import entertain_me.app.dto.anime.ThemeDto;
 import entertain_me.app.model.Anime;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import entertain_me.app.vo.AnimeVo;
@@ -31,6 +32,9 @@ public class AnimeService {
   @Autowired
   StudioService studioService;
 
+  @Autowired
+  ThemeService themeService;
+
   public List<AllAnimeInfoVo> getAnimeByTitle(String title) {
     if (title == null || title.trim().isEmpty()) {
       log.warn("Title is empty");
@@ -43,6 +47,7 @@ public class AnimeService {
     List<DemographicDto> demographics = demographicService.findDemographicNameByAnimeIds(animeIds);
     List<StudioDto> studios = studioService.findStudioNameByAnimeIds(animeIds);
     List<GenreDto> genres = genreService.findGenreNameByAnimeIds(animeIds);
+    List<ThemeDto> themes = themeService.findStudioNameByAnimeIds(animeIds);
 
     Map<UUID, List<String>> demographicsMap = demographics.stream()
             .collect(Collectors.toMap(DemographicDto::animeId,
@@ -71,14 +76,28 @@ public class AnimeService {
                       return combined;
                     }));
 
+      Map<UUID, List<String>> themeMap = themes.stream()
+              .collect(Collectors.toMap(ThemeDto::animeId,
+                      g -> Collections.singletonList(g.name()),
+                      (existing, replacement) -> {
+                          List<String> combined = new ArrayList<>(existing);
+                          combined.addAll(replacement);
+                          return combined;
+                      }));
+      System.out.println(animeIds);
     return animeList.stream().map(anime -> {
       UUID animeId = anime.getId();
       List<String> demographicsNames = Optional.ofNullable(demographicsMap.get(animeId))
               .orElse(Collections.emptyList());
+
       List<String> studiosNames = Optional.ofNullable(studiosMap.get(animeId))
               .orElse(Collections.emptyList());
+
       List<String> genresNames = Optional.ofNullable(genresMap.get(animeId))
               .orElse(Collections.emptyList());
+
+      List<String> themesNames = Optional.ofNullable(themeMap.get(animeId))
+              .orElse((Collections.emptyList()));
 
       return new AllAnimeInfoVo(
               anime.getTitle(),
@@ -90,7 +109,8 @@ public class AnimeService {
               anime.getYear(),
               demographicsNames,
               studiosNames,
-              genresNames
+              genresNames,
+              themesNames
       );
     }).collect(Collectors.toList());
   }
