@@ -20,10 +20,10 @@ public class ThemeService {
 
     public Theme findOrCreateTheme(String name) {
         return themeRepository.findByName(name)
-                .orElseGet(() -> themeRepository.save(new Theme(UUID.randomUUID(), name)));
+                .orElseGet(() -> themeRepository.save(new Theme(name)));
     }
 
-    public List<ThemeDto> findStudioNameByAnimeIds(List<UUID> animeIds){
+    public List<ThemeDto> findStudioNameByAnimeIds(List<Long> animeIds){
         return themeRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
 }

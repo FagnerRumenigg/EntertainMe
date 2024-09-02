@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
@@ -15,13 +16,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
-public class Address {
+public class Address implements Serializable {
 
     @Id
     @Column(name = "id_address")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @UuidGenerator
-    private UUID id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_user")

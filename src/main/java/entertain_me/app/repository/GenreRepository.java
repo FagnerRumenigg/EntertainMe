@@ -20,5 +20,5 @@ public interface GenreRepository  extends JpaRepository<Genre, UUID> {
             "FROM Genre g " +
             "JOIN g.animes a " +
             "WHERE a.id IN :animeIds")
-    List<GenreDto> findDistinctNameByAnimes_IdIn(List<UUID> animeIds);
+    List<GenreDto> findDistinctNameByAnimes_IdIn(List<Long> animeIds);
 }

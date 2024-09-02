@@ -1,5 +1,6 @@
 package entertain_me.app.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -13,16 +14,14 @@ import org.hibernate.annotations.UuidGenerator;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "anime")
-public class Anime {
+public class Anime implements Serializable {
 
 	@Id
 	@Column(name = "id_anime")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@UuidGenerator
-	private UUID id;
+	private Long id;
 
 	@Column(name = "id_jikan")
 	private Integer jikanId;
@@ -80,7 +79,7 @@ public class Anime {
 	)
 	private Set<Theme> themes;
 
-	public Anime(UUID id, String title, String source, String status, String ageRating, String synopsys, Integer episodes, Integer year) {
+	public Anime(Long id, String title, String source, String status, String ageRating, String synopsys, Integer episodes, Integer year) {
 		this.id = id;
 		this.title = title;
 		this.source = source;

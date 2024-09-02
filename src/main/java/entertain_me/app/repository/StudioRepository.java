@@ -20,6 +20,6 @@ public interface StudioRepository extends JpaRepository<Studio, UUID> {
             "FROM Studio s " +
             "JOIN s.animes a " +
             "WHERE a.id IN :animeIds")
-    List<StudioDto> findDistinctNameByAnimes_IdIn(List<UUID> animeIds);
+    List<StudioDto> findDistinctNameByAnimes_IdIn(List<Long> animeIds);
 
 }

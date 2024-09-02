@@ -3,6 +3,7 @@ package entertain_me.app.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
@@ -10,13 +11,13 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "theme")
-public class Theme {
+public class Theme implements Serializable {
     @Id
     @Column(name = "id_theme")
-    private UUID idTheme;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idTheme;
 
     @Column(name = "name")
     private String name;
@@ -24,8 +25,7 @@ public class Theme {
     @ManyToMany(mappedBy = "themes")
     private Set<Anime> animes;
 
-    public Theme(UUID idTheme, String name){
-        this.idTheme = idTheme;
+    public Theme( String name){
         this.name = name;
     }
 }

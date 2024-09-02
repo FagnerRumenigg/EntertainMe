@@ -2,6 +2,7 @@ package entertain_me.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import entertain_me.app.model.Anime;
@@ -17,4 +18,7 @@ public interface AnimeRepository extends JpaRepository<Anime, UUID> {
             "FROM Anime a " +
             "WHERE LOWER(a.title) LIKE LOWER(CONCAT('%', :title, '%'))")
     List<Anime> findAllAnimeInfoByTitle(String title);
+
+    @Query(value = "SELECT * FROM anime ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
+    List<Anime> findRandomAnimes(@Param("limit") int limit);
 }

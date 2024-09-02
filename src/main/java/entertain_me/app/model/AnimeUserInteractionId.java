@@ -11,13 +11,12 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Embeddable
 public class AnimeUserInteractionId implements Serializable {
 
     @Column(name = "id_user")
-    private UUID idUser;
+    private Long idUser;
 
     @Column(name = "id_anime")
-    private UUID idAnime;
+    private Long idAnime;
 }

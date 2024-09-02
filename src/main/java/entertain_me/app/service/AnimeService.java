@@ -42,7 +42,7 @@ public class AnimeService {
     }
 
     List<Anime> animeList = animeRepository.findAllAnimeInfoByTitle(title.trim());
-    List<UUID> animeIds = animeList.stream().map(Anime::getId).collect(Collectors.toList());
+    List<Long> animeIds = animeList.stream().map(Anime::getId).collect(Collectors.toList());
 
     List<DemographicDto> demographics = demographicService.findDemographicNameByAnimeIds(animeIds);
     List<StudioDto> studios = studioService.findStudioNameByAnimeIds(animeIds);
@@ -86,7 +86,7 @@ public class AnimeService {
                       }));
       System.out.println(animeIds);
     return animeList.stream().map(anime -> {
-      UUID animeId = anime.getId();
+      Long animeId = anime.getId();
       List<String> demographicsNames = Optional.ofNullable(demographicsMap.get(animeId))
               .orElse(Collections.emptyList());
 
@@ -117,5 +117,9 @@ public class AnimeService {
 
   private Anime getById(UUID animeId){
       return animeRepository.getReferenceById(animeId);
+  }
+
+  public List<Anime> getRandomAnimes(Integer limit){
+      return animeRepository.findRandomAnimes(limit);
   }
 }

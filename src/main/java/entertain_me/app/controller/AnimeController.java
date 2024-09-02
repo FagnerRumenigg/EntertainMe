@@ -1,5 +1,6 @@
 package entertain_me.app.controller;
 
+import entertain_me.app.service.RecommendationService;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import entertain_me.app.vo.ProblemVo;
 import entertain_me.app.vo.AnimeVo;
@@ -15,25 +16,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import entertain_me.app.service.AnimeService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping(value = "anime",  produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Anime")
 @CrossOrigin
 @RestController
-
 public class AnimeController {
 
     @Autowired
     private AnimeService service;
+
+    @Autowired
+    private RecommendationService recommendationService;
+
 
     @Operation(summary = "Get anime by the title", method = "GET")
     @ApiResponses(value = {
@@ -51,5 +52,9 @@ public class AnimeController {
             throws DataAccessResourceFailureException {
         List<AllAnimeInfoVo> animeList = service.getAnimeByTitle(title);
         return animeList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
+    }
+
+    @PostMapping("recomenda")
+    public void teste() throws Exception {
     }
 }

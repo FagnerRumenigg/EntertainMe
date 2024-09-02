@@ -17,10 +17,10 @@ public class DemographicService {
 
     public Demographic findOrCreateDemographic(String name) {
         return demographicRepository.findByName(name)
-                .orElseGet(() -> demographicRepository.save(new Demographic(UUID.randomUUID(), name)));
+                .orElseGet(() -> demographicRepository.save(new Demographic(name)));
     }
 
-    public List<DemographicDto> findDemographicNameByAnimeIds(List<UUID> animeIds){
+    public List<DemographicDto> findDemographicNameByAnimeIds(List<Long> animeIds){
         return demographicRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
 

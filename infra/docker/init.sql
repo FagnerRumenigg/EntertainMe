@@ -1,5 +1,5 @@
 CREATE TABLE users (
-    id_user    UUID          PRIMARY KEY,
+    id_user    SERIAL        PRIMARY KEY,
     name       VARCHAR(100)  NOT NULL,
     email      VARCHAR(100)  NOT NULL,
     password   VARCHAR(256)  NOT NULL,
@@ -8,27 +8,27 @@ CREATE TABLE users (
 );
 
 CREATE TABLE studio (
-    id_studio   UUID         PRIMARY KEY,
+    id_studio   SERIAL         PRIMARY KEY,
     name        VARCHAR(50)  NOT NULL
 );
 
 CREATE TABLE demographic (
-    id_demographic   UUID     PRIMARY KEY,
+    id_demographic   SERIAL     PRIMARY KEY,
     name             VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE genre (
-    id_genre   UUID          PRIMARY KEY,
+    id_genre   SERIAL          PRIMARY KEY,
     name       VARCHAR(50)   NOT NULL
 );
 
 CREATE TABLE theme (
-    id_theme   UUID          PRIMARY KEY,
+    id_theme   SERIAL          PRIMARY KEY,
     name       VARCHAR(50)   NOT NULL
 );
 
 CREATE TABLE anime (
-    id_anime           UUID           PRIMARY KEY,
+    id_anime           SERIAL           PRIMARY KEY,
     id_jikan           INTEGER        NOT NULL,
     title              VARCHAR(200)   NOT NULL,
     source             VARCHAR(100)   NOT NULL,
@@ -40,11 +40,11 @@ CREATE TABLE anime (
 );
 
 CREATE TABLE custom_anime_user (
-    id_anime           UUID           NOT null,
-    id_user            UUID           NOT NULL,
-    id_demographic     UUID           NOT NULL,
-    id_studio          UUID           NOT NULL,
-    id_genre           UUID           NOT NULL,
+    id_anime           INTEGER           NOT null,
+    id_user            INTEGER           NOT NULL,
+    id_demographic     INTEGER           NOT NULL,
+    id_studio          INTEGER           NOT NULL,
+    id_genre           INTEGER           NOT NULL,
     custom_title       VARCHAR(200)   NOT NULL,
     custom_synopsys    VARCHAR(5000),
     PRIMARY KEY (id_anime, id_user),
@@ -54,40 +54,40 @@ CREATE TABLE custom_anime_user (
 );
 
 CREATE TABLE anime_genre (
-    id_anime UUID NOT NULL,
-    id_genre UUID NOT NULL,
+    id_anime INTEGER NOT NULL,
+    id_genre INTEGER NOT NULL,
     PRIMARY KEY (id_anime, id_genre),
     FOREIGN KEY (id_anime) REFERENCES anime(id_anime),
     FOREIGN KEY (id_genre) REFERENCES genre(id_genre)
 );
 
 CREATE TABLE anime_studio (
-    id_anime  UUID NOT NULL,
-    id_studio UUID NOT NULL,
+    id_anime  INTEGER NOT NULL,
+    id_studio INTEGER NOT NULL,
     PRIMARY KEY (id_anime, id_studio),
     FOREIGN KEY (id_anime) REFERENCES anime(id_anime),
     FOREIGN KEY (id_studio) REFERENCES studio(id_studio)
 );
 
 CREATE TABLE anime_demographic (
-    id_anime UUID NOT NULL,
-    id_demographic UUID NOT NULL,
+    id_anime INTEGER NOT NULL,
+    id_demographic INTEGER NOT NULL,
     PRIMARY KEY (id_anime, id_demographic),
     FOREIGN KEY (id_anime) REFERENCES anime(id_anime),
     FOREIGN KEY (id_demographic) REFERENCES demographic(id_demographic)
 );
 
 CREATE TABLE anime_theme (
-    id_anime UUID NOT NULL,
-    id_theme UUID NOT NULL,
+    id_anime INTEGER NOT NULL,
+    id_theme INTEGER NOT NULL,
     PRIMARY KEY (id_anime, id_theme),
     FOREIGN KEY (id_anime) REFERENCES anime(id_anime),
     FOREIGN KEY (id_theme) REFERENCES theme(id_theme)
 );
 
 CREATE TABLE anime_user_interactions(
-    id_anime      UUID NOT NULL,
-    id_user       UUID  NOT NULL,
+    id_anime      INTEGER NOT NULL,
+    id_user       INTEGER  NOT NULL,
     rating_score  SMALLINT NOT NULL, -- 1 not like / 2 like / 3 loved
     no_interest   BOOLEAN,
     watched		  BOOLEAN,
@@ -127,8 +127,8 @@ CREATE TYPE estate AS ENUM (
 );
 
 CREATE TABLE address (
-    id_address  UUID PRIMARY KEY,
-    id_user     UUID NOT NULL,
+    id_address  SERIAL PRIMARY KEY,
+    id_user     INTEGER NOT NULL,
     street      VARCHAR(100) NOT NULL,
     city        VARCHAR(100) NOT NULL,
     estate      estate NOT NULL,

@@ -18,10 +18,10 @@ public class StudioService {
 
     public Studio findOrCreateStudio(String name) {
         return studioRepository.findByName(name)
-                .orElseGet(() -> studioRepository.save(new Studio(UUID.randomUUID(), name)));
+                .orElseGet(() -> studioRepository.save(new Studio(name)));
     }
 
-    public List<StudioDto> findStudioNameByAnimeIds(List<UUID> animeIds){
+    public List<StudioDto> findStudioNameByAnimeIds(List<Long> animeIds){
         return studioRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
 }

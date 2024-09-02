@@ -17,6 +17,6 @@ public interface ThemeRepository extends JpaRepository<Theme, UUID> {
             "FROM Theme t " +
             "JOIN t.animes a " +
             "WHERE a.id IN :animeIds")
-    List<ThemeDto> findDistinctNameByAnimes_IdIn(List<UUID> animeIds);
+    List<ThemeDto> findDistinctNameByAnimes_IdIn(List<Long> animeIds);
 
 }

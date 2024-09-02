@@ -9,10 +9,9 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
-@Table(name = "anime_user_interaction")
-public class AnimeUserInteraction implements Serializable {
+@Table(name = "anime_user_interactions")
+public class AnimeUserInteractions implements Serializable {
 
     @EmbeddedId
     private AnimeUserInteractionId id;
@@ -20,15 +19,15 @@ public class AnimeUserInteraction implements Serializable {
     @ManyToOne
     @MapsId("idUser")
     @JoinColumn(name = "id_user")
-    private User user;
+    private User userId;
 
     @ManyToOne
     @MapsId("idAnime")
     @JoinColumn(name = "id_anime")
-    private Anime anime;
+    private Anime animeId;
 
     @Column(name = "rating_score", nullable = false)
-    private short ratingScore;
+    private short rating;
 
     @Column(name = "no_interest")
     private boolean noInterest;

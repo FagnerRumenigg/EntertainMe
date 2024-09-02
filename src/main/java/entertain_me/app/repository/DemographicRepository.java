@@ -20,7 +20,7 @@ public interface DemographicRepository extends JpaRepository<Demographic, UUID> 
             "FROM Demographic d " +
             "JOIN d.animes a " +
             "WHERE a.id IN :animeIds")
-    List<DemographicDto> findDistinctNameByAnimes_IdIn(List<UUID> animeIds);
+    List<DemographicDto> findDistinctNameByAnimes_IdIn(List<Long> animeIds);
 
 
 }

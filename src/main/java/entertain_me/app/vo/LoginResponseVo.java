@@ -17,7 +17,7 @@ public record LoginResponseVo(
         Integer expiresInSeconds,
 
         @Schema(name = "clientCode")
-        UUID clientCode,
+        Long clientCode,
 
         @Schema(name ="name")
         String name,

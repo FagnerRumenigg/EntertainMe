@@ -19,10 +19,10 @@ public class GenreService {
 
     public Genre findOrCreateGenre(String name) {
         return genreRepository.findByName(name)
-                .orElseGet(() -> genreRepository.save(new Genre(UUID.randomUUID(), name)));
+                .orElseGet(() -> genreRepository.save(new Genre(name)));
     }
 
-    public List<GenreDto> findGenreNameByAnimeIds(List<UUID> animeIds){
+    public List<GenreDto> findGenreNameByAnimeIds(List<Long> animeIds){
         return genreRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
 }
