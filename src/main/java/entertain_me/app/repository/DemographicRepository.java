@@ -22,5 +22,8 @@ public interface DemographicRepository extends JpaRepository<Demographic, Long> 
             "WHERE a.id IN :animeIds")
     List<DemographicDto> findDistinctNameByAnimes_IdIn(List<Long> animeIds);
 
+    @Query("SELECT new entertain_me.app.dto.anime.DemographicDto(d.id, d.name) " +
+            "FROM Demographic d ")
+    List<DemographicDto> findAllDemographics();
 
 }

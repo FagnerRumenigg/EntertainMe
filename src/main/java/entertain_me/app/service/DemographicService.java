@@ -24,4 +24,8 @@ public class DemographicService {
         return demographicRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
 
+    public List<DemographicDto> findAllDemographics(){
+        return demographicRepository.findAllDemographics();
+    }
+
 }

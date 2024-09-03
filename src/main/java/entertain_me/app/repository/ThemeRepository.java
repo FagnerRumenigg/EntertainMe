@@ -19,4 +19,8 @@ public interface ThemeRepository extends JpaRepository<Theme, Long> {
             "WHERE a.id IN :animeIds")
     List<ThemeDto> findDistinctNameByAnimes_IdIn(List<Long> animeIds);
 
+    @Query("SELECT new entertain_me.app.dto.anime.ThemeDto(t.id, t.name) " +
+            "FROM Theme t ")
+    List<ThemeDto> findAllTheme();
+
 }

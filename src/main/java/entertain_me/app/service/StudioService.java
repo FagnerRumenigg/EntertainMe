@@ -24,4 +24,8 @@ public class StudioService {
     public List<StudioDto> findStudioNameByAnimeIds(List<Long> animeIds){
         return studioRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
+
+    public List<StudioDto> findAllStudio(){
+        return studioRepository.findAllStudio();
+    }
 }

@@ -51,7 +51,7 @@ public class AnimeService {
     List<ThemeDto> themes = themeService.findStudioNameByAnimeIds(animeIds);
 
     Map<Long, List<String>> demographicsMap = demographics.stream()
-            .collect(Collectors.toMap(DemographicDto::animeId,
+            .collect(Collectors.toMap(DemographicDto::demographicId,
                     d -> Collections.singletonList(d.name()),
                     (existing, replacement) -> {
                       List<String> combined = new ArrayList<>(existing);
@@ -60,7 +60,7 @@ public class AnimeService {
                     }));
 
     Map<Long, List<String>> studiosMap = studios.stream()
-            .collect(Collectors.toMap(StudioDto::animeId,
+            .collect(Collectors.toMap(StudioDto::studioId,
                     s -> Collections.singletonList(s.name()),
                     (existing, replacement) -> {
                       List<String> combined = new ArrayList<>(existing);
@@ -69,7 +69,7 @@ public class AnimeService {
                     }));
 
     Map<Long, List<String>> genresMap = genres.stream()
-            .collect(Collectors.toMap(GenreDto::animeId,
+            .collect(Collectors.toMap(GenreDto::genreId,
                     g -> Collections.singletonList(g.name()),
                     (existing, replacement) -> {
                       List<String> combined = new ArrayList<>(existing);
@@ -78,7 +78,7 @@ public class AnimeService {
                     }));
 
       Map<Long, List<String>> themeMap = themes.stream()
-              .collect(Collectors.toMap(ThemeDto::animeId,
+              .collect(Collectors.toMap(ThemeDto::themeId,
                       g -> Collections.singletonList(g.name()),
                       (existing, replacement) -> {
                           List<String> combined = new ArrayList<>(existing);

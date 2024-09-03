@@ -22,4 +22,8 @@ public interface StudioRepository extends JpaRepository<Studio, Long> {
             "WHERE a.id IN :animeIds")
     List<StudioDto> findDistinctNameByAnimes_IdIn(List<Long> animeIds);
 
+    @Query("SELECT new entertain_me.app.dto.anime.StudioDto(s.id, s.name) " +
+            "FROM Studio s ")
+    List<StudioDto> findAllStudio();
+
 }

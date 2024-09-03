@@ -21,4 +21,8 @@ public interface GenreRepository  extends JpaRepository<Genre, Long> {
             "JOIN g.animes a " +
             "WHERE a.id IN :animeIds")
     List<GenreDto> findDistinctNameByAnimes_IdIn(List<Long> animeIds);
+
+    @Query("SELECT new entertain_me.app.dto.anime.GenreDto(g.id, g.name) " +
+            "FROM Genre g ")
+    List<GenreDto> findAllGenre();
 }

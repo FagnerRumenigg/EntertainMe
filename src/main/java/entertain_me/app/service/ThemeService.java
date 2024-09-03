@@ -26,4 +26,8 @@ public class ThemeService {
     public List<ThemeDto> findStudioNameByAnimeIds(List<Long> animeIds){
         return themeRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
+
+    public List<ThemeDto> findAllTheme(){
+        return themeRepository.findAllTheme();
+    }
 }

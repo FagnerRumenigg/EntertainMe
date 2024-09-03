@@ -26,6 +26,9 @@ public class GenreService {
         return genreRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
 
+    public List<GenreDto> findAllGenre(){
+        return genreRepository.findAllGenre();
+    }
     public List<Genre> getGenreById(List<Long> idList){
         return genreRepository.findAllById(idList);
     }
