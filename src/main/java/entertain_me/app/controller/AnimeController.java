@@ -53,8 +53,4 @@ public class AnimeController {
         List<AllAnimeInfoVo> animeList = service.getAnimeByTitle(title);
         return animeList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
-
-    @PostMapping("recomenda")
-    public void teste() throws Exception {
-    }
 }

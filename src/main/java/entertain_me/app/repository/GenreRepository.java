@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface GenreRepository  extends JpaRepository<Genre, UUID> {
+public interface GenreRepository  extends JpaRepository<Genre, Long> {
 
     Optional<Genre> findByName(String name);
 

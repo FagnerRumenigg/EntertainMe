@@ -36,6 +36,7 @@ public class AnimeService {
   ThemeService themeService;
 
   public List<AllAnimeInfoVo> getAnimeByTitle(String title) {
+
     if (title == null || title.trim().isEmpty()) {
       log.warn("Title is empty");
       throw new IllegalArgumentException("Title is empty");
@@ -49,7 +50,7 @@ public class AnimeService {
     List<GenreDto> genres = genreService.findGenreNameByAnimeIds(animeIds);
     List<ThemeDto> themes = themeService.findStudioNameByAnimeIds(animeIds);
 
-    Map<UUID, List<String>> demographicsMap = demographics.stream()
+    Map<Long, List<String>> demographicsMap = demographics.stream()
             .collect(Collectors.toMap(DemographicDto::animeId,
                     d -> Collections.singletonList(d.name()),
                     (existing, replacement) -> {
@@ -58,7 +59,7 @@ public class AnimeService {
                       return combined;
                     }));
 
-    Map<UUID, List<String>> studiosMap = studios.stream()
+    Map<Long, List<String>> studiosMap = studios.stream()
             .collect(Collectors.toMap(StudioDto::animeId,
                     s -> Collections.singletonList(s.name()),
                     (existing, replacement) -> {
@@ -67,7 +68,7 @@ public class AnimeService {
                       return combined;
                     }));
 
-    Map<UUID, List<String>> genresMap = genres.stream()
+    Map<Long, List<String>> genresMap = genres.stream()
             .collect(Collectors.toMap(GenreDto::animeId,
                     g -> Collections.singletonList(g.name()),
                     (existing, replacement) -> {
@@ -76,7 +77,7 @@ public class AnimeService {
                       return combined;
                     }));
 
-      Map<UUID, List<String>> themeMap = themes.stream()
+      Map<Long, List<String>> themeMap = themes.stream()
               .collect(Collectors.toMap(ThemeDto::animeId,
                       g -> Collections.singletonList(g.name()),
                       (existing, replacement) -> {
@@ -84,7 +85,7 @@ public class AnimeService {
                           combined.addAll(replacement);
                           return combined;
                       }));
-      System.out.println(animeIds);
+
     return animeList.stream().map(anime -> {
       Long animeId = anime.getId();
       List<String> demographicsNames = Optional.ofNullable(demographicsMap.get(animeId))
@@ -115,7 +116,7 @@ public class AnimeService {
     }).collect(Collectors.toList());
   }
 
-  private Anime getById(UUID animeId){
+  private Anime getById(Long animeId){
       return animeRepository.getReferenceById(animeId);
   }
 

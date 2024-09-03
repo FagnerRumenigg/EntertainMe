@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 
     @RequestMapping("/")
-    public String homeHello(){
-        return "Socorro, i need help!";
+    public ResponseEntity<?> homeHello(){
+        return ResponseEntity.ok().build();
     }
 }

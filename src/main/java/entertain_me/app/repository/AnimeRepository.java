@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface AnimeRepository extends JpaRepository<Anime, UUID> {
+public interface AnimeRepository extends JpaRepository<Anime, Long> {
 
     @Query("SELECT new entertain_me.app.model.Anime(" +
             "a.id, a.title, a.source, a.status, a.ageRating, a.synopsys, a.episodes, a.year) " +

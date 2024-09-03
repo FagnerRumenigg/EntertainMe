@@ -13,6 +13,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -75,9 +78,8 @@ public class TokenServiceConfig {
 	public String getJtiFromToken(String token) {
 		try {
 			DecodedJWT decodedJWT = JWT.decode(token);
-			return decodedJWT.getId(); // Obtém o JTI do token
+			return decodedJWT.getId();
 		} catch (Exception e) {
-			// Tratar exceções relacionadas ao decoding do token
 			return null;
 		}
 	}
@@ -95,5 +97,16 @@ public class TokenServiceConfig {
 		var authHeader = request.getHeader("Authorization");
 		if (authHeader == null) return null;
 		return authHeader.replace("Bearer ", "");
+	}
+
+	public static Long getUserIdFromContext(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		Object principal = authentication.getPrincipal();
+
+		if (principal instanceof User userDetails) {
+			return userDetails.getId();
+		}
+		return null;
 	}
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface StudioRepository extends JpaRepository<Studio, UUID> {
+public interface StudioRepository extends JpaRepository<Studio, Long> {
 
     Optional<Studio> findByName(String name);
 

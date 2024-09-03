@@ -10,9 +10,9 @@ import java.util.UUID;
 public record AddressDto(
 
     @Schema(name = "addressId")
-    UUID addressId,
+    Long addressId,
     @Schema(name = "userId")
-    UUID userId,
+    Long userId,
     @Schema(name = "street")
     String street,
     @Schema(name = "city")

@@ -29,4 +29,12 @@ public class Genre implements Serializable {
     public Genre(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "idGenre=" + idGenre +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

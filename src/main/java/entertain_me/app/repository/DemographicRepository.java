@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DemographicRepository extends JpaRepository<Demographic, UUID> {
+public interface DemographicRepository extends JpaRepository<Demographic, Long> {
 
     Optional<Demographic> findByName(String name);
 

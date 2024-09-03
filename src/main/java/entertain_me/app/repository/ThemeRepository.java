@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ThemeRepository extends JpaRepository<Theme, UUID> {
+public interface ThemeRepository extends JpaRepository<Theme, Long> {
 
     Optional<Theme> findByName(String name);
 
