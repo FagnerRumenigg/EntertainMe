@@ -9,7 +9,9 @@ import entertain_me.app.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -29,5 +31,10 @@ public class ThemeService {
 
     public List<ThemeDto> findAllTheme(){
         return themeRepository.findAllTheme();
+    }
+
+    public Set<Theme> findAllThemesById(List<Long> ids){
+        List<Theme> themes = themeRepository.findAllById(ids);
+        return new HashSet<>(themes);
     }
 }

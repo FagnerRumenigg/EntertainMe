@@ -7,7 +7,9 @@ import entertain_me.app.repository.StudioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -27,5 +29,10 @@ public class StudioService {
 
     public List<StudioDto> findAllStudio(){
         return studioRepository.findAllStudio();
+    }
+
+    public Set<Studio> finAllStudioById(List<Long> ids){
+        List<Studio> studios = studioRepository.findAllById(ids);
+        return new HashSet<>(studios);
     }
 }

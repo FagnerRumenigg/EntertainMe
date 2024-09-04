@@ -10,7 +10,6 @@ import entertain_me.app.exception.IncorrectPasswordException;
 import entertain_me.app.model.User;
 import entertain_me.app.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +31,10 @@ public class UserService {
     TokenServiceConfig tokenServiceConfig;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
 
     public void changePassword(ChangePasswordDto changePasswordDto) throws IncorrectPasswordException {
         User user = userRepository.getByEmail(changePasswordDto.email())
@@ -125,6 +128,10 @@ public class UserService {
         Pattern pattern = Pattern.compile(passwordPattern);
         Matcher matcher = pattern.matcher(password);
         return !matcher.matches();
+    }
+
+    public User getById(Long id){
+        return userRepository.findById(id).orElseThrow(() ->  new UsernameNotFoundException("ID not found"));
     }
 
     private void addToBlacklist(String token){

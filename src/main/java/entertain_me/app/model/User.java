@@ -3,6 +3,7 @@ package entertain_me.app.model;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -41,6 +42,39 @@ public class User implements UserDetails{
 	
 	@Column(name = "role")
 	private UserRoleEnum role;
+
+	@ManyToMany
+	@JoinTable(
+			name = "user_preference_demographic",
+			joinColumns = @JoinColumn(name = "id_user"),
+			inverseJoinColumns = @JoinColumn(name = "id_demographic")
+	)
+	private Set<Demographic> demographics;
+
+	@ManyToMany
+	@JoinTable(
+			name = "user_preference_genre",
+			joinColumns = @JoinColumn(name = "id_user"),
+			inverseJoinColumns = @JoinColumn(name = "id_genre")
+	)
+	private Set<Genre> genres;
+
+	@ManyToMany
+	@JoinTable(
+			name = "user_preference_studio",
+			joinColumns = @JoinColumn(name = "id_user"),
+			inverseJoinColumns = @JoinColumn(name = "id_studio")
+	)
+	private Set<Studio> studios;
+
+
+	@ManyToMany
+	@JoinTable(
+			name = "user_preference_theme",
+			joinColumns = @JoinColumn(name = "id_user"),
+			inverseJoinColumns = @JoinColumn(name = "id_theme")
+	)
+	private Set<Theme> themes;
 	
 	public User(String name, String email, String password, UserRoleEnum role) {
 		this.name = name;

@@ -57,19 +57,20 @@ public class Anime implements Serializable {
 
 	@ManyToMany
 	@JoinTable(
+			name = "anime_genre",
+			joinColumns = @JoinColumn(name = "id_anime"),
+			inverseJoinColumns = @JoinColumn(name = "id_genre")
+	)
+	private Set<Genre> genres;
+
+	@ManyToMany
+	@JoinTable(
 			name = "anime_studio",
 			joinColumns = @JoinColumn(name = "id_anime"),
 			inverseJoinColumns = @JoinColumn(name = "id_studio")
 	)
 	private Set<Studio> studios;
 
-	@ManyToMany
-	@JoinTable(
-			name = "anime_genre",
-			joinColumns = @JoinColumn(name = "id_anime"),
-			inverseJoinColumns = @JoinColumn(name = "id_genre")
-	)
-	private Set<Genre> genres;
 
 	@ManyToMany
 	@JoinTable(

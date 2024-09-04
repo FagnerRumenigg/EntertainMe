@@ -62,8 +62,8 @@ public class JikanService {
                                     anime.demographicsName(),
                                     anime.studiosName(),
                                     anime.genresName(),
-                                    anime.themesName()))
-                            .toList();
+                                    anime.themesName())
+                            ).toList();
                     for (JikanResponseDataDto anime : animesReturn) {
                         log.info("Anime {} registered: ",anime.title());
                         Anime newAnime = setAnimeFromJikan(anime);

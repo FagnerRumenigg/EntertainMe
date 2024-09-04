@@ -8,7 +8,9 @@ import entertain_me.app.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -29,7 +31,10 @@ public class GenreService {
     public List<GenreDto> findAllGenre(){
         return genreRepository.findAllGenre();
     }
-    public List<Genre> getGenreById(List<Long> idList){
-        return genreRepository.findAllById(idList);
+
+    public Set<Genre> findAllGenreById(List<Long> ids){
+        List<Genre> genres = genreRepository.findAllById(ids);
+
+        return new HashSet<>(genres);
     }
 }

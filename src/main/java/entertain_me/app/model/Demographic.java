@@ -24,6 +24,9 @@ public class Demographic implements Serializable {
     @ManyToMany(mappedBy = "demographics")
     private Set<Anime> animes;
 
+    @ManyToMany(mappedBy = "demographics")
+    private Set<User> user;
+
     public Demographic(String name) {
         this.name = name;
     }

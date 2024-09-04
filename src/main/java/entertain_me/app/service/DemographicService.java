@@ -6,8 +6,9 @@ import entertain_me.app.repository.DemographicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 @Service
 public class DemographicService {
@@ -28,4 +29,8 @@ public class DemographicService {
         return demographicRepository.findAllDemographics();
     }
 
+    public Set<Demographic> findAllDemographicsById(List<Long> ids){
+        List<Demographic> demographics= demographicRepository.findAllById(ids);
+        return new HashSet<>(demographics);
+    }
 }
