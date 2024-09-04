@@ -4,6 +4,7 @@ import entertain_me.app.dto.recommendation.PreferencesDto;
 import entertain_me.app.service.UserPreferenceRecommendationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,5 +22,10 @@ public class UserPreferenceRecommendation {
     public ResponseEntity<?> savePreferences(@RequestBody PreferencesDto preferencesDto){
         userPreferenceRecommendationService.savePreferences(preferencesDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/getPreferencesRecommendation")
+    public ResponseEntity<?> getAllPreferencesRecommendation() {
+        return ResponseEntity.ok(userPreferenceRecommendationService.getAllPreferencesRecommendation());
     }
 }

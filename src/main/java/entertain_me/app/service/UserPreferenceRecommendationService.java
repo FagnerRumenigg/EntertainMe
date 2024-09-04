@@ -3,6 +3,7 @@ package entertain_me.app.service;
 import entertain_me.app.config.TokenServiceConfig;
 import entertain_me.app.dto.recommendation.PreferencesDto;
 import entertain_me.app.model.*;
+import entertain_me.app.vo.UserPreferenceRecommendationVo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,22 +33,31 @@ import java.util.Set;
         User user = userService.getById(TokenServiceConfig.getUserIdFromContext());
 
         if (!preferencesDto.demographics().isEmpty()) {
-            updateUserDemographics(user, preferencesDto.demographics(), "demographic");
+            updateUserPreferenceRecommendation(user, preferencesDto.demographics(), "demographic");
         }
         if (!preferencesDto.genres().isEmpty()) {
-            updateUserDemographics(user, preferencesDto.genres(), "genre");
+            updateUserPreferenceRecommendation(user, preferencesDto.genres(), "genre");
         }
         if (!preferencesDto.studios().isEmpty()) {
-            updateUserDemographics(user, preferencesDto.studios(), "studio");
+            updateUserPreferenceRecommendation(user, preferencesDto.studios(), "studio");
         }
         if (!preferencesDto.themes().isEmpty()) {
-            updateUserDemographics(user, preferencesDto.themes(), "theme");
+            updateUserPreferenceRecommendation(user, preferencesDto.themes(), "theme");
         }
 
         userService.saveUser(user);
     }
 
-    private void updateUserDemographics(User user, List<Long> ids, String typeRepository) {
+    public UserPreferenceRecommendationVo getAllPreferencesRecommendation(){
+        return new UserPreferenceRecommendationVo(
+                demographicService.findAllDemographics(),
+                genreService.findAllGenre(),
+                studioService.findAllStudio(),
+                themeService.findAllTheme()
+        );
+    }
+
+    private void updateUserPreferenceRecommendation(User user, List<Long> ids, String typeRepository) {
         switch (typeRepository) {
             case "demographic":
                 Set<Demographic> demographics = demographicService.findAllDemographicsById(ids);
