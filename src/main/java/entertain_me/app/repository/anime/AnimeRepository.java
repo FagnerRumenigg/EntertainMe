@@ -1,5 +1,7 @@
 package entertain_me.app.repository.anime;
 
+import entertain_me.app.vo.AllAnimeInfoVo;
+import entertain_me.app.vo.AllAnimeInfoVoUnique;
 import entertain_me.app.vo.AnimeVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -50,5 +52,25 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "JOIN a.themes t " +
             "WHERE t.id IN (:themeIds)")
     List<AnimeVo> findAnimeByTheme(@Param("themeIds") List<Long> themeIds);
+
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
+            "FROM Anime a " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
+            "WHERE a.id IN :ids")
+    List<AllAnimeInfoVoUnique> findAnimeDetails(@Param("ids") List<Long> ids);
 
 }

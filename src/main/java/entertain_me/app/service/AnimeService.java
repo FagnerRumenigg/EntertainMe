@@ -6,6 +6,7 @@ import entertain_me.app.dto.anime.StudioDto;
 import entertain_me.app.dto.anime.ThemeDto;
 import entertain_me.app.model.Anime;
 import entertain_me.app.vo.AllAnimeInfoVo;
+import entertain_me.app.vo.AllAnimeInfoVoUnique;
 import entertain_me.app.vo.AnimeVo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,4 +140,9 @@ public class AnimeService {
     public List<AnimeVo> getAnimeByTheme(List<Long> themeIds) {
         return animeRepository.findAnimeByTheme(themeIds);
     }
+
+    public List<AllAnimeInfoVoUnique> getFavoriteWorkerAnime(){
+        return animeRepository.findAnimeDetails(List.of(11L, 12L));
+    }
+
 }

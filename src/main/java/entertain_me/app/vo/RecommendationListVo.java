@@ -23,7 +23,7 @@ public record RecommendationListVo(
                 example = "[{themeId: 1, name:name}]")
         List<AnimeVo> animesByThemes,
 
-        List<AnimeVo> entertainMeFavoriteAnimes,
+        List<AllAnimeInfoVo> entertainMeFavoriteAnimes,
 
         List<AnimeVo> topAnimes,
 

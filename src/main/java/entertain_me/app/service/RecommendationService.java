@@ -3,6 +3,8 @@ package entertain_me.app.service;
 import entertain_me.app.config.TokenServiceConfig;
 import entertain_me.app.dto.recommendation.PreferencesDto;
 import entertain_me.app.model.*;
+import entertain_me.app.vo.AllAnimeInfoVo;
+import entertain_me.app.vo.AllAnimeInfoVoUnique;
 import entertain_me.app.vo.AnimeVo;
 import entertain_me.app.vo.RecommendationListVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class RecommendationService {
     @Autowired
     private UserService userService;
 
-    public RecommendationListVo getListOfPreferenceRecommendation() {
+    public RecommendationListVo getHomeListByUser() {
         Long userId = TokenServiceConfig.getUserIdFromContext();
 
         PreferencesDto preferencesDto = mountUserPreferences(userId);
@@ -34,7 +36,13 @@ public class RecommendationService {
         List<AnimeVo> animesByTheme = animeService.getAnimeByTheme(preferencesDto.themes());
 
         return new RecommendationListVo(
-                animesByDemographic, animesByGenre, animesByStudio, animesByTheme, null, null, null
+                animesByDemographic,
+                animesByGenre,
+                animesByStudio,
+                animesByTheme,
+                mountAllAnimeInfoVo(animeService.getFavoriteWorkerAnime()),
+                null,
+                null
         );
     }
 
@@ -64,6 +72,67 @@ public class RecommendationService {
                 studioIds,
                 themeIds
         );
+    }
+
+    private List<AllAnimeInfoVo> mountAllAnimeInfoVo(List<AllAnimeInfoVoUnique> allAnimeInfoVoUnique) {
+        // Map para consolidar animes com base no título
+        Map<String, AllAnimeInfoVo> animeMap = new HashMap<>();
+
+        for (AllAnimeInfoVoUnique animeInfoVoUnique : allAnimeInfoVoUnique) {
+            String title = animeInfoVoUnique.title();
+            AllAnimeInfoVo existingAnimeInfoVo = animeMap.get(title);
+
+            if (existingAnimeInfoVo == null) {
+                existingAnimeInfoVo = new AllAnimeInfoVo(
+                        animeInfoVoUnique.title(),
+                        animeInfoVoUnique.source(),
+                        animeInfoVoUnique.status(),
+                        animeInfoVoUnique.ageRating(),
+                        animeInfoVoUnique.synopsys(),
+                        animeInfoVoUnique.episodes(),
+                        animeInfoVoUnique.year(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                );
+                animeMap.put(title, existingAnimeInfoVo);
+            }
+
+            // Adiciona os novos elementos às listas existentes
+            existingAnimeInfoVo = new AllAnimeInfoVo(
+                    existingAnimeInfoVo.title(),
+                    existingAnimeInfoVo.source(),
+                    existingAnimeInfoVo.status(),
+                    existingAnimeInfoVo.ageRating(),
+                    existingAnimeInfoVo.synopsys(),
+                    existingAnimeInfoVo.episodes(),
+                    existingAnimeInfoVo.year(),
+                    addUniqueElements(existingAnimeInfoVo.demographics(), animeInfoVoUnique.demographics()),
+                    addUniqueElements(existingAnimeInfoVo.studios(), animeInfoVoUnique.studios()),
+                    addUniqueElements(existingAnimeInfoVo.genres(), animeInfoVoUnique.genres()),
+                    addUniqueElements(existingAnimeInfoVo.themes(), animeInfoVoUnique.themes())
+            );
+
+            // Atualiza o mapa com o novo valor de AllAnimeInfoVo
+            animeMap.put(title, existingAnimeInfoVo);
+        }
+
+        // Retorna a lista final de AllAnimeInfoVo
+        return new ArrayList<>(animeMap.values());
+    }
+
+
+    private List<String> addUniqueElements(List<String> existingList, String newElements) {
+        if (existingList == null) {
+            existingList = new ArrayList<>();
+        }
+
+        if (!existingList.contains(newElements)) {
+            existingList.add(newElements);
+        }
+
+        return existingList;
     }
 
 }

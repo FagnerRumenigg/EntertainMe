@@ -21,6 +21,6 @@ public class RecommendationController {
     RecommendationService recommendationService;
     @GetMapping("homeListAnimes")
     public ResponseEntity<RecommendationListVo> meuOvo(){
-        return ResponseEntity.ok(recommendationService.getListOfPreferenceRecommendation());
+        return ResponseEntity.ok(recommendationService.getHomeListByUser());
     }
 }
