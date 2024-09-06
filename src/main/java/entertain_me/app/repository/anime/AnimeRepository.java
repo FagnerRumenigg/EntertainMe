@@ -25,61 +25,165 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
     @Query(value = "SELECT * FROM anime ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
     List<Anime> findRandomAnimes(@Param("limit") int limit);
 
-    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
-            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year)" +
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
             "FROM Anime a " +
-            "JOIN a.demographics d " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
             "WHERE d.id IN (:demographicsId)")
-    List<AnimeVo> findAnimeByDemographic(@Param("demographicsId") List<Long> demographicsId);
+    List<AllAnimeInfoVoUnique> findAnimeByDemographic(@Param("demographicsId") List<Long> demographicsId);
 
-    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
-            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
             "FROM Anime a " +
-            "JOIN a.genres g " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
             "WHERE g.id IN (:genreIds)")
-    List<AnimeVo> findAnimeByGenre(@Param("genreIds") List<Long> genreIds);
+    List<AllAnimeInfoVoUnique> findAnimeByGenre(@Param("genreIds") List<Long> genreIds);
 
-    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
-            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
             "FROM Anime a " +
-            "JOIN a.studios s " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
             "WHERE s.id IN (:studioIds)")
-    List<AnimeVo> findAnimeByStudio(@Param("studioIds") List<Long> studioIds);
+    List<AllAnimeInfoVoUnique> findAnimeByStudio(@Param("studioIds") List<Long> studioIds);
 
-    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
-            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
             "FROM Anime a " +
-            "JOIN a.themes t " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
             "WHERE t.id IN (:themeIds)")
-    List<AnimeVo> findAnimeByTheme(@Param("themeIds") List<Long> themeIds);
+    List<AllAnimeInfoVoUnique> findAnimeByTheme(@Param("themeIds") List<Long> themeIds);
 
-    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
-            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year)" +
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
             "FROM Anime a " +
-            "JOIN a.demographics d " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
             "WHERE d.id NOT IN (:demographicsId)")
-    List<AnimeVo> findAnimeByOtherDemographic(@Param("demographicsId") List<Long> demographicsId);
+    List<AllAnimeInfoVoUnique> findAnimeByOtherDemographic(@Param("demographicsId") List<Long> demographicsId);
 
-    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
-            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
             "FROM Anime a " +
-            "JOIN a.genres g " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
             "WHERE g.id NOT IN (:genreIds)")
-    List<AnimeVo> findAnimeByOtherGenre(@Param("genreIds") List<Long> genreIds);
+    List<AllAnimeInfoVoUnique> findAnimeByOtherGenre(@Param("genreIds") List<Long> genreIds);
 
-    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
-            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
             "FROM Anime a " +
-            "JOIN a.studios s " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
             "WHERE s.id NOT IN (:studioIds)")
-    List<AnimeVo> findAnimeByOtherStudio(@Param("studioIds") List<Long> studioIds);
+    List<AllAnimeInfoVoUnique> findAnimeByOtherStudio(@Param("studioIds") List<Long> studioIds);
 
-    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
-            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+    @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes, " +
+            "a.year, " +
+            "d.name, " +
+            "s.name, " +
+            "g.name, " +
+            "t.name) " +
             "FROM Anime a " +
-            "JOIN a.themes t " +
+            "LEFT JOIN a.demographics d " +
+            "LEFT JOIN a.genres g " +
+            "LEFT JOIN a.studios s " +
+            "LEFT JOIN a.themes t " +
             "WHERE t.id NOT IN (:themeIds)")
-    List<AnimeVo> findAnimeByOtherTheme(@Param("themeIds") List<Long> themeIds);
+    List<AllAnimeInfoVoUnique> findAnimeByOtherTheme(@Param("themeIds") List<Long> themeIds);
 
     @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
             "a.title, " +
@@ -99,6 +203,6 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "LEFT JOIN a.studios s " +
             "LEFT JOIN a.themes t " +
             "WHERE a.id IN :ids")
-    List<AllAnimeInfoVoUnique> findAnimeDetails(@Param("ids") List<Long> ids);
+    List<AllAnimeInfoVoUnique> findEntertainMeTeamFavoriteAnimes(@Param("ids") List<Long> ids);
 
 }

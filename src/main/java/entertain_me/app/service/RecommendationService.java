@@ -8,6 +8,7 @@ import entertain_me.app.vo.AllAnimeInfoVoUnique;
 import entertain_me.app.vo.AnimeVo;
 import entertain_me.app.vo.RecommendationListVo;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Log4j2
 public class RecommendationService {
 
     @Autowired
@@ -38,18 +40,20 @@ public class RecommendationService {
         Long userId = TokenServiceConfig.getUserIdFromContext();
 
         PreferencesDto preferencesDto = buildUserPreferences(userId);
+        log.info("BATEU AQUI");
+        List<AllAnimeInfoVo> animesByDemographic = animeService.getAnimeByDemographic(preferencesDto.demographics());
+        List<AllAnimeInfoVo> animesByGenre = animeService.getAnimeByGenre(preferencesDto.genres());
+        List<AllAnimeInfoVo> animesByStudio = animeService.getAnimeByStudio(preferencesDto.studios());
+        List<AllAnimeInfoVo> animesByTheme = animeService.getAnimeByTheme(preferencesDto.themes());
 
-        List<AnimeVo> animesByDemographic = animeService.getAnimeByDemographic(preferencesDto.demographics());
-        List<AnimeVo> animesByGenre = animeService.getAnimeByGenre(preferencesDto.genres());
-        List<AnimeVo> animesByStudio = animeService.getAnimeByStudio(preferencesDto.studios());
-        List<AnimeVo> animesByTheme = animeService.getAnimeByTheme(preferencesDto.themes());
+
 
         return new RecommendationListVo(
                 animesByDemographic,
                 animesByGenre,
                 animesByStudio,
                 animesByTheme,
-                buildFavoriteAnimes(animeService.getFavoriteWorkerAnime(favoriteAnimeIds)),
+                animeService.getEntertainMeTeamFavoriteAnimes(favoriteAnimeIds),
                 jikanService.getTopAnimesJikan(),
                 buildUpsideDownAnime(preferencesDto)
         );
@@ -83,57 +87,13 @@ public class RecommendationService {
         );
     }
 
-    private List<AllAnimeInfoVo> buildFavoriteAnimes(List<AllAnimeInfoVoUnique> allAnimeInfoVoUnique) {
-        Map<String, AllAnimeInfoVo> animeMap = new HashMap<>();
+    private List<AllAnimeInfoVo> buildUpsideDownAnime(PreferencesDto preferencesDto){
+        List<AllAnimeInfoVo> upsideDownListAnime = new ArrayList<>();
 
-        for (AllAnimeInfoVoUnique animeInfoVoUnique : allAnimeInfoVoUnique) {
-            String title = animeInfoVoUnique.title();
-            AllAnimeInfoVo existingAnimeInfoVo = animeMap.get(title);
-
-            if (existingAnimeInfoVo == null) {
-                existingAnimeInfoVo = new AllAnimeInfoVo(
-                        animeInfoVoUnique.title(),
-                        animeInfoVoUnique.source(),
-                        animeInfoVoUnique.status(),
-                        animeInfoVoUnique.ageRating(),
-                        animeInfoVoUnique.synopsys(),
-                        animeInfoVoUnique.episodes(),
-                        animeInfoVoUnique.year(),
-                        new ArrayList<>(),
-                        new ArrayList<>(),
-                        new ArrayList<>(),
-                        new ArrayList<>()
-                );
-                animeMap.put(title, existingAnimeInfoVo);
-            }
-
-            existingAnimeInfoVo = new AllAnimeInfoVo(
-                    existingAnimeInfoVo.title(),
-                    existingAnimeInfoVo.source(),
-                    existingAnimeInfoVo.status(),
-                    existingAnimeInfoVo.ageRating(),
-                    existingAnimeInfoVo.synopsys(),
-                    existingAnimeInfoVo.episodes(),
-                    existingAnimeInfoVo.year(),
-                    addUniqueElements(existingAnimeInfoVo.demographics(), animeInfoVoUnique.demographics()),
-                    addUniqueElements(existingAnimeInfoVo.studios(), animeInfoVoUnique.studios()),
-                    addUniqueElements(existingAnimeInfoVo.genres(), animeInfoVoUnique.genres()),
-                    addUniqueElements(existingAnimeInfoVo.themes(), animeInfoVoUnique.themes())
-            );
-
-            animeMap.put(title, existingAnimeInfoVo);
-        }
-
-        return new ArrayList<>(animeMap.values());
-    }
-
-    private List<AnimeVo> buildUpsideDownAnime(PreferencesDto preferencesDto){
-        List<AnimeVo> upsideDownListAnime = new ArrayList<>();
-
-        List<AnimeVo> animesByDemographic = animeService.getAnimeByOtherDemographic(preferencesDto.demographics());
-        List<AnimeVo> animesByGenre = animeService.getAnimeByOtherGenre(preferencesDto.genres());
-        List<AnimeVo> animesByStudio = animeService.getAnimeByOtherStudio(preferencesDto.studios());
-        List<AnimeVo> animesByTheme = animeService.getAnimeByOtherTheme(preferencesDto.themes());
+        List<AllAnimeInfoVo> animesByDemographic = animeService.getAnimeByOtherDemographic(preferencesDto.demographics());
+        List<AllAnimeInfoVo> animesByGenre = animeService.getAnimeByOtherGenre(preferencesDto.genres());
+        List<AllAnimeInfoVo> animesByStudio = animeService.getAnimeByOtherStudio(preferencesDto.studios());
+        List<AllAnimeInfoVo> animesByTheme = animeService.getAnimeByOtherTheme(preferencesDto.themes());
 
         upsideDownListAnime.addAll(animesByDemographic);
         upsideDownListAnime.addAll(animesByGenre);
@@ -142,19 +102,6 @@ public class RecommendationService {
 
         return upsideDownListAnime;
     }
-
-    private List<String> addUniqueElements(List<String> existingList, String newElements) {
-        if (existingList == null) {
-            existingList = new ArrayList<>();
-        }
-
-        if (!existingList.contains(newElements)) {
-            existingList.add(newElements);
-        }
-
-        return existingList;
-    }
-
 
     @PostConstruct
     public void init() {

@@ -129,36 +129,71 @@ public class AnimeService {
         return animeRepository.findRandomAnimes(limit);
     }
 
-    public List<AnimeVo> getAnimeByDemographic(List<Long> demographicIds) { return animeRepository.findAnimeByDemographic(demographicIds); }
-
-    public List<AnimeVo> getAnimeByGenre(List<Long> genreIds) {
-        return animeRepository.findAnimeByGenre(genreIds);
+    public List<AllAnimeInfoVo> getAnimeByDemographic(List<Long> demographicIds) {
+        return convertToAllAnimeInfoVo(animeRepository.findAnimeByDemographic(demographicIds));
     }
 
-    public List<AnimeVo> getAnimeByStudio(List<Long> studioIds) {
-        return animeRepository.findAnimeByStudio(studioIds);
+    public List<AllAnimeInfoVo> getAnimeByGenre(List<Long> genreIds) {
+        return convertToAllAnimeInfoVo(animeRepository.findAnimeByGenre(genreIds));
     }
 
-    public List<AnimeVo> getAnimeByOtherTheme(List<Long> themeIds) {
-        return animeRepository.findAnimeByOtherTheme(themeIds);
+    public List<AllAnimeInfoVo> getAnimeByStudio(List<Long> studioIds) {
+        return convertToAllAnimeInfoVo(animeRepository.findAnimeByStudio(studioIds));
     }
 
-    public List<AnimeVo> getAnimeByOtherDemographic(List<Long> demographicIds) { return animeRepository.findAnimeByOtherDemographic(demographicIds); }
-
-    public List<AnimeVo> getAnimeByOtherGenre(List<Long> genreIds) {
-        return animeRepository.findAnimeByOtherGenre(genreIds);
+    public List<AllAnimeInfoVo> getAnimeByOtherTheme(List<Long> themeIds) {
+        return convertToAllAnimeInfoVo(animeRepository.findAnimeByOtherTheme(themeIds));
     }
 
-    public List<AnimeVo> getAnimeByOtherStudio(List<Long> studioIds) {
-        return animeRepository.findAnimeByOtherStudio(studioIds);
+    public List<AllAnimeInfoVo> getAnimeByOtherDemographic(List<Long> demographicIds) {
+        return convertToAllAnimeInfoVo(animeRepository.findAnimeByOtherDemographic(demographicIds));
     }
 
-    public List<AnimeVo> getAnimeByTheme(List<Long> themeIds) {
-        return animeRepository.findAnimeByTheme(themeIds);
+    public List<AllAnimeInfoVo> getAnimeByOtherGenre(List<Long> genreIds) {
+        return convertToAllAnimeInfoVo(animeRepository.findAnimeByOtherGenre(genreIds));
     }
 
-    public List<AllAnimeInfoVoUnique> getFavoriteWorkerAnime(List<Long> favoriteAnimes){
-        return animeRepository.findAnimeDetails(favoriteAnimes);
+    public List<AllAnimeInfoVo> getAnimeByOtherStudio(List<Long> studioIds) {
+        return convertToAllAnimeInfoVo(animeRepository.findAnimeByOtherStudio(studioIds));
+    }
+
+    public List<AllAnimeInfoVo> getAnimeByTheme(List<Long> themeIds) {
+        return convertToAllAnimeInfoVo(animeRepository.findAnimeByTheme(themeIds));
+    }
+
+    public List<AllAnimeInfoVo> getEntertainMeTeamFavoriteAnimes(List<Long> favoriteAnimes){
+        return convertToAllAnimeInfoVo(animeRepository.findEntertainMeTeamFavoriteAnimes(favoriteAnimes));
+    }
+
+    private List<String> convertStringToList(String commaSeparatedString) {
+        if(commaSeparatedString != null){
+            return Arrays.asList(commaSeparatedString.split("\\s*,\\s*"));
+        }
+        return new ArrayList<>();
+    }
+
+    public List<AllAnimeInfoVo> convertToAllAnimeInfoVo(List<AllAnimeInfoVoUnique> uniqueList) {
+        List<AllAnimeInfoVo> convertedList = new ArrayList<>();
+
+        for (AllAnimeInfoVoUnique unique : uniqueList) {
+            AllAnimeInfoVo converted = new AllAnimeInfoVo(
+                    unique.title(),
+                    unique.source(),
+                    unique.status(),
+                    unique.ageRating(),
+                    unique.synopsys(),
+                    unique.episodes(),
+                    unique.year(),
+                    convertStringToList(unique.demographics()),
+                    convertStringToList(unique.studios()),
+                    convertStringToList(unique.genres()),
+                    convertStringToList(unique.themes())
+            );
+
+            convertedList.add(converted);
+        }
+
+        return convertedList;
     }
 
 }

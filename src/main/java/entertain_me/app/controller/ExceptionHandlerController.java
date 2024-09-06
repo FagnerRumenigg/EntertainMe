@@ -101,6 +101,6 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         log.error(ex);
         var error = ProblemVo.builder().message( ex.getLocalizedMessage()).build();
         log.error("[ApiExceptionHandler] - Exception -> {}", ex.getLocalizedMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( ex.getLocalizedMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }
