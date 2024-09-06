@@ -121,13 +121,15 @@ public class AnimeService {
         return animeRepository.getReferenceById(animeId);
     }
 
+    public List<Anime> getById(List<Long> ids) {
+        return animeRepository.findAllById(ids);
+    }
+
     public List<Anime> getRandomAnimes(Integer limit) {
         return animeRepository.findRandomAnimes(limit);
     }
 
-    public List<AnimeVo> getAnimeByDemographic(List<Long> demographicIds) {
-        return animeRepository.findAnimeByDemographic(demographicIds);
-    }
+    public List<AnimeVo> getAnimeByDemographic(List<Long> demographicIds) { return animeRepository.findAnimeByDemographic(demographicIds); }
 
     public List<AnimeVo> getAnimeByGenre(List<Long> genreIds) {
         return animeRepository.findAnimeByGenre(genreIds);
@@ -137,12 +139,26 @@ public class AnimeService {
         return animeRepository.findAnimeByStudio(studioIds);
     }
 
+    public List<AnimeVo> getAnimeByOtherTheme(List<Long> themeIds) {
+        return animeRepository.findAnimeByOtherTheme(themeIds);
+    }
+
+    public List<AnimeVo> getAnimeByOtherDemographic(List<Long> demographicIds) { return animeRepository.findAnimeByOtherDemographic(demographicIds); }
+
+    public List<AnimeVo> getAnimeByOtherGenre(List<Long> genreIds) {
+        return animeRepository.findAnimeByOtherGenre(genreIds);
+    }
+
+    public List<AnimeVo> getAnimeByOtherStudio(List<Long> studioIds) {
+        return animeRepository.findAnimeByOtherStudio(studioIds);
+    }
+
     public List<AnimeVo> getAnimeByTheme(List<Long> themeIds) {
         return animeRepository.findAnimeByTheme(themeIds);
     }
 
-    public List<AllAnimeInfoVoUnique> getFavoriteWorkerAnime(){
-        return animeRepository.findAnimeDetails(List.of(11L, 12L));
+    public List<AllAnimeInfoVoUnique> getFavoriteWorkerAnime(List<Long> favoriteAnimes){
+        return animeRepository.findAnimeDetails(favoriteAnimes);
     }
 
 }

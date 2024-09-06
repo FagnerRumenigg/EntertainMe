@@ -53,6 +53,34 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "WHERE t.id IN (:themeIds)")
     List<AnimeVo> findAnimeByTheme(@Param("themeIds") List<Long> themeIds);
 
+    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
+            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year)" +
+            "FROM Anime a " +
+            "JOIN a.demographics d " +
+            "WHERE d.id NOT IN (:demographicsId)")
+    List<AnimeVo> findAnimeByOtherDemographic(@Param("demographicsId") List<Long> demographicsId);
+
+    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
+            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+            "FROM Anime a " +
+            "JOIN a.genres g " +
+            "WHERE g.id NOT IN (:genreIds)")
+    List<AnimeVo> findAnimeByOtherGenre(@Param("genreIds") List<Long> genreIds);
+
+    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
+            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+            "FROM Anime a " +
+            "JOIN a.studios s " +
+            "WHERE s.id NOT IN (:studioIds)")
+    List<AnimeVo> findAnimeByOtherStudio(@Param("studioIds") List<Long> studioIds);
+
+    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
+            "a.title, a.source, a.status, a.synopsys, a.episodes, a.year) " +
+            "FROM Anime a " +
+            "JOIN a.themes t " +
+            "WHERE t.id NOT IN (:themeIds)")
+    List<AnimeVo> findAnimeByOtherTheme(@Param("themeIds") List<Long> themeIds);
+
     @Query("SELECT new entertain_me.app.vo.AllAnimeInfoVoUnique(" +
             "a.title, " +
             "a.source, " +

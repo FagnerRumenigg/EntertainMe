@@ -7,10 +7,13 @@ import entertain_me.app.vo.AllAnimeInfoVo;
 import entertain_me.app.vo.AllAnimeInfoVoUnique;
 import entertain_me.app.vo.AnimeVo;
 import entertain_me.app.vo.RecommendationListVo;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -25,10 +28,14 @@ public class RecommendationService {
     @Autowired
     private UserService userService;
 
+    @Value("${anime.favorites}")
+    private String favoriteAnimeIdsString;
+    private List<Long> favoriteAnimeIds;
     public RecommendationListVo getHomeListByUser() {
+
         Long userId = TokenServiceConfig.getUserIdFromContext();
 
-        PreferencesDto preferencesDto = mountUserPreferences(userId);
+        PreferencesDto preferencesDto = buildUserPreferences(userId);
 
         List<AnimeVo> animesByDemographic = animeService.getAnimeByDemographic(preferencesDto.demographics());
         List<AnimeVo> animesByGenre = animeService.getAnimeByGenre(preferencesDto.genres());
@@ -40,13 +47,13 @@ public class RecommendationService {
                 animesByGenre,
                 animesByStudio,
                 animesByTheme,
-                mountAllAnimeInfoVo(animeService.getFavoriteWorkerAnime()),
+                buildFavoriteAnimes(animeService.getFavoriteWorkerAnime(favoriteAnimeIds)),
                 null,
-                null
+                buildUpsideDownAnime(preferencesDto)
         );
     }
 
-    private PreferencesDto mountUserPreferences(Long userId) {
+    private PreferencesDto buildUserPreferences(Long userId) {
         Set<Object> preferences = userService.getUserPreferences(userId);
 
         List<Long> demographicsIds = new ArrayList<>();
@@ -74,8 +81,7 @@ public class RecommendationService {
         );
     }
 
-    private List<AllAnimeInfoVo> mountAllAnimeInfoVo(List<AllAnimeInfoVoUnique> allAnimeInfoVoUnique) {
-        // Map para consolidar animes com base no título
+    private List<AllAnimeInfoVo> buildFavoriteAnimes(List<AllAnimeInfoVoUnique> allAnimeInfoVoUnique) {
         Map<String, AllAnimeInfoVo> animeMap = new HashMap<>();
 
         for (AllAnimeInfoVoUnique animeInfoVoUnique : allAnimeInfoVoUnique) {
@@ -99,7 +105,6 @@ public class RecommendationService {
                 animeMap.put(title, existingAnimeInfoVo);
             }
 
-            // Adiciona os novos elementos às listas existentes
             existingAnimeInfoVo = new AllAnimeInfoVo(
                     existingAnimeInfoVo.title(),
                     existingAnimeInfoVo.source(),
@@ -114,14 +119,27 @@ public class RecommendationService {
                     addUniqueElements(existingAnimeInfoVo.themes(), animeInfoVoUnique.themes())
             );
 
-            // Atualiza o mapa com o novo valor de AllAnimeInfoVo
             animeMap.put(title, existingAnimeInfoVo);
         }
 
-        // Retorna a lista final de AllAnimeInfoVo
         return new ArrayList<>(animeMap.values());
     }
 
+    private List<AnimeVo> buildUpsideDownAnime(PreferencesDto preferencesDto){
+        List<AnimeVo> upsideDownListAnime = new ArrayList<>();
+
+        List<AnimeVo> animesByDemographic = animeService.getAnimeByOtherDemographic(preferencesDto.demographics());
+        List<AnimeVo> animesByGenre = animeService.getAnimeByOtherGenre(preferencesDto.genres());
+        List<AnimeVo> animesByStudio = animeService.getAnimeByOtherStudio(preferencesDto.studios());
+        List<AnimeVo> animesByTheme = animeService.getAnimeByOtherTheme(preferencesDto.themes());
+
+        upsideDownListAnime.addAll(animesByDemographic);
+        upsideDownListAnime.addAll(animesByGenre);
+        upsideDownListAnime.addAll(animesByStudio);
+        upsideDownListAnime.addAll(animesByTheme);
+
+        return upsideDownListAnime;
+    }
 
     private List<String> addUniqueElements(List<String> existingList, String newElements) {
         if (existingList == null) {
@@ -135,4 +153,13 @@ public class RecommendationService {
         return existingList;
     }
 
+
+    @PostConstruct
+    public void init() {
+        System.out.println(favoriteAnimeIdsString);
+        favoriteAnimeIds = Arrays.stream(favoriteAnimeIdsString.split(","))
+                .map(String::trim)  // Remove espaços em branco antes de converter
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
+    }
 }
