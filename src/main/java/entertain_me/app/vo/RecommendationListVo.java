@@ -1,10 +1,5 @@
 package entertain_me.app.vo;
 
-import entertain_me.app.dto.anime.DemographicDto;
-import entertain_me.app.dto.anime.GenreDto;
-import entertain_me.app.dto.anime.StudioDto;
-import entertain_me.app.dto.anime.ThemeDto;
-import entertain_me.app.model.Anime;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -25,7 +20,7 @@ public record RecommendationListVo(
 
         List<AllAnimeInfoVo> entertainMeFavoriteAnimes,
 
-        List<AnimeVo> topAnimes,
+        List<AllAnimeInfoVo> topAnimes,
 
         List<AnimeVo> upsideDownWorldAnimes
 ) {

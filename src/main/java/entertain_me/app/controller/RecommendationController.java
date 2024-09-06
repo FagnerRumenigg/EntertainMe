@@ -20,7 +20,7 @@ public class RecommendationController {
     @Autowired
     RecommendationService recommendationService;
     @GetMapping("homeListAnimes")
-    public ResponseEntity<RecommendationListVo> meuOvo(){
+    public ResponseEntity<RecommendationListVo> meuOvo() throws Exception {
         return ResponseEntity.ok(recommendationService.getHomeListByUser());
     }
 }

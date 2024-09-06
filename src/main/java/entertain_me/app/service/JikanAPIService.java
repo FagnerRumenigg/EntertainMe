@@ -1,5 +1,6 @@
 package entertain_me.app.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
@@ -22,7 +23,22 @@ public class JikanAPIService {
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiUrl, String.class);
 
+        return buildJikanResponseDataDto(responseEntity);
+    }
+
+
+
+    public List<JikanResponseDataDto> requestTopAnimes() throws Exception {
+        String apiUrl = "https://api.jikan.moe/v4/top/anime";
+
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiUrl, String.class);
+
+        return buildJikanResponseDataDto(responseEntity);
+    }
+
+    private List<JikanResponseDataDto> buildJikanResponseDataDto(ResponseEntity<String> responseEntity) throws Exception {
         List<JikanResponseDataDto> JikanResponseDataDtoList = new ArrayList<>();
+
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             String responseBody = responseEntity.getBody();
             ObjectMapper mapper = new ObjectMapper();

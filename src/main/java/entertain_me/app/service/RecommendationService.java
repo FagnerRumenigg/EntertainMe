@@ -28,10 +28,12 @@ public class RecommendationService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JikanService jikanService;
     @Value("${anime.favorites}")
     private String favoriteAnimeIdsString;
     private List<Long> favoriteAnimeIds;
-    public RecommendationListVo getHomeListByUser() {
+    public RecommendationListVo getHomeListByUser() throws Exception {
 
         Long userId = TokenServiceConfig.getUserIdFromContext();
 
@@ -48,7 +50,7 @@ public class RecommendationService {
                 animesByStudio,
                 animesByTheme,
                 buildFavoriteAnimes(animeService.getFavoriteWorkerAnime(favoriteAnimeIds)),
-                null,
+                jikanService.getTopAnimesJikan(),
                 buildUpsideDownAnime(preferencesDto)
         );
     }
@@ -156,9 +158,8 @@ public class RecommendationService {
 
     @PostConstruct
     public void init() {
-        System.out.println(favoriteAnimeIdsString);
         favoriteAnimeIds = Arrays.stream(favoriteAnimeIdsString.split(","))
-                .map(String::trim)  // Remove espaços em branco antes de converter
+                .map(String::trim)
                 .map(Long::parseLong)
                 .collect(Collectors.toList());
     }

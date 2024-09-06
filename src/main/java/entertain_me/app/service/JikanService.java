@@ -3,6 +3,7 @@ package entertain_me.app.service;
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
 import entertain_me.app.model.*;
 import entertain_me.app.repository.anime.AnimeRepository;
+import entertain_me.app.vo.AllAnimeInfoVo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -87,6 +89,29 @@ public class JikanService {
             log.error("Fail updating anime database", e);
             throw new Exception("Fail updating anime database", e);
         }
+    }
+
+    public List<AllAnimeInfoVo> getTopAnimesJikan() throws Exception {
+        List<JikanResponseDataDto> animesList = jikanAPIService.requestTopAnimes();
+        List<AllAnimeInfoVo> allAnimesInfoVo = new ArrayList<>();
+
+        animesList.forEach((anime) ->{
+                    AllAnimeInfoVo allAnimeInfoVo = new AllAnimeInfoVo(
+                            anime.title(),
+                            anime.source(),
+                            anime.status(),
+                            anime.ageRating(),
+                            anime.synopsis(),
+                            anime.episodes(),
+                            anime.year(),
+                            anime.demographicsName(),
+                            anime.studiosName(),
+                            anime.genresName(),
+                            anime.themesName()
+                    );
+            allAnimesInfoVo.add(allAnimeInfoVo);
+        });
+        return allAnimesInfoVo;
     }
 
     private Anime setAnimeFromJikan(JikanResponseDataDto anime) {
