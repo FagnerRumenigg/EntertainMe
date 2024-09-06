@@ -52,5 +52,4 @@ public class UserPreferenceRecommendation {
     public ResponseEntity<?> getAllPreferencesRecommendation() {
         return ResponseEntity.ok(userPreferenceRecommendationService.getAllPreferencesRecommendation());
     }
-
 }

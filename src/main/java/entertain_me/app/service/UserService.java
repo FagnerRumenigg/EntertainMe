@@ -7,8 +7,8 @@ import entertain_me.app.dto.user.ChangePasswordDto;
 import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
-import entertain_me.app.model.User;
-import entertain_me.app.repository.UserRepository;
+import entertain_me.app.model.*;
+import entertain_me.app.repository.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -134,6 +135,9 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() ->  new UsernameNotFoundException("ID not found"));
     }
 
+    public Set<Object> getUserPreferences(Long userId) {
+        return userRepository.findPreferencesByUserId(userId);
+    }
     private void addToBlacklist(String token){
         String jti = tokenServiceConfig.getJtiFromToken(token);
         long expiration = tokenServiceConfig.getExpirationFromToken(token);

@@ -8,7 +8,7 @@ import entertain_me.app.exception.AlreadyExistsException;
 import entertain_me.app.exception.EmailNotValidException;
 import entertain_me.app.exception.IncorrectPasswordException;
 import entertain_me.app.model.User;
-import entertain_me.app.repository.UserRepository;
+import entertain_me.app.repository.user.UserRepository;
 import entertain_me.app.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

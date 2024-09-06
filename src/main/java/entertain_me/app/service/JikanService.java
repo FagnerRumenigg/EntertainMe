@@ -2,7 +2,7 @@ package entertain_me.app.service;
 
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
 import entertain_me.app.model.*;
-import entertain_me.app.repository.AnimeRepository;
+import entertain_me.app.repository.anime.AnimeRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

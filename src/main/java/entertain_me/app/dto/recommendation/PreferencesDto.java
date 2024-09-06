@@ -2,6 +2,7 @@ package entertain_me.app.dto.recommendation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.ToString;
 
 import java.util.List;
 

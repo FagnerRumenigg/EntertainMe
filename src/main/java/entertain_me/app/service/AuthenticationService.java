@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import entertain_me.app.model.User;
-import entertain_me.app.repository.UserRepository;
+import entertain_me.app.repository.user.UserRepository;
 
 @Log4j2
 @Service

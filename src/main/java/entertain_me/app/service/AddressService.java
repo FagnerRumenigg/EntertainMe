@@ -4,7 +4,7 @@ import entertain_me.app.dto.user.AddressDto;
 import entertain_me.app.model.Address;
 import entertain_me.app.model.User;
 import entertain_me.app.repository.AddressRepository;
-import entertain_me.app.repository.UserRepository;
+import entertain_me.app.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
