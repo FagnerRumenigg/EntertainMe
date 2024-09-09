@@ -4,7 +4,6 @@ import entertain_me.app.dto.anime.DemographicDto;
 import entertain_me.app.dto.anime.GenreDto;
 import entertain_me.app.dto.anime.StudioDto;
 import entertain_me.app.dto.anime.ThemeDto;
-import entertain_me.app.model.Anime;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import entertain_me.app.vo.AnimeVo;
 import lombok.extern.log4j.Log4j2;
@@ -160,18 +159,6 @@ public class AnimeService {
                         Collectors.mapping(nameExtractor, Collectors.toList())));
     }
 
-    private Anime getById(Long animeId) {
-        return animeRepository.getReferenceById(animeId);
-    }
-
-    public List<Anime> getById(List<Long> ids) {
-        return animeRepository.findAllById(ids);
-    }
-
-    public List<Anime> getRandomAnimes(Integer limit) {
-        return animeRepository.findRandomAnimes(limit);
-    }
-
     public Page<AllAnimeInfoVo> getAnimeByDemographic(List<Long> demographicIds, Pageable pageable) {
         return buildAllAnimeInfoVoList(animeRepository.findAnimeByDemographic(demographicIds, pageable));
     }
@@ -205,8 +192,6 @@ public class AnimeService {
     }
 
     public Page<AllAnimeInfoVo> getEntertainMeTeamFavoriteAnimes(List<Long> favoriteAnimes, Pageable pageable) {
-        log.info(pageable.getPageNumber());
-        log.info(animeRepository.findEntertainMeTeamFavoriteAnimes(favoriteAnimes, pageable).getContent());
         return buildAllAnimeInfoVoList(animeRepository.findEntertainMeTeamFavoriteAnimes(favoriteAnimes, pageable));
     }
 }

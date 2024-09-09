@@ -95,10 +95,8 @@ public class JikanService {
     }
 
     public Page<AllAnimeInfoVo> getTopAnimesJikan(Pageable pageable) throws Exception {
-        // Obtém a lista de animes da API
         List<JikanResponseDataDto> animesList = jikanAPIService.requestTopAnimes();
 
-        // Converte a lista de DTOs em AllAnimeInfoVo
         List<AllAnimeInfoVo> allAnimesInfoVo = new ArrayList<>();
         animesList.forEach((anime) -> {
             AllAnimeInfoVo allAnimeInfoVo = new AllAnimeInfoVo(
