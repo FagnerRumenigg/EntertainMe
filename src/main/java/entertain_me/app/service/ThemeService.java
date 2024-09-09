@@ -1,10 +1,7 @@
 package entertain_me.app.service;
 
-import entertain_me.app.dto.anime.StudioDto;
 import entertain_me.app.dto.anime.ThemeDto;
-import entertain_me.app.model.Studio;
 import entertain_me.app.model.Theme;
-import entertain_me.app.repository.StudioRepository;
 import entertain_me.app.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 public class ThemeService {
@@ -25,7 +21,7 @@ public class ThemeService {
                 .orElseGet(() -> themeRepository.save(new Theme(name)));
     }
 
-    public List<ThemeDto> findStudioNameByAnimeIds(List<Long> animeIds){
+    public List<ThemeDto> findThemeNameByAnimeIds(List<Long> animeIds){
         return themeRepository.findDistinctNameByAnimes_IdIn(animeIds);
     }
 

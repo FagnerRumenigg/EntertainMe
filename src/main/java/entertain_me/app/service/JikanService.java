@@ -6,6 +6,9 @@ import entertain_me.app.repository.anime.AnimeRepository;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -91,27 +94,36 @@ public class JikanService {
         }
     }
 
-    public List<AllAnimeInfoVo> getTopAnimesJikan() throws Exception {
+    public Page<AllAnimeInfoVo> getTopAnimesJikan(Pageable pageable) throws Exception {
+        // Obtém a lista de animes da API
         List<JikanResponseDataDto> animesList = jikanAPIService.requestTopAnimes();
-        List<AllAnimeInfoVo> allAnimesInfoVo = new ArrayList<>();
 
-        animesList.forEach((anime) ->{
-                    AllAnimeInfoVo allAnimeInfoVo = new AllAnimeInfoVo(
-                            anime.title(),
-                            anime.source(),
-                            anime.status(),
-                            anime.ageRating(),
-                            anime.synopsis(),
-                            anime.episodes(),
-                            anime.year(),
-                            anime.demographicsName(),
-                            anime.studiosName(),
-                            anime.genresName(),
-                            anime.themesName()
-                    );
+        // Converte a lista de DTOs em AllAnimeInfoVo
+        List<AllAnimeInfoVo> allAnimesInfoVo = new ArrayList<>();
+        animesList.forEach((anime) -> {
+            AllAnimeInfoVo allAnimeInfoVo = new AllAnimeInfoVo(
+                    anime.title(),
+                    anime.source(),
+                    anime.status(),
+                    anime.ageRating(),
+                    anime.synopsis(),
+                    anime.episodes(),
+                    anime.year(),
+                    anime.demographicsName(),
+                    anime.studiosName(),
+                    anime.genresName(),
+                    anime.themesName()
+            );
             allAnimesInfoVo.add(allAnimeInfoVo);
         });
-        return allAnimesInfoVo;
+
+        // Cria um sublist com base na paginação
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), allAnimesInfoVo.size());
+        List<AllAnimeInfoVo> pagedAnimes = allAnimesInfoVo.subList(start, end);
+
+        // Retorna a lista paginada como um objeto Page
+        return new PageImpl<>(pagedAnimes, pageable, allAnimesInfoVo.size());
     }
 
     private Anime setAnimeFromJikan(JikanResponseDataDto anime) {

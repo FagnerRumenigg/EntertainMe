@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +49,9 @@ public class AnimeController {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemVo.class))})
     })
     @GetMapping("/getByTitle/{title}")
-    public ResponseEntity<List<AllAnimeInfoVo>> getAnimeByTitle(@Parameter(description = "Anime title", example = "Naruto") @PathVariable String title)
+    public ResponseEntity<Page<AllAnimeInfoVo>> getAnimeByTitle(@Parameter(description = "Anime title", example = "Naruto") @PathVariable String title)
             throws DataAccessResourceFailureException {
-        List<AllAnimeInfoVo> animeList = service.getAnimeByTitle(title);
+        Page<AllAnimeInfoVo> animeList = service.getAnimeByTitle(title);
         return animeList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 }

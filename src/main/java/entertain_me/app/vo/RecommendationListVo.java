@@ -1,28 +1,29 @@
 package entertain_me.app.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public record RecommendationListVo(
         @Schema(description = "List with the demographics",
                 example = "[{demographicId: 1, name:name}]")
-        List<AllAnimeInfoVo> animesByDemographics,
+        Page<AllAnimeInfoVo> animesByDemographics,
         @Schema(description = "List with the genres",
                 example = "[{genreId: 1, name:name}]")
-        List<AllAnimeInfoVo> animesByGenres,
+        Page<AllAnimeInfoVo> animesByGenres,
         @Schema(description = "List with the studios",
                 example = "[{studioId: 1, name:name}]")
-        List<AllAnimeInfoVo> animesByStudios,
+        Page<AllAnimeInfoVo> animesByStudios,
         @Schema(description = "List with the themes",
                 example = "[{themeId: 1, name:name}]")
-        List<AllAnimeInfoVo> animesByThemes,
+        Page<AllAnimeInfoVo> animesByThemes,
 
-        List<AllAnimeInfoVo> entertainMeFavoriteAnimes,
+        Page<AllAnimeInfoVo> entertainMeFavoriteAnimes,
 
-        List<AllAnimeInfoVo> topAnimes,
+        Page<AllAnimeInfoVo> topAnimes,
 
-        List<AllAnimeInfoVo> upsideDownWorldAnimes
+        Page<AllAnimeInfoVo> upsideDownWorldAnimes
 ) {
 
 }
