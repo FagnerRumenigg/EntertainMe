@@ -137,7 +137,6 @@ CREATE TABLE address (
     FOREIGN KEY (id_user) REFERENCES users(id_user)
 );
 
-
 CREATE INDEX idx_anime_title ON anime(title);
 CREATE INDEX idx_studio_title ON studio(name);
 CREATE INDEX idx_demographic_title ON demographic(name);

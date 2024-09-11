@@ -132,7 +132,10 @@ public class RecommendationService {
     }
 
     public Page<AllAnimeInfoVo> getFavoriteEntertainMeTeam(PaginationRequestDto paginationRequestDto){
-        return animeService.getEntertainMeTeamFavoriteAnimes(favoriteAnimeIds ,createPageable(paginationRequestDto));
+        if(favoriteAnimeIds != null){
+            return animeService.getEntertainMeTeamFavoriteAnimes(favoriteAnimeIds ,createPageable(paginationRequestDto));
+        }
+        return Page.empty();
     }
 
     private Pageable createPageable(PaginationRequestDto paginationRequestDto) {
@@ -140,9 +143,14 @@ public class RecommendationService {
     }
     @PostConstruct
     public void init() {
-        favoriteAnimeIds = Arrays.stream(favoriteAnimeIdsString.split(","))
-                .map(String::trim)
-                .map(Long::parseLong)
-                .collect(Collectors.toList());
+        if(favoriteAnimeIdsString != null && !favoriteAnimeIdsString.isEmpty()){
+            favoriteAnimeIds = Arrays.stream(favoriteAnimeIdsString.split(","))
+                    .map(String::trim)
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+        }else {
+            log.info("variable anime.favorites not found or is empty");
+            favoriteAnimeIds = null;
+        }
     }
 }
