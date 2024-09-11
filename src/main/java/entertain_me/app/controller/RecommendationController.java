@@ -78,7 +78,7 @@ public class RecommendationController {
     public ResponseEntity<Page<AllAnimeInfoVo>> getAnimeByStudio(
             @RequestParam int page,
             @RequestParam int size) throws Exception {
-        Page<AllAnimeInfoVo> animeList = recommendationService.getByGenre(page, size);
+        Page<AllAnimeInfoVo> animeList = recommendationService.getByStudio(page, size);
 
         return animeList.isEmpty() ?  ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
