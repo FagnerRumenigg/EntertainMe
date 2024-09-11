@@ -5,9 +5,6 @@ import entertain_me.app.dto.PaginationRequestDto;
 import entertain_me.app.dto.recommendation.PreferencesDto;
 import entertain_me.app.model.*;
 import entertain_me.app.vo.AllAnimeInfoVo;
-import entertain_me.app.vo.AllAnimeInfoVoUnique;
-import entertain_me.app.vo.AnimeVo;
-import entertain_me.app.vo.RecommendationListVo;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +34,8 @@ public class RecommendationService {
 
     @Autowired
     private JikanService jikanService;
-    @Value("${anime.favorites}")
+
+    @Value("${anime.favorites:#{null}}")
     private String favoriteAnimeIdsString;
     private List<Long> favoriteAnimeIds;
 
