@@ -40,7 +40,7 @@ public class AnimeController {
     @Operation(summary = "Get anime by the title", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Anime founded",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AnimeVo.class))}),
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AllAnimeInfoVo.class))}),
             @ApiResponse(responseCode = "204", description = "Anime not founded",
                     content = { @Content(mediaType =  "application/json")}),
             @ApiResponse(responseCode = "400", description = "Title is null or empty",

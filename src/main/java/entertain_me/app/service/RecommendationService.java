@@ -41,36 +41,37 @@ public class RecommendationService {
     private String favoriteAnimeIdsString;
     private List<Long> favoriteAnimeIds;
 
-    public Page<AllAnimeInfoVo> getByDemographic(PaginationRequestDto paginationRequestDto){
+    public Page<AllAnimeInfoVo> getByDemographic(Integer page, Integer size){
         Long userId = TokenServiceConfig.getUserIdFromContext();
         PreferencesDto preferencesDto = buildUserPreferences(userId);
 
         return animeService.getAnimeByDemographic(preferencesDto.demographics(),
-                createPageable(paginationRequestDto));
+                createPageable(new PaginationRequestDto(page, size)));
     }
 
-    public Page<AllAnimeInfoVo> getByGenre(PaginationRequestDto paginationRequestDto){
+    public Page<AllAnimeInfoVo> getByGenre(Integer page, Integer size){
         Long userId = TokenServiceConfig.getUserIdFromContext();
         PreferencesDto preferencesDto = buildUserPreferences(userId);
 
         return animeService.getAnimeByGenre(preferencesDto.genres(),
-                createPageable(paginationRequestDto));
+                createPageable(new PaginationRequestDto(page, size)));
     }
 
-    public Page<AllAnimeInfoVo> getByStudio(PaginationRequestDto paginationRequestDto){
+    public Page<AllAnimeInfoVo> getByStudio(Integer page, Integer size){
         Long userId = TokenServiceConfig.getUserIdFromContext();
         PreferencesDto preferencesDto = buildUserPreferences(userId);
 
         return animeService.getAnimeByStudio(preferencesDto.studios(),
-                createPageable(paginationRequestDto));
+                createPageable(new PaginationRequestDto(page, size)));
     }
 
-    public Page<AllAnimeInfoVo> getByTheme(PaginationRequestDto paginationRequestDto){
+    public Page<AllAnimeInfoVo> getByTheme(Integer page, Integer size){
+
         Long userId = TokenServiceConfig.getUserIdFromContext();
         PreferencesDto preferencesDto = buildUserPreferences(userId);
 
         return animeService.getAnimeByTheme(preferencesDto.themes(),
-                createPageable(paginationRequestDto));
+                createPageable(new PaginationRequestDto(page, size)));
     }
 
     private PreferencesDto buildUserPreferences(Long userId) {
@@ -101,7 +102,9 @@ public class RecommendationService {
         );
     }
 
-    public Page<AllAnimeInfoVo> buildUpsideDownAnime(PaginationRequestDto paginationRequestDto){
+    public Page<AllAnimeInfoVo> buildUpsideDownAnime(Integer page, Integer size){
+        PaginationRequestDto paginationRequestDto = new PaginationRequestDto(page, size);
+
         List<AllAnimeInfoVo> upsideDownListAnime = new ArrayList<>();
         Long userId = TokenServiceConfig.getUserIdFromContext();
         PreferencesDto preferencesDto = buildUserPreferences(userId);
@@ -127,13 +130,13 @@ public class RecommendationService {
                 (paginationRequestDto), totalElements);
     }
 
-    public Page<AllAnimeInfoVo> getMyAnimeListTopAnimes(PaginationRequestDto paginationRequestDto) throws Exception {
-        return jikanService.getTopAnimesJikan(createPageable(paginationRequestDto));
+    public Page<AllAnimeInfoVo> getMyAnimeListTopAnimes(Integer page, Integer size) throws Exception {
+        return jikanService.getTopAnimesJikan(createPageable(new PaginationRequestDto(page, size)));
     }
 
-    public Page<AllAnimeInfoVo> getFavoriteEntertainMeTeam(PaginationRequestDto paginationRequestDto){
+    public Page<AllAnimeInfoVo> getFavoriteEntertainMeTeam(Integer page, Integer size){
         if(favoriteAnimeIds != null){
-            return animeService.getEntertainMeTeamFavoriteAnimes(favoriteAnimeIds ,createPageable(paginationRequestDto));
+            return animeService.getEntertainMeTeamFavoriteAnimes(favoriteAnimeIds ,createPageable(new PaginationRequestDto(page, size)));
         }
         return Page.empty();
     }
