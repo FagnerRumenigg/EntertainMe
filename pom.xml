@@ -91,6 +91,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-ai-translation-text</artifactId>
+			<version>1.0.0-beta.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

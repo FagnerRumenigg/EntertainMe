@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +35,9 @@ public class RecommendationService {
 
     @Autowired
     private JikanService jikanService;
+
+    @Autowired
+    private AnimeUserInteractionService animeUserInteractionService;
 
     @Value("${anime.favorites:#{null}}")
     private String favoriteAnimeIdsString;
@@ -142,6 +146,11 @@ public class RecommendationService {
     private Pageable createPageable(PaginationRequestDto paginationRequestDto) {
         return PageRequest.of(paginationRequestDto.page(), paginationRequestDto.size());
     }
+
+    public void getRecommendationMasterBlasterTop(){
+        animeUserInteractionService.
+    }
+
     @PostConstruct
     public void init() {
         if(favoriteAnimeIdsString != null && !favoriteAnimeIdsString.isEmpty()){
@@ -153,5 +162,11 @@ public class RecommendationService {
             log.info("variable anime.favorites not found or is empty");
             favoriteAnimeIds = null;
         }
+    }
+
+    public void testTranslate() throws Exception {
+        TranslationService translationService = new TranslationService();
+        String response = translationService.post();
+        log.info(TranslationService.prettify(response));
     }
 }

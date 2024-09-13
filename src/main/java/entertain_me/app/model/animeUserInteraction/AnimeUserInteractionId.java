@@ -1,4 +1,4 @@
-package entertain_me.app.model;
+package entertain_me.app.model.animeUserInteraction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

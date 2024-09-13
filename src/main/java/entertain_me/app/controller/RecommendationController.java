@@ -1,5 +1,6 @@
 package entertain_me.app.controller;
 
+import com.azure.core.annotation.Get;
 import entertain_me.app.dto.PaginationRequestDto;
 import entertain_me.app.dto.recommendation.PreferencesDto;
 import entertain_me.app.service.RecommendationService;
@@ -153,5 +154,16 @@ public class RecommendationController {
         Page<AllAnimeInfoVo> animeList = recommendationService.getMyAnimeListTopAnimes(page, size);
 
         return animeList.isEmpty() ?  ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
+    }
+
+    @GetMapping("recommendationMasterBlasterTop")
+    public ResponseEntity<AllAnimeInfoVo> recommendationMasterBlasterTop(){
+        recommendationService.getRecommendationMasterBlasterTop();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("teste")
+    public void teste() throws Exception{
+        recommendationService.testTranslate();
     }
 }
