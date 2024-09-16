@@ -25,15 +25,14 @@ public class TranslationService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // This function performs a POST request.
     public String post() throws Exception {
         String url = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=pt-br";
 
         // Create headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Ocp-Apim-Subscription-Key", "ca117f2a729f4a0bac7ab2d7c33a4efc");
-        headers.set("Ocp-Apim-Subscription-Region", "eastus");
+        headers.set("Ocp-Apim-Subscription-Key", apiKey);
+        headers.set("Ocp-Apim-Subscription-Region", location);
         // TODO: ADICIONAR SELECT PARA PEGAR SYNOPSY DO ANIME, ADICIONAR A UM DTO (PRECISA SER CRIADO)
 
         // Create request body

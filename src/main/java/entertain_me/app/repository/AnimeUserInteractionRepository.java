@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface AnimeUserInteractionRepository extends JpaRepository<AnimeUserInteractions, AnimeUserInteractionId> {
 
-    @Query("SELECT new com.seu.pacote.AnimeUserInteractionDto(ai.id.idAnime, ai.rating, ai.noInterest, ai.watched) " +
+    @Query("SELECT new entertain_me.app.dto.anime.AnimeUserInteractionDto(ai.id.idAnime, ai.rating, ai.noInterest, ai.watched) " +
             "FROM AnimeUserInteractions ai " +
             "WHERE ai.id.idUser = :idUser")
     List<AnimeUserInteractionDto> findInteractionsByUserId(@Param("idUser") Long idUser);
