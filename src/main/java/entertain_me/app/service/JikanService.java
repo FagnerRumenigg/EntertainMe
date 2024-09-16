@@ -2,6 +2,8 @@ package entertain_me.app.service;
 
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
 import entertain_me.app.model.*;
+import entertain_me.app.model.Anime.Anime;
+import entertain_me.app.model.Anime.AnimeImages;
 import entertain_me.app.repository.anime.AnimeRepository;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import lombok.extern.log4j.Log4j2;
@@ -23,24 +25,22 @@ import java.util.stream.Collectors;
 @Service
 public class JikanService {
 
-    private final JikanAPIService jikanAPIService;
-    private final AnimeRepository repository;
-    private final GenreService genreService;
-    private final StudioService studioService;
-    private final DemographicService demographicService;
-    private final ThemeService themeService;
+    @Autowired
+    private JikanAPIService jikanAPIService;
+    @Autowired
+    private AnimeRepository repository;
+    @Autowired
+    private GenreService genreService;
+    @Autowired
+    private StudioService studioService;
+    @Autowired
+    private DemographicService demographicService;
+    @Autowired
+    private ThemeService themeService;
 
     @Autowired
-    public JikanService(JikanAPIService jikanAPIService, AnimeRepository repository, GenreService genreService,
-                        StudioService studioService, DemographicService demographicService, ThemeService themeService) {
-        this.jikanAPIService = jikanAPIService;
-        this.repository = repository;
-        this.genreService = genreService;
-        this.studioService = studioService;
-        this.demographicService = demographicService;
-        this.themeService = themeService;
+    private AnimeImageService animeImageService;
 
-    }
 
     public void getAllAnimesJikan() throws Exception {
         try {
@@ -54,25 +54,30 @@ public class JikanService {
                 log.info("Returned "+animesList.size()+" animes at the page: "+page);
 
                 if (!animesList.isEmpty()) {
-                    List<JikanResponseDataDto> animesReturn = animesList.stream()
-                            .map(anime -> new JikanResponseDataDto(
-                                    anime.jikanId(),
-                                    anime.title(),
-                                    anime.source(),
-                                    anime.status(),
-                                    anime.ageRating(),
-                                    anime.synopsis(),
-                                    anime.episodes(),
-                                    anime.year(),
-                                    anime.demographicsName(),
-                                    anime.studiosName(),
-                                    anime.genresName(),
-                                    anime.themesName())
-                            ).toList();
-                    for (JikanResponseDataDto anime : animesReturn) {
-                        log.info("Anime {} registered: ",anime.title());
+//                    List<JikanResponseDataDto> animesReturn = animesList.stream()
+//                            .map(anime -> new JikanResponseDataDto(
+//                                    anime.jikanId(),
+//                                    anime.title(),
+//                                    anime.source(),
+//                                    anime.status(),
+//                                    anime.ageRating(),
+//                                    anime.synopsis(),
+//                                    anime.episodes(),
+//                                    anime.year(),
+//                                    anime.demographicsName(),
+//                                    anime.studiosName(),
+//                                    anime.genresName(),
+//                                    anime.themesName(),
+//                                    anime.imageUrl())
+//                            ).toList();
+                    for (JikanResponseDataDto anime : animesList) {
                         Anime newAnime = setAnimeFromJikan(anime);
-                        repository.save(newAnime);
+                        Anime animeRegistered = repository.save(newAnime);
+                        log.info("Anime {} registered: ",anime.title());
+
+                        animeImageService.saveImages(animeRegistered.getId() ,anime.imageUrl(), anime.smallImageUrl(), anime.largeImageUrl());
+                        log.info("Images also saved");
+
                     }
                 } else {
                     returnOk = false;

@@ -42,24 +42,27 @@ public class JikanAPIService {
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             String responseBody = responseEntity.getBody();
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode rootNode = mapper.readTree(responseBody);
-            JsonNode dataNode = rootNode.path("data");
+            JsonNode dataReturn = mapper.readTree(responseBody);
+            JsonNode dataAnimeList = dataReturn.path("data");
 
-            if (dataNode.isArray()) {
-                for (JsonNode animeNode : dataNode) {
+            if (dataAnimeList.isArray()) {
+                for (JsonNode anime : dataAnimeList) {
                     JikanResponseDataDto jikanResponseDataDto = new JikanResponseDataDto(
-                            animeNode.path("mal_id").asInt(),
-                            animeNode.path("title").asText(),
-                            animeNode.path("source").asText(),
-                            animeNode.path("status").asText(),
-                            animeNode.path("rating").asText(),
-                            animeNode.path("synopsis").asText(),
-                            animeNode.path("episodes").asInt(),
-                            animeNode.path("year").asInt(),
-                            getNameFromJikan(animeNode, "demographics"),
-                            getNameFromJikan(animeNode, "studios"),
-                            getNameFromJikan(animeNode, "genres"),
-                            getNameFromJikan(animeNode, "themes")
+                            anime.path("mal_id").asInt(),
+                            anime.path("title").asText(),
+                            anime.path("source").asText(),
+                            anime.path("status").asText(),
+                            anime.path("rating").asText(),
+                            anime.path("synopsis").asText(),
+                            anime.path("episodes").asInt(),
+                            anime.path("year").asInt(),
+                            getNameFromJikan(anime, "demographics"),
+                            getNameFromJikan(anime, "studios"),
+                            getNameFromJikan(anime, "genres"),
+                            getNameFromJikan(anime, "themes"),
+                            getImageFromJikan(anime, "webp", "image_url"),
+                            getImageFromJikan(anime, "webp", "small_image_url"),
+                            getImageFromJikan(anime, "webp", "large_image_url")
                     );
                     JikanResponseDataDtoList.add(jikanResponseDataDto);
                 }
@@ -69,6 +72,23 @@ public class JikanAPIService {
         }
         return JikanResponseDataDtoList;
     }
+
+    private String getImageFromJikan(JsonNode jsonNode, String format, String property) {
+        JsonNode imagesList = jsonNode.path("images");
+        JsonNode formatNode = imagesList.path(format);
+
+        if (formatNode.isObject()) {
+            String url = formatNode.path(property).asText();
+            if (url.isEmpty()) {
+                log.info("The property '{}' is not found in format '{}'", property, format);
+            }
+            return url;
+        } else {
+            log.info("The format '{}' is not present in the images list or is not an object", format);
+            return "";
+        }
+    }
+
 
     private List<String> getNameFromJikan(JsonNode jsonNode, String jikanList) {
         List<String> genericList = new ArrayList<>();
@@ -81,7 +101,7 @@ public class JikanAPIService {
                 genericList.add(name);
             }
         } else {
-           log.info("The jikanList is not an array or doesn't exist: " + jikanList);
+           log.info("The jikanList is not an array or doesn't exist: {}", jikanList);
         }
 
         return genericList;

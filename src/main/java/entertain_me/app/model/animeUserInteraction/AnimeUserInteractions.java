@@ -1,8 +1,5 @@
 package entertain_me.app.model.animeUserInteraction;
 
-import entertain_me.app.model.Anime;
-import entertain_me.app.model.User;
-import entertain_me.app.model.animeUserInteraction.AnimeUserInteractionId;
 import jakarta.persistence.*;
 import lombok.*;
 

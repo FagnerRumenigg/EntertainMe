@@ -28,5 +28,12 @@ public record JikanResponseDataDto(
         @Schema(name = "genres")
         List<String> genresName,
         @Schema(name = "themes")
-        List<String> themesName){
+        List<String> themesName,
+        @Schema(name = "imageUrl")
+        String imageUrl,
+        @Schema(name = "smallImageUrl")
+        String smallImageUrl,
+        @Schema(name = "largeImageUrl")
+        String largeImageUrl
+        ){
 }

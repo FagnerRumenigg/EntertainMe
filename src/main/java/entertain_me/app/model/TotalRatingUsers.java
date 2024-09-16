@@ -18,15 +18,15 @@ public class TotalRatingUsers {
 
     @Id
     @Column(name = "id_anime")
-    Long id;
+    private Long id;
 
     @Column(name = "total_rating")
-    Double totalRating;
+    private Double totalRating;
 
     @Column(name ="total_votes")
-    Integer totalVotes;
+    private Integer totalVotes;
 
     @Column(name = "last_updated")
-    LocalDateTime lastUpdated;
+    private LocalDateTime lastUpdated;
 
 }

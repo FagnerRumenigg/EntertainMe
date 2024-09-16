@@ -1,7 +1,5 @@
 package entertain_me.app.repository.anime;
 
-import entertain_me.app.vo.AllAnimeInfoVo;
-import entertain_me.app.vo.AllAnimeInfoVoUnique;
 import entertain_me.app.vo.AnimeVo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import entertain_me.app.model.Anime;
+import entertain_me.app.model.Anime.Anime;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public interface AnimeRepository extends JpaRepository<Anime, Long> {

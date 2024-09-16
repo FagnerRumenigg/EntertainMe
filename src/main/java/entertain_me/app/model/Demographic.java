@@ -1,11 +1,12 @@
 package entertain_me.app.model;
 
+import entertain_me.app.model.Anime.Anime;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
 import java.util.Set;
-import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor

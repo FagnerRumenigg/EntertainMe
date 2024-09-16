@@ -1,4 +1,4 @@
-package entertain_me.app.model;
+package entertain_me.app.model.Anime;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,6 +6,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import entertain_me.app.model.Demographic;
+import entertain_me.app.model.Genre;
+import entertain_me.app.model.Studio;
+import entertain_me.app.model.Theme;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
