@@ -148,7 +148,7 @@ public class RecommendationService {
     }
 
     public void getRecommendationMasterBlasterTop(){
-        animeUserInteractionService.
+
     }
 
     @PostConstruct
