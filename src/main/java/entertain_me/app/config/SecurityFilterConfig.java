@@ -2,12 +2,10 @@ package entertain_me.app.config;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entertain_me.app.vo.ProblemVo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import entertain_me.app.service.AuthenticationService;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -32,19 +29,27 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 	private AuthenticationService authorizationService;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
 		try {
 			var token = tokenService.recoverToken(request);
 
 			if (token != null) {
 				String jti = tokenService.getJtiFromToken(token);
+
 				if (jti != null && tokenService.isBlacklisted(jti)) {
 					String message = "Token is blacklisted";
 					log.error(message);
 
 					handleReturnException(message, response, HttpServletResponse.SC_UNAUTHORIZED);
 					return;
+				}else if (jti != null && !tokenService.isBlacklisted(jti)){
+					String message = "Token is invalid, please, do login again";
+					log.error(message);
+
+					handleReturnException(message, response, HttpServletResponse.SC_UNAUTHORIZED);
+					return;
 				}
+
 				var login = tokenService.validateToken(token);
 				if (!login.isEmpty()) {
 					UserDetails user = authorizationService.findByLogin(login);
@@ -54,6 +59,12 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 						SecurityContextHolder.getContext().setAuthentication(authentication);
 					}
 				}
+			}else{
+				String message = "Token is null";
+				log.error(message);
+
+				handleReturnException(message, response, 401);
+				return;
 			}
 			filterChain.doFilter(request, response);
 		} catch(Exception e) {
@@ -66,9 +77,9 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 
 	private void handleReturnException(String message, HttpServletResponse response, Integer responseStatus) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
-		ProblemVo errorResponse = new ProblemVo("Token is blacklisted");
+		ProblemVo errorResponse = new ProblemVo(message);
 
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setStatus(responseStatus);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
 		response.getWriter().flush();

@@ -15,5 +15,4 @@ public interface AnimeUserInteractionRepository extends JpaRepository<AnimeUserI
             "FROM AnimeUserInteractions ai " +
             "WHERE ai.id.idUser = :idUser")
     List<AnimeUserInteractionDto> findInteractionsByUserId(@Param("idUser") Long idUser);
-
 }
