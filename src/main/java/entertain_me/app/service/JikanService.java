@@ -118,10 +118,13 @@ public class JikanService {
     }
 
     public void setAnimeStreaming(List<JikanAnimeIdsDto> jikanId) throws Exception{
-        List<JikanAnimeStreamingDto> jikanAnimeStreamingDtoList = jikanAPIService.requestAnimeStreaming(jikanId);
-        log.info(jikanAnimeStreamingDtoList);
-        if(jikanAnimeStreamingDtoList != null){
-            animeStreamingService.save(jikanAnimeStreamingDtoList);
+        for (JikanAnimeIdsDto jikanAnimeIdsDto : jikanId) {
+            List<JikanAnimeStreamingDto> streamingDtoList = jikanAPIService.requestAnimeStreaming(jikanAnimeIdsDto);
+
+            animeStreamingService.save(streamingDtoList);
+            log.info("Anime {} processed. {}", jikanAnimeIdsDto.id(), streamingDtoList);
+
+            Thread.sleep(1500);
         }
     }
 

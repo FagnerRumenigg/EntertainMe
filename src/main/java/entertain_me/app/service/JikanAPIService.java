@@ -31,37 +31,24 @@ public class JikanAPIService {
         return buildJikanResponseDataDto(responseEntity);
     }
 
-    public List<JikanAnimeStreamingDto> requestAnimeStreaming(List<JikanAnimeIdsDto> jikanAnimeIdsDtoList) throws Exception {
-        List<JikanAnimeStreamingDto> allAnimeStreamingDtoList = new ArrayList<>();
+    public List<JikanAnimeStreamingDto> requestAnimeStreaming(JikanAnimeIdsDto jikanAnimeIdsDto) throws Exception {
+        List<JikanAnimeStreamingDto> animeStreamingDtoList = new ArrayList<>();
 
-        if (jikanAnimeIdsDtoList.isEmpty()) {
-            log.info("Anime list is empty");
-            return allAnimeStreamingDtoList;
-        }
+        String apiUrl = String.format("https://api.jikan.moe/v4/anime/%d/streaming", jikanAnimeIdsDto.jikanId());
 
-        for (JikanAnimeIdsDto jikanAnimeIdsDto : jikanAnimeIdsDtoList) {
-            try {
-                Thread.sleep(1500);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiUrl, String.class);
 
-                String apiUrl = String.format("https://api.jikan.moe/v4/anime/%d/streaming", jikanAnimeIdsDto.jikanId());
+        animeStreamingDtoList = buildJikanAnimeStreamingDto(responseEntity, jikanAnimeIdsDto.id());
 
-                ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiUrl, String.class);
-
-                List<JikanAnimeStreamingDto> animeStreamingDtoList = buildJikanAnimeStreamingDto(responseEntity, jikanAnimeIdsDto.id());
-                log.info("Anime {} processe. {}", jikanAnimeIdsDto.id(), animeStreamingDtoList);
-                allAnimeStreamingDtoList.addAll(animeStreamingDtoList);
-
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // Preserve o status de interrupção
-                log.error("Request interrupted: ", e);
-                throw new RuntimeException("Request interrupted", e);
-            } catch (Exception e) {
-                log.error("Failed to fetch streaming info for Jikan ID " + jikanAnimeIdsDto.jikanId() + ": " + e.getMessage());
-            }
-        }
-
-        return allAnimeStreamingDtoList;
+        return animeStreamingDtoList;
     }
+
+
+    // Método responsável por salvar os dados de streaming no banco de dados
+    private void saveAnimeStreaming(List<JikanAnimeStreamingDto> animeStreamingDtoList, Long animeId) {
+
+    }
+
 
 
     public List<JikanResponseDataDto> requestTopAnimes() throws Exception {

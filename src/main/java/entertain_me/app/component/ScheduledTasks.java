@@ -31,7 +31,7 @@ public class ScheduledTasks {
         log.info("Task finished at: "+LocalDateTime.now().format(format));
     }
 
-    @Scheduled(cron = "00 16 21 * * MON")
+    @Scheduled(cron = "00 59 19 * * TUE")
     public void updateAnimeStreaming() throws Exception {
         log.info("Starting database update task at the following time: " + LocalDateTime.now().format(format));
 
@@ -42,7 +42,7 @@ public class ScheduledTasks {
     }
 
     @Scheduled(cron = "01 00 00 * * *")
-    public void compactLogMidnight() throws Exception {
+    public void compactLogMidnight() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
         log.info("Compacting log by time, at: {}",LocalDateTime.now().format(format));
     }
