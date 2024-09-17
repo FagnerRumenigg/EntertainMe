@@ -25,20 +25,20 @@ public class ScheduledTasks {
     DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @Scheduled(cron = "00 47 19 * * MON")
-    public void updateDatabase() throws Exception {
-        log.info("Starting database update task at the following time: " + LocalDateTime.now().format(format));
+    public void updateAnimeDatabase() throws Exception {
+        log.info("Starting updateAnimeDatabase task at the following time: {}",  LocalDateTime.now().format(format));
         jikanService.getAllAnimesJikan();
-        log.info("Task finished at: "+LocalDateTime.now().format(format));
+        log.info("Task updateAnimeDatabase finished at: "+LocalDateTime.now().format(format));
     }
 
     @Scheduled(cron = "00 59 19 * * TUE")
     public void updateAnimeStreaming() throws Exception {
-        log.info("Starting database update task at the following time: " + LocalDateTime.now().format(format));
+        log.info("Starting updateAnimeStreaming task at the following time: {}",LocalDateTime.now().format(format));
 
         List<JikanAnimeIdsDto> jikanAnimeId = animeService.getAllJikanId();
 
         jikanService.setAnimeStreaming(jikanAnimeId);
-        log.info("Task finished at: "+LocalDateTime.now().format(format));
+        log.info("Task updateAnimeStreaming finished at: "+LocalDateTime.now().format(format));
     }
 
     @Scheduled(cron = "01 00 00 * * *")
