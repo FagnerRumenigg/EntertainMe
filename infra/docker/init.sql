@@ -4,6 +4,8 @@ CREATE TABLE users (
     email          VARCHAR(100) NOT NULL,
     password       VARCHAR(256) NOT NULL,
     role           VARCHAR(15)  NOT NULL,
+    register_date  TIMESTAMP	not null,
+    login_date	   TIMESTAMP,
     CONSTRAINT unique_email UNIQUE (email)
 );
 
@@ -201,27 +203,3 @@ CREATE INDEX idx_studio_title ON studio(name);
 CREATE INDEX idx_demographic_title ON demographic(name);
 CREATE INDEX idx_genre_title ON genre(name);
 CREATE INDEX idx_email ON users(email);
-
-/*
-LIMPAR DATABASE
-
-DO $$
-DECLARE
-    r RECORD;
-BEGIN
-    FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
-        EXECUTE 'DROP TABLE IF EXISTS public.' || r.tablename || ' CASCADE;';
-    END LOOP;
-END $$;
-
-DROP TYPE IF EXISTS estate CASCADE;
-
-DO $$
-DECLARE
-    r RECORD;
-BEGIN
-    FOR r IN (SELECT indexname FROM pg_indexes WHERE schemaname = 'public') LOOP
-        EXECUTE 'DROP INDEX IF EXISTS public.' || r.indexname || ' CASCADE;';
-    END LOOP;
-END $$;
-*/

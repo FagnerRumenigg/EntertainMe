@@ -29,12 +29,11 @@ public class ScheduledTasks {
         log.info("Starting updateAnimeDatabase task at the following time: {}",  LocalDateTime.now().format(format));
         jikanService.getAllAnimesJikan();
         log.info("Task updateAnimeDatabase finished at: "+LocalDateTime.now().format(format));
+        updateAnimeStreaming();
     }
 
-    @Scheduled(cron = "00 59 19 * * TUE")
     public void updateAnimeStreaming() throws Exception {
         log.info("Starting updateAnimeStreaming task at the following time: {}",LocalDateTime.now().format(format));
-
         List<JikanAnimeIdsDto> jikanAnimeId = animeService.getAllJikanId();
 
         jikanService.setAnimeStreaming(jikanAnimeId);
