@@ -1,5 +1,6 @@
 package entertain_me.app.repository.anime;
 
+import entertain_me.app.dto.anime.JikanAnimeIdsDto;
 import entertain_me.app.vo.AnimeVo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -149,4 +150,6 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "WHERE a.id IN :ids")
     Page<AnimeVo> findEntertainMeTeamFavoriteAnimes(List<Long> ids, Pageable pageable);
 
+    @Query("SELECT new entertain_me.app.dto.anime.JikanAnimeIdsDto(a.id, a.jikanId) FROM Anime a")
+    List<JikanAnimeIdsDto> findAllIds();
 }

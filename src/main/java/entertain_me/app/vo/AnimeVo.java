@@ -6,9 +6,7 @@ import java.util.List;
 
 @Schema(name = "AnimeReturn")
 public record AnimeVo(
-        
     Long id,
-
     @Schema(name = "title")
     String title,
     @Schema(name = "source")

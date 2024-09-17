@@ -94,4 +94,8 @@ public class Anime implements Serializable {
 		this.episodes = episodes;
 		this.year = year;
 	}
+
+	public Anime(Long animeId) {
+		this.id = animeId;
+	}
 }

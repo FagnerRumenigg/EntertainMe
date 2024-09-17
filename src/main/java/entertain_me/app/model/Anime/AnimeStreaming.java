@@ -19,8 +19,8 @@ public class AnimeStreaming {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_anime")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_anime", referencedColumnName = "id_anime", nullable = false)
     private Anime anime;
 
     @Column(name = "name")
@@ -29,5 +29,10 @@ public class AnimeStreaming {
     @Column(name ="url")
     private String url;
 
+    public AnimeStreaming(Long animeId, String name, String url) {
+        this.anime = new Anime(animeId);
+        this.name = name;
+        this.url = url;
+    }
 
 }

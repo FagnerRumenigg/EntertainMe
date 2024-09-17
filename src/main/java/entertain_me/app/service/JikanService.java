@@ -1,5 +1,7 @@
 package entertain_me.app.service;
 
+import entertain_me.app.dto.anime.JikanAnimeIdsDto;
+import entertain_me.app.dto.jikan_api.JikanAnimeStreamingDto;
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
 import entertain_me.app.model.*;
 import entertain_me.app.model.Anime.Anime;
@@ -37,9 +39,11 @@ public class JikanService {
     private DemographicService demographicService;
     @Autowired
     private ThemeService themeService;
-
     @Autowired
     private AnimeImageService animeImageService;
+
+    @Autowired
+    private AnimeStreamingService animeStreamingService;
 
 
     public void getAllAnimesJikan() throws Exception {
@@ -54,22 +58,6 @@ public class JikanService {
                 log.info("Returned "+animesList.size()+" animes at the page: "+page);
 
                 if (!animesList.isEmpty()) {
-//                    List<JikanResponseDataDto> animesReturn = animesList.stream()
-//                            .map(anime -> new JikanResponseDataDto(
-//                                    anime.jikanId(),
-//                                    anime.title(),
-//                                    anime.source(),
-//                                    anime.status(),
-//                                    anime.ageRating(),
-//                                    anime.synopsis(),
-//                                    anime.episodes(),
-//                                    anime.year(),
-//                                    anime.demographicsName(),
-//                                    anime.studiosName(),
-//                                    anime.genresName(),
-//                                    anime.themesName(),
-//                                    anime.imageUrl())
-//                            ).toList();
                     for (JikanResponseDataDto anime : animesList) {
                         Anime newAnime = setAnimeFromJikan(anime);
                         Anime animeRegistered = repository.save(newAnime);
@@ -127,6 +115,14 @@ public class JikanService {
 
         // Retorna a lista paginada como um objeto Page
         return new PageImpl<>(pagedAnimes, pageable, allAnimesInfoVo.size());
+    }
+
+    public void setAnimeStreaming(List<JikanAnimeIdsDto> jikanId) throws Exception{
+        List<JikanAnimeStreamingDto> jikanAnimeStreamingDtoList = jikanAPIService.requestAnimeStreaming(jikanId);
+        log.info(jikanAnimeStreamingDtoList);
+        if(jikanAnimeStreamingDtoList != null){
+            animeStreamingService.save(jikanAnimeStreamingDtoList);
+        }
     }
 
     private Anime setAnimeFromJikan(JikanResponseDataDto anime) {

@@ -1,9 +1,6 @@
 package entertain_me.app.service;
 
-import entertain_me.app.dto.anime.DemographicDto;
-import entertain_me.app.dto.anime.GenreDto;
-import entertain_me.app.dto.anime.StudioDto;
-import entertain_me.app.dto.anime.ThemeDto;
+import entertain_me.app.dto.anime.*;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import entertain_me.app.vo.AnimeVo;
 import lombok.extern.log4j.Log4j2;
@@ -193,5 +190,9 @@ public class AnimeService {
 
     public Page<AllAnimeInfoVo> getEntertainMeTeamFavoriteAnimes(List<Long> favoriteAnimes, Pageable pageable) {
         return buildAllAnimeInfoVoList(animeRepository.findEntertainMeTeamFavoriteAnimes(favoriteAnimes, pageable));
+    }
+
+    public List<JikanAnimeIdsDto> getAllJikanId(){
+        return animeRepository.findAllIds();
     }
 }
