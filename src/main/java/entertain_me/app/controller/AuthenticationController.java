@@ -46,7 +46,6 @@ public class AuthenticationController {
 	private AuthenticationManager authenticationManager;
 	@Autowired 
 	private AuthenticationService authenticationService;
-
 	@Autowired
 	private TokenServiceConfig tokenService;
 
@@ -68,6 +67,7 @@ public class AuthenticationController {
 			String token = tokenService.generateToken(user);
 
 			log.info("User: "+ user.getName() +" logged");
+			authenticationService.login(user.getId());
 			return ResponseEntity.ok(new LoginResponseVo(token, "Bearer", 3600,user.getId(), user.getName(), user.getEmail()));
 	}
 

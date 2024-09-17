@@ -1,6 +1,7 @@
 package entertain_me.app.model;
 
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +44,12 @@ public class User implements UserDetails{
 	@Column(name = "role")
 	private UserRoleEnum role;
 
+	@Column(name = "register_date")
+	private LocalDateTime registerDate;
+
+	@Column(name = "login_date")
+	private LocalDateTime loginDate;
+
 	@ManyToMany
 	@JoinTable(
 			name = "user_preference_demographic",
@@ -75,12 +82,13 @@ public class User implements UserDetails{
 			inverseJoinColumns = @JoinColumn(name = "id_theme")
 	)
 	private Set<Theme> themes;
-	
-	public User(String name, String email, String password, UserRoleEnum role) {
+
+	public User(String name, String email, String password, UserRoleEnum role, LocalDateTime registerDate) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.registerDate = registerDate;
 	}
 
 	@Override

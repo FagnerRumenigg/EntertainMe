@@ -17,15 +17,14 @@ import org.springframework.stereotype.Service;
 import entertain_me.app.model.User;
 import entertain_me.app.repository.user.UserRepository;
 
+import java.time.LocalDateTime;
+
 @Log4j2
 @Service
 public class AuthenticationService implements UserDetailsService{
 
 	@Autowired 
 	UserRepository repository;
-
-	@Autowired
-	AddressService addressService;
 
 	@Autowired
 	UserService userService;
@@ -56,7 +55,14 @@ public class AuthenticationService implements UserDetailsService{
 		}
 
 		String encryptedPassword = new BCryptPasswordEncoder().encode(registerUser.password());
-		User newUser = new User(registerUser.name(), registerUser.email(), encryptedPassword, registerUser.role());
+
+		User newUser = new User(
+				registerUser.name(),
+				registerUser.email(),
+				encryptedPassword,
+				registerUser.role(),
+				LocalDateTime.now()
+		);
 
 		repository.save(newUser);
 		log.info("User created");
@@ -70,5 +76,13 @@ public class AuthenticationService implements UserDetailsService{
 		tokenServiceConfig.addToBlacklist(jti, expiration);
 		log.info("User logout");
 
+	}
+
+	public void login(Long userId){
+		User user = userService.getById(userId);
+
+		user.setLoginDate(LocalDateTime.now());
+
+		userService.saveUser(user);
 	}
 }

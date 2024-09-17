@@ -59,12 +59,6 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 						SecurityContextHolder.getContext().setAuthentication(authentication);
 					}
 				}
-			}else{
-				String message = "Token is null";
-				log.error(message);
-
-				handleReturnException(message, response, 401);
-				return;
 			}
 			filterChain.doFilter(request, response);
 		} catch(Exception e) {
