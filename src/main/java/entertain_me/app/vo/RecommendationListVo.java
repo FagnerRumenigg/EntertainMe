@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
+@Schema(description = "RecommendationListVo")
 public record RecommendationListVo(
         @Schema(description = "List with the demographics",
                 example = "[{demographicId: 1, name:name}]")

@@ -42,12 +42,6 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 
 					handleReturnException(message, response, HttpServletResponse.SC_UNAUTHORIZED);
 					return;
-				}else if (jti != null && !tokenService.isBlacklisted(jti)){
-					String message = "Token is invalid, please, do login again";
-					log.error(message);
-
-					handleReturnException(message, response, HttpServletResponse.SC_UNAUTHORIZED);
-					return;
 				}
 
 				var login = tokenService.validateToken(token);
