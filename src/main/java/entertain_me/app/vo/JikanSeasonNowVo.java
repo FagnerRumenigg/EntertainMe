@@ -1,0 +1,2 @@
+package entertain_me.app.dto.jikan_api;public record JikanSeasonNow() {
+}
