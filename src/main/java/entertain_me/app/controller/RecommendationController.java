@@ -4,10 +4,7 @@ import com.azure.core.annotation.Get;
 import entertain_me.app.dto.PaginationRequestDto;
 import entertain_me.app.dto.recommendation.PreferencesDto;
 import entertain_me.app.service.RecommendationService;
-import entertain_me.app.vo.AllAnimeInfoVo;
-import entertain_me.app.vo.AnimeVo;
-import entertain_me.app.vo.ProblemVo;
-import entertain_me.app.vo.RecommendationListVo;
+import entertain_me.app.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +18,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping(value = "recommend",  produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Recommendation")
@@ -162,8 +161,12 @@ public class RecommendationController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("teste")
-    public void teste() throws Exception{
-        recommendationService.testTranslate();
+    @GetMapping("seasonNow")
+    public ResponseEntity<Page<JikanSeasonNowVo>> animesSeasonNow(
+        @RequestParam int page,
+        @RequestParam int size) throws Exception {
+        Page<JikanSeasonNowVo> jikanSeasonNowVoList = recommendationService.getSeasonNowJikan(page, size);
+        return jikanSeasonNowVoList.isEmpty() ?  ResponseEntity.noContent().build() : ResponseEntity.ok(jikanSeasonNowVoList);
+
     }
 }

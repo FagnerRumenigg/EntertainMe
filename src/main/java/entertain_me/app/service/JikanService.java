@@ -7,6 +7,7 @@ import entertain_me.app.model.*;
 import entertain_me.app.model.Anime.Anime;
 import entertain_me.app.repository.anime.AnimeRepository;
 import entertain_me.app.vo.AllAnimeInfoVo;
+import entertain_me.app.vo.JikanSeasonNowVo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -110,6 +111,17 @@ public class JikanService {
         List<AllAnimeInfoVo> pagedAnimes = allAnimesInfoVo.subList(start, end);
 
         return new PageImpl<>(pagedAnimes, pageable, allAnimesInfoVo.size());
+    }
+
+    public Page<JikanSeasonNowVo> getSeasonNowJikan(Pageable pageable, Integer limitPerPage) throws Exception{
+        List<JikanSeasonNowVo> jikanSeasonNowVo = jikanAPIService.requestSeasonAnimes(limitPerPage);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), jikanSeasonNowVo.size());
+        List<JikanSeasonNowVo> pagedAnimes = jikanSeasonNowVo.subList(start, end);
+
+        return new PageImpl<>(pagedAnimes, pageable, jikanSeasonNowVo.size());
+
     }
 
     public void setAnimeStreaming(List<JikanAnimeIdsDto> jikanId) throws Exception{

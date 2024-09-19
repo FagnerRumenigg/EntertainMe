@@ -6,11 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import entertain_me.app.dto.anime.JikanAnimeIdsDto;
 import entertain_me.app.dto.jikan_api.JikanAnimeStreamingDto;
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
+import entertain_me.app.vo.JikanSeasonNowVo;
 import lombok.extern.log4j.Log4j2;
+import org.apache.naming.StringManager;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,20 +46,28 @@ public class JikanAPIService {
         return animeStreamingDtoList;
     }
 
-
-    // Método responsável por salvar os dados de streaming no banco de dados
-    private void saveAnimeStreaming(List<JikanAnimeStreamingDto> animeStreamingDtoList, Long animeId) {
-
-    }
-
-
-
     public List<JikanResponseDataDto> requestTopAnimes() throws Exception {
         String apiUrl = "https://api.jikan.moe/v4/top/anime";
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiUrl, String.class);
 
         return buildJikanResponseDataDto(responseEntity);
+    }
+
+    public List<JikanSeasonNowVo> requestSeasonAnimes(Integer limitByPage) throws Exception{
+        String apiUrl = "https://api.jikan.moe/v4/seasons/now";
+
+        StringBuilder urlBuilder = new StringBuilder(apiUrl);
+
+        if (limitByPage != null) {
+            urlBuilder.append("?limit=").append(limitByPage);
+        }
+
+        String finalUrl = urlBuilder.toString();
+
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(finalUrl, String.class);
+
+        return buildJikanSeasonNowDto(responseEntity);
     }
 
     private List<JikanAnimeStreamingDto> buildJikanAnimeStreamingDto(ResponseEntity<String> responseEntity, Long animeId) throws Exception {
@@ -90,6 +101,7 @@ public class JikanAPIService {
 
         return jikanAnimeStreamingDtoList;
     }
+
     private List<JikanResponseDataDto> buildJikanResponseDataDto(ResponseEntity<String> responseEntity) throws Exception {
         List<JikanResponseDataDto> JikanResponseDataDtoList = new ArrayList<>();
 
@@ -126,6 +138,32 @@ public class JikanAPIService {
         }
         return JikanResponseDataDtoList;
     }
+
+    private List<JikanSeasonNowVo> buildJikanSeasonNowDto(ResponseEntity<String> responseEntity) throws Exception {
+        List<JikanSeasonNowVo> JikanSeasonNowVoList = new ArrayList<>();
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            String responseBody = responseEntity.getBody();
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode dataReturn = mapper.readTree(responseBody);
+            JsonNode dataAnimeList = dataReturn.path("data");
+
+            if (dataAnimeList.isArray()) {
+                for (JsonNode anime : dataAnimeList) {
+                    JikanSeasonNowVo jikanResponseDataDto = new JikanSeasonNowVo(
+                            anime.path("mal_id").asInt(),
+                            anime.path("title").asText(),
+                            getImageFromJikan(anime, "webp", "image_url")
+                    );
+                    JikanSeasonNowVoList.add(jikanResponseDataDto);
+                }
+            }
+        } else {
+            throw new Exception("The connection with the jikan-api is down. Try again later.");
+        }
+        return JikanSeasonNowVoList;
+    }
+
 
     private String getImageFromJikan(JsonNode jsonNode, String format, String property) {
         JsonNode imagesList = jsonNode.path("images");

@@ -1,2 +1,10 @@
-package entertain_me.app.dto.jikan_api;public record JikanSeasonNow() {
+package entertain_me.app.vo;
+
+public record JikanSeasonNowVo(
+        Integer jikan_id,
+
+        String title,
+
+        String image
+) {
 }

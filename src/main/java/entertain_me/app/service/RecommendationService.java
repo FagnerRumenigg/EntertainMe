@@ -5,6 +5,7 @@ import entertain_me.app.dto.PaginationRequestDto;
 import entertain_me.app.dto.recommendation.PreferencesDto;
 import entertain_me.app.model.*;
 import entertain_me.app.vo.AllAnimeInfoVo;
+import entertain_me.app.vo.JikanSeasonNowVo;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +135,10 @@ public class RecommendationService {
 
     public Page<AllAnimeInfoVo> getMyAnimeListTopAnimes(Integer page, Integer size) throws Exception {
         return jikanService.getTopAnimesJikan(createPageable(new PaginationRequestDto(page, size)));
+    }
+
+    public Page<JikanSeasonNowVo> getSeasonNowJikan(Integer page, Integer size) throws Exception {
+        return jikanService.getSeasonNowJikan(createPageable(new PaginationRequestDto(page, size)), size);
     }
 
     public Page<AllAnimeInfoVo> getFavoriteEntertainMeTeam(Integer page, Integer size){
