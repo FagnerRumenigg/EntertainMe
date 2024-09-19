@@ -5,7 +5,6 @@ import entertain_me.app.dto.jikan_api.JikanAnimeStreamingDto;
 import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
 import entertain_me.app.model.*;
 import entertain_me.app.model.Anime.Anime;
-import entertain_me.app.model.Anime.AnimeImages;
 import entertain_me.app.repository.anime.AnimeRepository;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import lombok.extern.log4j.Log4j2;
@@ -55,17 +54,15 @@ public class JikanService {
 
             while (returnOk) {
                 List<JikanResponseDataDto> animesList = jikanAPIService.requestAllAnimes(page);
-                log.info("Returned "+animesList.size()+" animes at the page: "+page);
+                log.info("Returned {} animes at the page: {}", animesList.size(), page);
 
                 if (!animesList.isEmpty()) {
                     for (JikanResponseDataDto anime : animesList) {
                         Anime newAnime = setAnimeFromJikan(anime);
                         Anime animeRegistered = repository.save(newAnime);
-                        log.info("Anime {} registered: ",anime.title());
+                        log.info("Anime {} registered ",anime.title());
 
                         animeImageService.saveImages(animeRegistered.getId() ,anime.imageUrl(), anime.smallImageUrl(), anime.largeImageUrl());
-                        log.info("Images also saved");
-
                     }
                 } else {
                     returnOk = false;
@@ -76,7 +73,7 @@ public class JikanService {
 
                 if (passedMinutes >= 5) {
                     timeStart = LocalDateTime.now();
-                    log.info("5 minutes passed, page: {}  - {}", page, timeStart.format(format));
+                    log.info("5 minutes passed, page: {} - {}", page, timeStart.format(format));
                 }
                 page++;
                 Thread.sleep(1500);
@@ -108,12 +105,10 @@ public class JikanService {
             allAnimesInfoVo.add(allAnimeInfoVo);
         });
 
-        // Cria um sublist com base na paginação
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), allAnimesInfoVo.size());
         List<AllAnimeInfoVo> pagedAnimes = allAnimesInfoVo.subList(start, end);
 
-        // Retorna a lista paginada como um objeto Page
         return new PageImpl<>(pagedAnimes, pageable, allAnimesInfoVo.size());
     }
 

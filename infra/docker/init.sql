@@ -198,6 +198,12 @@ CREATE TABLE anime_streaming (
     FOREIGN KEY (id_anime) REFERENCES anime(id_anime)
 );
 
+create table legal_document(
+	id_document		SERIAL 		primary key,
+	documet_type	VARCHAR(50)		not null,
+	document_text	TEXT		not null
+);
+
 CREATE INDEX idx_anime_title ON anime(title);
 CREATE INDEX idx_studio_title ON studio(name);
 CREATE INDEX idx_demographic_title ON demographic(name);
