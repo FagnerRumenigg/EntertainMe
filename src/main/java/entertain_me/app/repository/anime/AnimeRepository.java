@@ -152,4 +152,17 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
 
     @Query("SELECT new entertain_me.app.dto.anime.JikanAnimeIdsDto(a.id, a.jikanId) FROM Anime a")
     List<JikanAnimeIdsDto> findAllIds();
+
+    @Query("SELECT new entertain_me.app.vo.AnimeVo(" +
+            "a.id, " +
+            "a.title, " +
+            "a.source, " +
+            "a.status, " +
+            "a.ageRating, " +
+            "a.synopsys, " +
+            "a.episodes," +
+            "a.year) " +
+            "FROM Anime a " +
+            "WHERE a.id IN (:animesId)")
+    List<AnimeVo> findAnimeById(List<Long> animesId);
 }

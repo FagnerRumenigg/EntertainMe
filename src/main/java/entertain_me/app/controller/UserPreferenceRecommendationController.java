@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "UserPreferenceRecommendation")
 @CrossOrigin
 @RestController
-public class UserPreferenceRecommendation {
+public class UserPreferenceRecommendationController {
 
     @Autowired
     UserPreferenceRecommendationService userPreferenceRecommendationService;
@@ -48,7 +47,7 @@ public class UserPreferenceRecommendation {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ProblemVo.class))})
     })
-    @GetMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getPreferences", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllPreferencesRecommendation() {
         return ResponseEntity.ok(userPreferenceRecommendationService.getAllPreferencesRecommendation());
     }

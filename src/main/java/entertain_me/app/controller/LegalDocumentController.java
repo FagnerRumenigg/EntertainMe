@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -27,7 +28,7 @@ public class LegalDocumentController {
     @Autowired
     LegalDocumentService legalDocumentService;
 
-    @Operation(summary = "Get legal document by type", method = "GET")
+    @Operation(summary = "Get legal document by type", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Document founded",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = LegalDocumentVo.class))}),

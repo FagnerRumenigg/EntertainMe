@@ -76,7 +76,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary =  "Reset the user password", method = "POST")
+    @Operation(summary =  "Reset the user password", method = "POST", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Password redefined"),
             @ApiResponse(responseCode = "500", description = "Internal error",

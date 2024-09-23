@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jdk.jshell.Snippet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class RecommendationController {
     @Autowired
     RecommendationService recommendationService;
 
-    @Operation(summary = "Get anime by demographic", method = "GET")
+    @Operation(summary = "Get anime by demographic", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of animes by demographic",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AllAnimeInfoVo.class))}),
@@ -47,7 +48,7 @@ public class RecommendationController {
         return animeList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 
-    @Operation(summary = "Get anime by genres", method = "GET")
+    @Operation(summary = "Get anime by genres", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of animes by genres",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AllAnimeInfoVo.class))}),
@@ -65,7 +66,7 @@ public class RecommendationController {
         return animeList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 
-    @Operation(summary = "Get anime by Studio", method = "GET")
+    @Operation(summary = "Get anime by Studio", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of animes by studios",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AllAnimeInfoVo.class))}),
@@ -83,7 +84,7 @@ public class RecommendationController {
         return animeList.isEmpty() ?  ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 
-    @Operation(summary = "Get anime by theme", method = "GET")
+    @Operation(summary = "Get anime by theme", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of animes by themes",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AllAnimeInfoVo.class))}),
@@ -101,7 +102,7 @@ public class RecommendationController {
         return animeList.isEmpty() ?  ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 
-    @Operation(summary = "Get a list of animes that is the most distinct for the user", method = "GET")
+    @Operation(summary = "Get a list of animes that is the most distinct for the user", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of animes that are the most distinct from the user preference ",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AllAnimeInfoVo.class))}),
@@ -115,11 +116,10 @@ public class RecommendationController {
             @RequestParam int page,
             @RequestParam int size) throws Exception {
         Page<AllAnimeInfoVo> animeList = recommendationService.buildUpsideDownAnime(page, size);
-
         return animeList.isEmpty() ?  ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 
-    @Operation(summary = "Get a list of favorite animes from the entertainMe team", method = "GET")
+    @Operation(summary = "Get a list of favorite animes from the entertainMe team", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of favorite animes from the entertainMe team ",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AllAnimeInfoVo.class))}),
@@ -137,7 +137,7 @@ public class RecommendationController {
         return animeList.isEmpty() ?  ResponseEntity.noContent().build() : ResponseEntity.ok(animeList);
     }
 
-    @Operation(summary = "Get a list of the top animes from myAnimeList", method = "GET")
+    @Operation(summary = "Get a list of the top animes from myAnimeList", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of top animes from the myAnimeList ",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AllAnimeInfoVo.class))}),
@@ -167,6 +167,5 @@ public class RecommendationController {
         @RequestParam int size) throws Exception {
         Page<JikanSeasonNowVo> jikanSeasonNowVoList = recommendationService.getSeasonNowJikan(page, size);
         return jikanSeasonNowVoList.isEmpty() ?  ResponseEntity.noContent().build() : ResponseEntity.ok(jikanSeasonNowVoList);
-
     }
 }

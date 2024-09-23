@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "anime_user_interactions")
+@ToString
+@Table(name = "anime_user_interaction")
 public class AnimeUserInteractions implements Serializable {
 
     @EmbeddedId
@@ -21,10 +22,16 @@ public class AnimeUserInteractions implements Serializable {
     private short rating;
 
     @Column(name = "no_interest")
-    private boolean noInterest;
+    private Boolean noInterest;
 
-    @Column(name = "watched")
-    private boolean watched;
+    @Column(name = "is_watched")
+    private Boolean watched;
+
+    @Column(name = "is_watching")
+    private Boolean watching;
+
+    @Column(name = "is_my_list")
+    private Boolean myList;
 
     @Column(name = "interaction_date")
     private LocalDateTime InteractionDate;

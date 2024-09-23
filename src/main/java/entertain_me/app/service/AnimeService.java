@@ -195,4 +195,8 @@ public class AnimeService {
     public List<JikanAnimeIdsDto> getAllJikanId(){
         return animeRepository.findAllIds();
     }
+
+    public List<AllAnimeInfoVo> getAnimesById(List<Long> animesId){
+        return buildAllAnimeInfoVoList(animeRepository.findAnimeById(animesId));
+    }
 }

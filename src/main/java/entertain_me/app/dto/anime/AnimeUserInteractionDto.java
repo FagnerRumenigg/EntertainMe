@@ -8,5 +8,7 @@ public record AnimeUserInteractionDto(
     long idAnime,
     short rating,
     boolean noInterest,
+    boolean isWatching,
+    boolean isMyList,
     boolean watched) {
 }

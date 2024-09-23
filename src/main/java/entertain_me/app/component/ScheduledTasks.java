@@ -24,7 +24,7 @@ public class ScheduledTasks {
 
     DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    @Scheduled(cron = "00 00 21 * * TUE")
+    @Scheduled(cron = "00 05 23 * * FRI")
     public void updateAnimeDatabase() throws Exception {
         log.info("Starting updateAnimeDatabase task at the following time: {}",  LocalDateTime.now().format(format));
         jikanService.getAllAnimesJikan();
