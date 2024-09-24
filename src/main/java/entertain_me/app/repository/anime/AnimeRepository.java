@@ -1,5 +1,6 @@
 package entertain_me.app.repository.anime;
 
+import entertain_me.app.dto.TranslateInfoDto;
 import entertain_me.app.dto.anime.JikanAnimeIdsDto;
 import entertain_me.app.vo.AnimeVo;
 import org.springframework.data.domain.Page;
@@ -165,4 +166,13 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "FROM Anime a " +
             "WHERE a.id IN (:animesId)")
     List<AnimeVo> findAnimeById(List<Long> animesId);
+
+    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto (a.id,  a.status, 'en', 'pt') FROM Anime a")
+    List<TranslateInfoDto> findAllStatus();
+
+    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto (a.id,  a.ageRating, 'en', 'pt') FROM Anime a")
+    List<TranslateInfoDto> findAllAgeRating();
+
+    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto (a.id,  a.synopsys, 'en', 'pt') FROM Anime a")
+    List<TranslateInfoDto> findAllSynopsys();
 }

@@ -37,7 +37,6 @@ public class AnimeController {
     @Autowired
     private RecommendationService recommendationService;
 
-
     @Operation(summary = "Get anime by the title", method = "GET", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Anime founded",

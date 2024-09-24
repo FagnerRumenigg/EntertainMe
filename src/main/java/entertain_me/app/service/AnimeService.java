@@ -1,5 +1,6 @@
 package entertain_me.app.service;
 
+import entertain_me.app.dto.TranslateInfoDto;
 import entertain_me.app.dto.anime.*;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import entertain_me.app.vo.AnimeVo;
@@ -199,4 +200,18 @@ public class AnimeService {
     public List<AllAnimeInfoVo> getAnimesById(List<Long> animesId){
         return buildAllAnimeInfoVoList(animeRepository.findAnimeById(animesId));
     }
+
+
+    public List<TranslateInfoDto> getAllAnimeStatus(){
+        return animeRepository.findAllStatus();
+    }
+
+    public List<TranslateInfoDto> getAllAnimeAgeRating(){
+        return animeRepository.findAllAgeRating();
+    }
+
+    public List<TranslateInfoDto> getAllAnimeSynopsis(){
+        return animeRepository.findAllSynopsys();
+    }
+
 }
