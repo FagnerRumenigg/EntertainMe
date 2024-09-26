@@ -167,12 +167,24 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "WHERE a.id IN (:animesId)")
     List<AnimeVo> findAnimeById(List<Long> animesId);
 
-    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto (a.id,  a.status, 'en', 'pt') FROM Anime a")
+    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto(a.id, a.status, 'en', 'pt') " +
+            "FROM Anime a " +
+            "LEFT JOIN AnimeLanguages al ON a.id = al.idAnime " +
+            "WHERE (al.officialTranslate IS NULL OR al.officialTranslate = false) " +
+            "ORDER BY a.id")
     List<TranslateInfoDto> findAllStatus();
 
-    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto (a.id,  a.ageRating, 'en', 'pt') FROM Anime a")
+    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto(a.id, a.ageRating, 'en', 'pt') " +
+            "FROM Anime a " +
+            "LEFT JOIN AnimeLanguages al ON a.id = al.idAnime " +
+            "WHERE (al.officialTranslate IS NULL OR al.officialTranslate = false) " +
+            "ORDER BY a.id")
     List<TranslateInfoDto> findAllAgeRating();
 
-    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto (a.id,  a.synopsys, 'en', 'pt') FROM Anime a")
+    @Query("SELECT new entertain_me.app.dto.TranslateInfoDto(a.id, a.synopsys, 'en', 'pt') " +
+            "FROM Anime a " +
+            "LEFT JOIN AnimeLanguages al ON a.id = al.idAnime " +
+            "WHERE (al.officialTranslate IS NULL OR al.officialTranslate = false) " +
+            "ORDER BY a.id")
     List<TranslateInfoDto> findAllSynopsys();
 }

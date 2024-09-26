@@ -32,4 +32,7 @@ public class AnimeLanguages {
 
     @Column(name = "synopsys")
     private String synopsys;
+
+    @Column(name = "official_translate")
+    private boolean officialTranslate;
 }

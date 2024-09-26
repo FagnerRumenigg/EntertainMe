@@ -199,9 +199,21 @@ CREATE TABLE anime_streaming (
 );
 
 create table legal_document(
-	id_document		SERIAL 		primary key,
-	documet_type	VARCHAR(50)		not null,
-	document_text	TEXT		not null
+	id_document		SERIAL 		    primary key,
+	document_type	VARCHAR(50)		not null,
+	document_text	TEXT		    not null,
+	PRIMARY KEY (id_document)
+);
+
+CREATE TABLE anime_languages (
+    id_anime       		INTEGER      NOT NULL,
+    language	   		CHAR(2)		 NOT NULL,
+    status         		VARCHAR(50),
+    age_rating     		VARCHAR(50),
+    synopsys       		VARCHAR(5000),
+    official_translate	BOOLEAN,
+    PRIMARY KEY (id_anime),
+    FOREIGN KEY (id_anime) REFERENCES anime(id_anime)
 );
 
 CREATE INDEX idx_anime_title ON anime(title);

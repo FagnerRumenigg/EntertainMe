@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @OpenAPIDefinition(info = @Info(title = "EntertainmeApi", version = "Alpha", description = "Application Entertain-Me API"))
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "entertain_me.app")
 public class EntertainmeApi {
 
 	public static void main(String[] args) {

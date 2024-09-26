@@ -20,4 +20,11 @@ public class LibreTranslateController {
     public void translate(){
         libreTranslateService.processTranslateRequest();
     }
+
+    @GetMapping("officialTranslate")
+    public void officialTranslate() throws Exception {
+        libreTranslateService.translateAzure();
+    }
+
+
 }

@@ -13,12 +13,13 @@ public class AnimeLanguagesService {
     @Autowired
     private AnimeLanguagesRepository animeLanguagesRepository;
 
-    public void saveAnimeLanguage(Long animeId, String textTranslated, String field){
+    public void saveAnimeLanguage(Long animeId, String textTranslated, String field, boolean isAzureOfficialTranslate){
         log.info("animeId {} - field {}", animeId, field);
         AnimeLanguages animeLanguages = getAnimeLanguages(animeId);
 
         animeLanguages.setIdAnime(animeId);
         animeLanguages.setLanguage("pt");
+        animeLanguages.setOfficialTranslate(isAzureOfficialTranslate);
 
         switch(field){
             case "status":

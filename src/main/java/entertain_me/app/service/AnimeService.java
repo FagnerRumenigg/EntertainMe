@@ -4,6 +4,7 @@ import entertain_me.app.dto.TranslateInfoDto;
 import entertain_me.app.dto.anime.*;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import entertain_me.app.vo.AnimeVo;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,9 @@ public class AnimeService {
     @Autowired
     ThemeService themeService;
 
+    public String teste(){
+        return "OLÁ";
+    }
     public Page<AllAnimeInfoVo> getAnimeByTitle(String title) {
 
         if (title == null || title.trim().isEmpty()) {
@@ -201,7 +205,6 @@ public class AnimeService {
         return buildAllAnimeInfoVoList(animeRepository.findAnimeById(animesId));
     }
 
-
     public List<TranslateInfoDto> getAllAnimeStatus(){
         return animeRepository.findAllStatus();
     }
@@ -211,7 +214,8 @@ public class AnimeService {
     }
 
     public List<TranslateInfoDto> getAllAnimeSynopsis(){
-        return animeRepository.findAllSynopsys();
+        return animeRepository.findAllSynopsys().stream()
+                .limit(2)
+                .collect(Collectors.toList());
     }
-
 }

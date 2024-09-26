@@ -173,10 +173,4 @@ public class RecommendationService {
             favoriteAnimeIds = null;
         }
     }
-
-    public void testTranslate() throws Exception {
-        TranslationService translationService = new TranslationService();
-        String response = translationService.post();
-        log.info(TranslationService.prettify(response));
-    }
 }
