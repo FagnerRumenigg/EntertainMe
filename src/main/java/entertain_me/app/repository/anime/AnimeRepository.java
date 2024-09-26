@@ -187,4 +187,6 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "WHERE (al.officialTranslate IS NULL OR al.officialTranslate = false) " +
             "ORDER BY a.id")
     List<TranslateInfoDto> findAllSynopsys();
+
+    List<Anime> findAnimeByJikanId(Integer jikanId);
 }

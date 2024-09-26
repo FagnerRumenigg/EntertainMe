@@ -30,7 +30,7 @@ public class JikanService {
     @Autowired
     private JikanAPIService jikanAPIService;
     @Autowired
-    private AnimeRepository repository;
+    private AnimeService animeService;
     @Autowired
     private GenreService genreService;
     @Autowired
@@ -59,11 +59,15 @@ public class JikanService {
 
                 if (!animesList.isEmpty()) {
                     for (JikanResponseDataDto anime : animesList) {
-                        Anime newAnime = setAnimeFromJikan(anime);
-                        Anime animeRegistered = repository.save(newAnime);
-                        log.info("Anime {} registered ",anime.title());
+                        if(animeService.getAnimeByJikanId(anime.jikanId()).isEmpty()){
+                            Anime newAnime = animeService.setAnimeFromJikan(anime);
+                            animeImageService.saveImages(newAnime.getId() ,anime.imageUrl(), anime.smallImageUrl(), anime.largeImageUrl());
 
-                        animeImageService.saveImages(animeRegistered.getId() ,anime.imageUrl(), anime.smallImageUrl(), anime.largeImageUrl());
+                            log.info("Anime {} registered ",anime.title());
+                        }else{
+                            log.info("Anime {} already registered", anime.title());
+                        }
+
                     }
                 } else {
                     returnOk = false;
@@ -133,53 +137,5 @@ public class JikanService {
 
             Thread.sleep(1500);
         }
-    }
-
-    private Anime setAnimeFromJikan(JikanResponseDataDto anime) {
-        Anime animeNovo = new Anime();
-
-        Set<Genre> genres = saveGenres(anime.genresName());
-        Set<Studio> studios = saveStudios(anime.studiosName());
-        Set<Demographic> demographics = saveDemographics(anime.demographicsName());
-        Set<Theme> themes = saveTheme(anime.themesName());
-
-        animeNovo.setJikanId(anime.jikanId());
-        animeNovo.setTitle(anime.title());
-        animeNovo.setSource(anime.source());
-        animeNovo.setStatus(anime.status());
-        animeNovo.setAgeRating(anime.ageRating());
-        animeNovo.setSynopsys(anime.synopsis());
-        animeNovo.setEpisodes(anime.episodes());
-        animeNovo.setYear(anime.year());
-        animeNovo.setGenres(genres);
-        animeNovo.setStudios(studios);
-        animeNovo.setDemographics(demographics);
-        animeNovo.setThemes(themes);
-
-        return animeNovo;
-    }
-
-    private Set<Genre> saveGenres(List<String> genreNames) {
-        return genreNames.stream()
-                .map(genreService::findOrCreateGenre)
-                .collect(Collectors.toSet());
-    }
-
-    private Set<Studio> saveStudios(List<String> studioNames) {
-        return studioNames.stream()
-                .map(studioService::findOrCreateStudio)
-                .collect(Collectors.toSet());
-    }
-
-    private Set<Demographic> saveDemographics(List<String> demographicNames) {
-        return demographicNames.stream()
-                .map(demographicService::findOrCreateDemographic)
-                .collect(Collectors.toSet());
-    }
-
-    private Set<Theme> saveTheme(List<String> themeNames) {
-        return themeNames.stream()
-                .map(themeService::findOrCreateTheme)
-                .collect(Collectors.toSet());
     }
 }

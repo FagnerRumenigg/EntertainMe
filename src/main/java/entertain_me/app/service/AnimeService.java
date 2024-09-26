@@ -2,6 +2,12 @@ package entertain_me.app.service;
 
 import entertain_me.app.dto.TranslateInfoDto;
 import entertain_me.app.dto.anime.*;
+import entertain_me.app.dto.jikan_api.JikanResponseDataDto;
+import entertain_me.app.model.Anime.Anime;
+import entertain_me.app.model.Demographic;
+import entertain_me.app.model.Genre;
+import entertain_me.app.model.Studio;
+import entertain_me.app.model.Theme;
 import entertain_me.app.vo.AllAnimeInfoVo;
 import entertain_me.app.vo.AnimeVo;
 import jakarta.annotation.PostConstruct;
@@ -38,9 +44,6 @@ public class AnimeService {
     @Autowired
     ThemeService themeService;
 
-    public String teste(){
-        return "OLÁ";
-    }
     public Page<AllAnimeInfoVo> getAnimeByTitle(String title) {
 
         if (title == null || title.trim().isEmpty()) {
@@ -217,5 +220,61 @@ public class AnimeService {
         return animeRepository.findAllSynopsys().stream()
                 .limit(2)
                 .collect(Collectors.toList());
+    }
+
+    private Anime save(Anime anime){
+        return animeRepository.save(anime);
+    }
+
+    public Anime setAnimeFromJikan(JikanResponseDataDto anime) {
+        Anime newAnime = new Anime();
+
+        Set<Genre> genres = saveGenres(anime.genresName());
+        Set<Studio> studios = saveStudios(anime.studiosName());
+        Set<Demographic> demographics = saveDemographics(anime.demographicsName());
+        Set<Theme> themes = saveTheme(anime.themesName());
+
+        newAnime.setJikanId(anime.jikanId());
+        newAnime.setTitle(anime.title());
+        newAnime.setSource(anime.source());
+        newAnime.setStatus(anime.status());
+        newAnime.setAgeRating(anime.ageRating());
+        newAnime.setSynopsys(anime.synopsis());
+        newAnime.setEpisodes(anime.episodes());
+        newAnime.setYear(anime.year());
+        newAnime.setGenres(genres);
+        newAnime.setStudios(studios);
+        newAnime.setDemographics(demographics);
+        newAnime.setThemes(themes);
+
+        return save(newAnime);
+    }
+
+    private Set<Genre> saveGenres(List<String> genreNames) {
+        return genreNames.stream()
+                .map(genreService::findOrCreateGenre)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Studio> saveStudios(List<String> studioNames) {
+        return studioNames.stream()
+                .map(studioService::findOrCreateStudio)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Demographic> saveDemographics(List<String> demographicNames) {
+        return demographicNames.stream()
+                .map(demographicService::findOrCreateDemographic)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Theme> saveTheme(List<String> themeNames) {
+        return themeNames.stream()
+                .map(themeService::findOrCreateTheme)
+                .collect(Collectors.toSet());
+    }
+
+    public List<Anime> getAnimeByJikanId(Integer jikanId){
+        return animeRepository.findAnimeByJikanId(jikanId);
     }
 }

@@ -24,15 +24,15 @@ public class ScheduledTasks {
 
     DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    @Scheduled(cron = "00 05 23 * * FRI")
-    public void updateAnimeDatabase() throws Exception {
+    @Scheduled(cron = "00 35 11 * * THU")
+    private void updateAnimeDatabase() throws Exception {
         log.info("Starting updateAnimeDatabase task at the following time: {}",  LocalDateTime.now().format(format));
         jikanService.getAllAnimesJikan();
         log.info("Task updateAnimeDatabase finished at: "+LocalDateTime.now().format(format));
         updateAnimeStreaming();
     }
 
-    public void updateAnimeStreaming() throws Exception {
+    private void updateAnimeStreaming() throws Exception {
         log.info("Starting updateAnimeStreaming task at the following time: {}",LocalDateTime.now().format(format));
         List<JikanAnimeIdsDto> jikanAnimeId = animeService.getAllJikanId();
 
@@ -41,7 +41,7 @@ public class ScheduledTasks {
     }
 
     @Scheduled(cron = "01 00 00 * * *")
-    public void compactLogMidnight() {
+    private void compactLogMidnight() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
         log.info("Compacting log by time, at: {}",LocalDateTime.now().format(format));
     }
