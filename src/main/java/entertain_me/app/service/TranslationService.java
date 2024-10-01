@@ -10,10 +10,10 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 @Log4j2
@@ -34,10 +34,10 @@ public class TranslationService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private static final int MAX_LIMIT_CHARACTER = 2000000;
+    private static final int MAX_LIMIT_CHARACTER = 35000;
 
 
-    public void translateOfficialAzure() {
+    public void translateOfficialAzure() throws InterruptedException {
         String url = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=pt";
 
         HttpHeaders headers = new HttpHeaders();
@@ -45,32 +45,26 @@ public class TranslationService {
         headers.set("Ocp-Apim-Subscription-Key", apiKey);
         headers.set("Ocp-Apim-Subscription-Region", location);
 
-        List<TranslateInfoDto> allAnimeSynopsys = animeService.getAllAnimeSynopsis();
+        List<TranslateInfoDto> allAnimeSynopsys = getAnimeSynopsysLimit();
         translateRequest(url, allAnimeSynopsys, headers);
     }
-    private void translateRequest(String apiUrl, List<TranslateInfoDto> list, HttpHeaders headers) {
-        AtomicReference<Integer> sumCharacter = new AtomicReference<>(0);
+    private void translateRequest(String apiUrl, List<TranslateInfoDto> list, HttpHeaders headers) throws InterruptedException {
         Gson gson = new Gson();
-
         for (TranslateInfoDto anime : list) {
             log.info("Anime Processing: {}", anime.animeId());
-            if (sumCharacter.get() < MAX_LIMIT_CHARACTER) {
-                String textToTranslate = anime.q();
-
-                if (isTextEmpty(textToTranslate)) {
-                    log.warn("Empty text to translate, anime ID: {}", anime.animeId());
-                    continue;
-                }
-
-                String requestBody = createRequestBody(textToTranslate, gson);
-
-                ResponseEntity<List<Map<String, Object>>> responseEntity = sendTranslationRequest(apiUrl, requestBody, headers);
-
-                processTranslationResponse(responseEntity, anime, sumCharacter);
-            } else {
-                log.info("Character limit reached: {}", sumCharacter.get());
-                break;
+            String textToTranslate = anime.q();
+            if (isTextEmpty(textToTranslate)) {
+                log.warn("Empty text to translate, anime ID: {}", anime.animeId());
+                continue;
             }
+
+            String requestBody = createRequestBody(textToTranslate, gson);
+
+            ResponseEntity<List<Map<String, Object>>> responseEntity = sendTranslationRequest(apiUrl, requestBody, headers);
+
+            processTranslationResponse(responseEntity, anime);
+
+
         }
     }
 
@@ -88,10 +82,10 @@ public class TranslationService {
         return restTemplate.exchange(apiUrl, HttpMethod.POST, entity, new ParameterizedTypeReference<List<Map<String, Object>>>() {});
     }
 
-    private void processTranslationResponse(ResponseEntity<List<Map<String, Object>>> responseEntity, TranslateInfoDto anime, AtomicReference<Integer> sumCharacter) {
+    private void processTranslationResponse(ResponseEntity<List<Map<String, Object>>> responseEntity, TranslateInfoDto anime) throws InterruptedException {
+
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             List<Map<String, Object>> responseBody = responseEntity.getBody();
-            log.info("Response Body: {}", responseBody);
 
             if (responseBody != null && !responseBody.isEmpty()) {
                 responseBody.forEach(translationResponse -> {
@@ -100,7 +94,6 @@ public class TranslationService {
                         translations.forEach(translation -> {
                             String translatedText = translation.get("text");
 
-                            sumCharacter.updateAndGet(v -> v + translatedText.length());
                             animeLanguagesService.saveAnimeLanguage(anime.animeId(), translatedText, "synopsys", true);
                         });
                     } else {
@@ -113,5 +106,29 @@ public class TranslationService {
         } else {
             log.error("Failed to translate, code: {}", responseEntity.getStatusCode());
         }
+        Thread.sleep(1500);
     }
+
+    private List<TranslateInfoDto> getAnimeSynopsysLimit() {
+        List<TranslateInfoDto> allAnimeSynopsys = animeService.getAllAnimeSynopsis();
+        List<TranslateInfoDto> listLimited = new ArrayList<>();
+        int[] characterCount = {0};
+
+        allAnimeSynopsys.stream()
+                .filter(anime -> anime.q() != null)
+                .takeWhile(anime -> {
+                    int synopsysSize = anime.q().length();
+
+                    if (characterCount[0] + synopsysSize <= MAX_LIMIT_CHARACTER) {
+                        characterCount[0] += synopsysSize;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+                .forEach(listLimited::add);
+            log.info("Will be processed {} animes", listLimited.size());
+        return listLimited;
+    }
+
 }

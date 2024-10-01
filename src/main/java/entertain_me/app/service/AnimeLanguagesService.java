@@ -14,7 +14,6 @@ public class AnimeLanguagesService {
     private AnimeLanguagesRepository animeLanguagesRepository;
 
     public void saveAnimeLanguage(Long animeId, String textTranslated, String field, boolean isAzureOfficialTranslate){
-        log.info("animeId {} - field {}", animeId, field);
         AnimeLanguages animeLanguages = getAnimeLanguages(animeId);
 
         animeLanguages.setIdAnime(animeId);

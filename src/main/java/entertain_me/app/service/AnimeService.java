@@ -217,9 +217,7 @@ public class AnimeService {
     }
 
     public List<TranslateInfoDto> getAllAnimeSynopsis(){
-        return animeRepository.findAllSynopsys().stream()
-                .limit(2)
-                .collect(Collectors.toList());
+        return animeRepository.findAllSynopsys();
     }
 
     private Anime save(Anime anime){
